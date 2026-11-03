@@ -1,0 +1,22 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { HashRouter } from 'react-router-dom'
+import './index.css'
+import App from './App'
+import { initDB } from './lib/db'
+import { startTranslator } from './i18n'
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({ immediate: true })
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+initDB().then(() => {
+  root.render(
+    <React.StrictMode>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </React.StrictMode>
+  )
+  startTranslator()
+})

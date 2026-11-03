@@ -1,0 +1,47 @@
+# English || हिंदी || मराठी   — phrases found by the coverage scan
+pay at hospital || अस्पताल में भुगतान || रुग्णालयात भरणा
+pay online || ऑनलाइन भुगतान || ऑनलाइन भरणा
+Log out / switch demo account || लॉग आउट / डेमो खाता बदलें || लॉग आउट / डेमो खाते बदला
+New bill / collect payment || नया बिल / भुगतान लें || नवीन बिल / रक्कम घ्या
+to search patients from anywhere. || कहीं से भी मरीज़ खोजने के लिए. || कुठूनही रुग्ण शोधण्यासाठी.
+Alternate || दूसरा नंबर || दुसरा नंबर
+Emergency contact || आपातकालीन संपर्क || आपत्कालीन संपर्क
+arrived || आए || आले
+/day || /दिन || /दिवस
+/ month || / महीना || / महिना
+Directory || सूची || यादी
+code || कोड || कोड
+staff || स्टाफ़ || कर्मचारी
+English || English || English
+Hindi || हिंदी || हिंदी
+Marathi || मराठी || मराठी
+Mon–Sat || सोम–शनि || सोम–शनि
+DLT sender ID (6 letters) || DLT सेंडर ID (6 अक्षर) || DLT सेंडर ID (6 अक्षरे)
+when connected to the cloud server || क्लाउड सर्वर से जुड़ने पर || क्लाउड सर्व्हरशी जोडल्यावर
+WhatsApp: sent from your phone (click-to-chat) || WhatsApp: आपके फ़ोन से (click-to-chat) || WhatsApp: तुमच्या फोनवरून (click-to-chat)
+WhatsApp: WhatsApp Business API || WhatsApp: WhatsApp Business API || WhatsApp: WhatsApp Business API
+WhatsApp: off || WhatsApp: बंद || WhatsApp: बंद
+SMS: demo || SMS: डेमो || SMS: डेमो
+Your health records are private. Only the doctors and staff treating you can see them, and every access is recorded. To download or delete your data, contact the hospital (Digital Personal Data Protection Act, 2023). || आपके स्वास्थ्य रिकॉर्ड निजी हैं. केवल आपका इलाज करने वाले डॉक्टर और स्टाफ़ इन्हें देख सकते हैं, और हर बार देखना दर्ज होता है. अपना डेटा डाउनलोड या हटाने के लिए अस्पताल से संपर्क करें (डिजिटल व्यक्तिगत डेटा संरक्षण अधिनियम, 2023). || तुमच्या आरोग्य नोंदी खाजगी आहेत. फक्त तुमच्यावर उपचार करणारे डॉक्टर व कर्मचारीच त्या पाहू शकतात आणि प्रत्येक वेळी पाहिल्याची नोंद होते. तुमचा डेटा डाउनलोड किंवा हटवण्यासाठी रुग्णालयाशी संपर्क करा (डिजिटल वैयक्तिक डेटा संरक्षण कायदा, 2023).
+Messages are sent only to patients who agreed (consent recorded on their profile), in the patient’s chosen language. With click-to-chat, tap “Send” to open WhatsApp with the message ready. Connect a WhatsApp Business API / SMS provider in Settings to send automatically. || संदेश केवल सहमत मरीज़ों को (सहमति प्रोफ़ाइल में दर्ज) उनकी चुनी भाषा में भेजे जाते हैं. click-to-chat में “भेजें” दबाने पर WhatsApp में संदेश तैयार खुलता है. अपने आप भेजने के लिए सेटिंग में WhatsApp Business API / SMS प्रदाता जोड़ें. || संदेश फक्त संमती दिलेल्या रुग्णांनाच (संमती प्रोफाइलमध्ये नोंदवलेली) त्यांच्या निवडलेल्या भाषेत पाठवले जातात. click-to-chat मध्ये “पाठवा” दाबल्यावर WhatsApp मध्ये संदेश तयार उघडतो. आपोआप पाठवण्यासाठी सेटिंग्जमध्ये WhatsApp Business API / SMS प्रदाता जोडा.
+Demo: “Open” lets you view a hospital’s reports. In the cloud version each hospital’s data is isolated in the database; the platform admin sees only usage numbers unless granted access. || डेमो: “खोलें” से अस्पताल की रिपोर्ट देख सकते हैं. क्लाउड संस्करण में हर अस्पताल का डेटा डेटाबेस में अलग रहता है; प्लेटफ़ॉर्म एडमिन केवल उपयोग के आँकड़े देखता है. || डेमो: “उघडा” ने रुग्णालयाचे अहवाल पाहता येतात. क्लाउड आवृत्तीत प्रत्येक रुग्णालयाचा डेटा डेटाबेसमध्ये वेगळा असतो; प्लॅटफॉर्म ॲडमिनला फक्त वापराचे आकडे दिसतात.
+• Each hospital’s data is kept separate – staff of one hospital can never see another hospital’s patients. || • हर अस्पताल का डेटा अलग रखा जाता है – एक अस्पताल का स्टाफ़ दूसरे अस्पताल के मरीज़ कभी नहीं देख सकता. || • प्रत्येक रुग्णालयाचा डेटा वेगळा ठेवला जातो – एका रुग्णालयाचे कर्मचारी दुसऱ्या रुग्णालयाचे रुग्ण कधीही पाहू शकत नाहीत.
+• Staff see only what their role needs (e.g. pharmacists do not see clinical notes; receptionists do not see diagnoses). || • स्टाफ़ केवल अपनी भूमिका के लिए ज़रूरी जानकारी देखते हैं (जैसे फ़ार्मासिस्ट क्लिनिकल नोट्स नहीं देखते; रिसेप्शनिस्ट निदान नहीं देखते). || • कर्मचाऱ्यांना फक्त त्यांच्या भूमिकेला आवश्यक माहिती दिसते (उदा. फार्मासिस्टना क्लिनिकल नोंदी दिसत नाहीत; स्वागतकर्त्यांना निदान दिसत नाही).
+• Prescriptions, clinical notes, lab reports and bills are locked once final. Corrections create a new version; every change is in the audit log. || • पर्चे, क्लिनिकल नोट्स, लैब रिपोर्ट और बिल अंतिम होने पर लॉक हो जाते हैं. सुधार नया संस्करण बनाता है; हर बदलाव ऑडिट लॉग में है. || • प्रिस्क्रिप्शन, क्लिनिकल नोंदी, लॅब रिपोर्ट व बिले अंतिम झाल्यावर लॉक होतात. दुरुस्ती नवीन आवृत्ती तयार करते; प्रत्येक बदल ऑडिट नोंदीत असतो.
+• Reports and documents are stored in a private store and opened through short-lived secure links – never public URLs. || • रिपोर्ट और दस्तावेज़ निजी स्टोर में रहते हैं और कम समय वाले सुरक्षित लिंक से खुलते हैं – कभी सार्वजनिक URL से नहीं. || • रिपोर्ट व दस्तऐवज खाजगी स्टोअरमध्ये ठेवले जातात आणि अल्पकालीन सुरक्षित लिंकने उघडतात – कधीही सार्वजनिक URL ने नाही.
+• Staff are logged out automatically after 30 minutes of inactivity. || • 30 मिनट निष्क्रिय रहने पर स्टाफ़ अपने आप लॉग आउट हो जाता है. || • 30 मिनिटे निष्क्रिय राहिल्यास कर्मचारी आपोआप लॉग आउट होतात.
+• Data is encrypted in transit (HTTPS) and at rest || • डेटा भेजते समय (HTTPS) और संग्रह में एन्क्रिप्टेड रहता है || • डेटा पाठवताना (HTTPS) व साठवणुकीत एन्क्रिप्ट केलेला असतो
+• Consent for WhatsApp / SMS is recorded with date and staff name, and patients can change it in the app. || • WhatsApp / SMS की सहमति तारीख और स्टाफ़ के नाम के साथ दर्ज होती है, और मरीज़ इसे ऐप में बदल सकते हैं. || • WhatsApp / SMS संमती तारीख व कर्मचाऱ्याच्या नावासह नोंदवली जाते आणि रुग्ण ती ॲपमध्ये बदलू शकतात.
+• Patients can ask for a copy of their records (download from the app, or export from Reports). || • मरीज़ अपने रिकॉर्ड की प्रति माँग सकते हैं (ऐप से डाउनलोड या रिपोर्ट से निर्यात). || • रुग्ण त्यांच्या नोंदींची प्रत मागू शकतात (ॲपमधून डाउनलोड किंवा अहवालातून निर्यात).
+• Medical records are retained as required by applicable medical record-keeping rules; deletion requests are reviewed by the administrator. || • मेडिकल रिकॉर्ड लागू नियमों के अनुसार रखे जाते हैं; हटाने के अनुरोध प्रशासक देखते हैं. || • वैद्यकीय नोंदी लागू नियमांनुसार ठेवल्या जातात; हटवण्याच्या विनंत्या प्रशासक तपासतात.
+• Backups: daily automatic database backups with point-in-time recovery || • बैकअप: रोज़ाना स्वचालित डेटाबेस बैकअप, किसी भी समय तक वापसी के साथ || • बॅकअप: दररोज स्वयंचलित डेटाबेस बॅकअप, कोणत्याही वेळेपर्यंत पुनर्प्राप्तीसह
+are enabled in Supabase || Supabase में चालू हैं || Supabase मध्ये सुरू आहेत
+• Future-ready: ABHA / ABDM linking can be added as a module (Patient ID ↔ ABHA number). || • भविष्य के लिए तैयार: ABHA / ABDM जुड़ाव मॉड्यूल के रूप में जोड़ा जा सकता है (पेशेंट ID ↔ ABHA नंबर). || • भविष्यासाठी तयार: ABHA / ABDM जोडणी मॉड्यूल म्हणून जोडता येईल (पेशंट ID ↔ ABHA नंबर).
+Hypertension || उच्च रक्तचाप || उच्च रक्तदाब
+Type 2 diabetes, Hypertension || टाइप 2 डायबिटीज़, उच्च रक्तचाप || टाइप 2 मधुमेह, उच्च रक्तदाब
+Asthma || अस्थमा || दमा
+General Ward (Male) || जनरल वार्ड (पुरुष) || जनरल वॉर्ड (पुरुष)
+General Ward (Female) || जनरल वार्ड (महिला) || जनरल वॉर्ड (महिला)
+Semi-Private || सेमी-प्राइवेट || सेमी-प्रायव्हेट
+Private Rooms || प्राइवेट कमरे || प्रायव्हेट खोल्या
+Emergency / Observation || इमरजेंसी / निगरानी || आपत्कालीन / निरीक्षण

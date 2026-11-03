@@ -1,0 +1,371 @@
+# English || हिंदी || मराठी   (lines starting with # are ignored)
+(reserved) || (आरक्षित) || (राखीव)
+(when connected to the cloud server) || (क्लाउड सर्वर से जुड़ने पर) || (क्लाउड सर्व्हरशी जोडल्यावर)
++ Consultation… || + परामर्श… || + तपासणी…
++ Lab / scan… || + लैब / स्कैन… || + लॅब / स्कॅन…
++ Procedure / service… || + प्रक्रिया / सेवा… || + प्रक्रिया / सेवा…
+1 tablet || 1 गोली || 1 गोळी
+1. Patient || 1. मरीज़ || 1. रुग्ण
+2. Doctor & visit type || 2. डॉक्टर और विज़िट का प्रकार || 2. डॉक्टर व भेटीचा प्रकार
+3. Date & time || 3. तारीख और समय || 3. तारीख व वेळ
+10-digit mobile number || 10 अंकों का मोबाइल नंबर || 10 अंकी मोबाईल नंबर
+A confirmation has been sent on WhatsApp / SMS. || पुष्टि WhatsApp / SMS पर भेज दी गई है. || पुष्टी WhatsApp / SMS वर पाठवली आहे.
+A different clinic (Satara) – its data is completely separate || दूसरा क्लिनिक (सातारा) – इसका डेटा पूरी तरह अलग है || दुसरे क्लिनिक (सातारा) – याचा डेटा पूर्णपणे वेगळा आहे
+A new version will replace it. Both stay in the record. || नया संस्करण इसकी जगह लेगा. दोनों रिकॉर्ड में रहेंगे. || नवीन आवृत्ती याची जागा घेईल. दोन्ही नोंदीत राहतील.
+A secure video link will be available in My Appointments. || सुरक्षित वीडियो लिंक ‘मेरी अपॉइंटमेंट’ में मिलेगा. || सुरक्षित व्हिडिओ लिंक ‘माझ्या भेटी’ मध्ये मिळेल.
+Absent || अनुपस्थित || गैरहजर
+Action || कार्य || कृती
+Activate || सक्रिय करें || सक्रिय करा
+Active || सक्रिय || सक्रिय
+Active (shown to patients) || सक्रिय (मरीज़ों को दिखेगा) || सक्रिय (रुग्णांना दिसेल)
+Add || जोड़ें || जोडा
+Add a note || नोट जोड़ें || नोंद जोडा
+Add at least one item || कम से कम एक आइटम जोड़ें || किमान एक बाब जोडा
+Add at least one medicine or advice || कम से कम एक दवा या सलाह जोड़ें || किमान एक औषध किंवा सल्ला जोडा
+Add at least one result field || कम से कम एक परिणाम फ़ील्ड जोड़ें || किमान एक निकाल रकाना जोडा
+Add department || विभाग जोड़ें || विभाग जोडा
+Add family member || परिवार का सदस्य जोड़ें || कुटुंबातील सदस्य जोडा
+Add field || फ़ील्ड जोड़ें || रकाना जोडा
+Add file || फ़ाइल जोड़ें || फाईल जोडा
+Add hospital || अस्पताल जोड़ें || रुग्णालय जोडा
+Add medicine || दवा जोड़ें || औषध जोडा
+Add medicines to the bill || बिल में दवाएँ जोड़ें || बिलात औषधे जोडा
+Add note || नोट जोड़ें || नोंद जोडा
+Add photos || फ़ोटो जोड़ें || फोटो जोडा
+Add service || सेवा जोड़ें || सेवा जोडा
+Add session || सत्र जोड़ें || सत्र जोडा
+Add staff || स्टाफ़ जोड़ें || कर्मचारी जोडा
+Add staff member || स्टाफ़ सदस्य जोड़ें || कर्मचारी जोडा
+Add stock || स्टॉक जोड़ें || साठा जोडा
+Add test || जाँच जोड़ें || तपासणी जोडा
+Add the Hindi and Marathi text before publishing || प्रकाशित करने से पहले हिंदी और मराठी पाठ जोड़ें || प्रसिद्ध करण्यापूर्वी हिंदी व मराठी मजकूर जोडा
+Add to a family (optional) || परिवार में जोड़ें (वैकल्पिक) || कुटुंबात जोडा (ऐच्छिक)
+Add to bill (pay later) || बिल में जोड़ें (बाद में भुगतान) || बिलात जोडा (नंतर भरणा)
+Add ward || वार्ड जोड़ें || वॉर्ड जोडा
+Addendum || परिशिष्ट नोट || पुरवणी नोंद
+Addendum added || परिशिष्ट नोट जोड़ा गया || पुरवणी नोंद जोडली
+Address || पता || पत्ता
+Admission || भर्ती || दाखल
+Admission type || भर्ती का प्रकार || दाखल प्रकार
+Admissions & discharges || भर्ती और छुट्टी || दाखल व डिस्चार्ज
+Admit || भर्ती करें || दाखल करा
+Admit a patient here || यहाँ मरीज़ भर्ती करें || येथे रुग्ण दाखल करा
+Admit patient || मरीज़ भर्ती करें || रुग्ण दाखल करा
+Admitted || भर्ती || दाखल
+Admitted patients || भर्ती मरीज़ || दाखल रुग्ण
+Admitted through emergency || इमरजेंसी से भर्ती || आपत्कालीन विभागातून दाखल
+Advance deposit (₹) || अग्रिम जमा (₹) || आगाऊ ठेव (₹)
+Advice || सलाह || सल्ला
+After food || खाने के बाद || जेवणानंतर
+Age || उम्र || वय
+Age (years) || उम्र (साल) || वय (वर्षे)
+Age (years) * || उम्र (साल) * || वय (वर्षे) *
+Ahead of you || आपसे पहले || तुमच्या आधी
+Alert doctor || डॉक्टर को सूचित करें || डॉक्टरांना कळवा
+All || सभी || सर्व
+All bills || सभी बिल || सर्व बिले
+All changes made on this device will be lost. || इस डिवाइस पर किए सभी बदलाव मिट जाएँगे. || या डिव्हाइसवरील सर्व बदल पुसले जातील.
+All doctors || सभी डॉक्टर || सर्व डॉक्टर
+All doctors in OPD today || आज OPD में सभी डॉक्टर || आज OPD मधील सर्व डॉक्टर
+All hospitals & clinics on the platform, plans, usage || प्लेटफ़ॉर्म के सभी अस्पताल और क्लिनिक, प्लान, उपयोग || प्लॅटफॉर्मवरील सर्व रुग्णालये व क्लिनिक, प्लॅन, वापर
+All records || सभी रिकॉर्ड || सर्व नोंदी
+All roles || सभी भूमिकाएँ || सर्व भूमिका
+All tasks done 👏 || सभी काम पूरे 👏 || सर्व कामे पूर्ण 👏
+All wards || सभी वार्ड || सर्व वॉर्ड
+Allergies || एलर्जी || ॲलर्जी
+Allergies (optional) || एलर्जी (वैकल्पिक) || ॲलर्जी (ऐच्छिक)
+Allergies: || एलर्जी: || ॲलर्जी:
+Allergy: || एलर्जी: || ॲलर्जी:
+Allow part payments || आंशिक भुगतान की अनुमति दें || अंशतः भरण्याची परवानगी द्या
+Allow patients to book from the app || मरीज़ों को ऐप से बुकिंग करने दें || रुग्णांना ॲपमधून बुकिंग करू द्या
+Almost there || बस थोड़ा सा और || जवळजवळ झाले
+Alternate mobile || दूसरा मोबाइल || दुसरा मोबाईल
+Alternate mobile number is not valid || दूसरा मोबाइल नंबर सही नहीं है || दुसरा मोबाईल नंबर बरोबर नाही
+Ambulance || एम्बुलेंस || रुग्णवाहिका
+Ambulance number || एम्बुलेंस नंबर || रुग्णवाहिका नंबर
+Amount || राशि || रक्कम
+Amount (part payment allowed) || राशि (आंशिक भुगतान संभव) || रक्कम (अंशतः भरणा चालेल)
+Amount received || प्राप्त राशि || मिळालेली रक्कम
+Amount to pay || भुगतान राशि || भरायची रक्कम
+Announce tokens || टोकन की घोषणा करें || टोकनची घोषणा करा
+Announcement removed || सूचना हटाई गई || सूचना काढली
+Announcements || सूचनाएँ || सूचना
+Another staff member already uses this mobile number || यह मोबाइल नंबर किसी अन्य स्टाफ़ का है || हा मोबाईल नंबर दुसऱ्या कर्मचाऱ्याचा आहे
+Any change sends the article back for doctor review. Use simple words – avoid medical jargon. || कोई भी बदलाव लेख को फिर से डॉक्टर की समीक्षा में भेजेगा. सरल शब्द लिखें – कठिन मेडिकल शब्दों से बचें. || कोणताही बदल लेख पुन्हा डॉक्टरांच्या तपासणीसाठी पाठवेल. सोपे शब्द वापरा – कठीण वैद्यकीय शब्द टाळा.
+Any nurse || कोई भी नर्स || कोणतीही परिचारिका
+Any time || किसी भी समय || कधीही
+App || ऐप || ॲप
+Apply for leave || छुट्टी के लिए आवेदन || रजेसाठी अर्ज
+Appointment || अपॉइंटमेंट || भेट
+Appointment cancelled || अपॉइंटमेंट रद्द || भेट रद्द
+Appointment confirmation || अपॉइंटमेंट की पुष्टि || भेटीची पुष्टी
+Appointment confirmed || अपॉइंटमेंट पक्की || भेट निश्चित
+Appointment duration (minutes) || अपॉइंटमेंट की अवधि (मिनट) || भेटीचा कालावधी (मिनिटे)
+Appointment duration must be at least 5 minutes || अपॉइंटमेंट कम से कम 5 मिनट की होनी चाहिए || भेट किमान 5 मिनिटांची असावी
+Appointment not found || अपॉइंटमेंट नहीं मिली || भेट सापडली नाही
+Appointment reminder || अपॉइंटमेंट रिमाइंडर || भेटीची आठवण
+Appointment reminders (day before and same day) || अपॉइंटमेंट रिमाइंडर (एक दिन पहले और उसी दिन) || भेटीची आठवण (आदल्या दिवशी व त्याच दिवशी)
+Appointment rescheduled || अपॉइंटमेंट का समय बदला || भेटीची वेळ बदलली
+Appointment utilisation || अपॉइंटमेंट उपयोग || भेटींचा वापर
+Appointment, report and payment updates || अपॉइंटमेंट, रिपोर्ट और भुगतान की जानकारी || भेट, रिपोर्ट व भरण्याची माहिती
+Appointment, report and payment updates on WhatsApp || WhatsApp पर अपॉइंटमेंट, रिपोर्ट और भुगतान की जानकारी || WhatsApp वर भेट, रिपोर्ट व भरण्याची माहिती
+Appointments || अपॉइंटमेंट || भेटी
+Appointments today || आज की अपॉइंटमेंट || आजच्या भेटी
+Appointments to reschedule || बदलनी वाली अपॉइंटमेंट || वेळ बदलायच्या भेटी
+Appointments, tokens, prescriptions, lab, pharmacy, billing and beds — in English, हिंदी and मराठी. || अपॉइंटमेंट, टोकन, पर्चे, लैब, फ़ार्मेसी, बिलिंग और बेड — English, हिंदी और मराठी में. || भेटी, टोकन, प्रिस्क्रिप्शन, लॅब, फार्मसी, बिलिंग आणि बेड — English, हिंदी आणि मराठीत.
+Approve || मंज़ूर करें || मंजूर करा
+Approved || मंज़ूर || मंजूर
+Approx. age || अनुमानित उम्र || अंदाजे वय
+Approx. wait || अनुमानित इंतज़ार || अंदाजे प्रतीक्षा
+Appt ID || अपॉइंटमेंट ID || भेट ID
+As per hospital return policy || अस्पताल की वापसी नीति के अनुसार || रुग्णालयाच्या परतावा धोरणानुसार
+Ask the hospital to add your vaccination details. || अस्पताल से अपने टीकाकरण की जानकारी जोड़ने को कहें. || रुग्णालयाला तुमच्या लसीकरणाची माहिती जोडायला सांगा.
+Ask the reception, or scan the QR at the hospital || रिसेप्शन से पूछें या अस्पताल में QR स्कैन करें || स्वागत कक्षात विचारा किंवा रुग्णालयातील QR स्कॅन करा
+At bedtime || सोते समय || झोपताना
+Attendance || हाज़िरी || हजेरी
+Attendance today || आज की हाज़िरी || आजची हजेरी
+Attending doctor || इलाज करने वाले डॉक्टर || उपचार करणारे डॉक्टर
+Audit log || ऑडिट लॉग || ऑडिट नोंद
+Authorised to verify lab reports || लैब रिपोर्ट सत्यापित करने के लिए अधिकृत || लॅब रिपोर्ट पडताळण्यास अधिकृत
+Automatic messages || स्वचालित संदेश || स्वयंचलित संदेश
+Availability || उपलब्धता || उपलब्धता
+Availability saved || उपलब्धता सेव हुई || उपलब्धता जतन झाली
+Available || उपलब्ध || उपलब्ध
+Average consultation (minutes, used until real data is available) || औसत परामर्श (मिनट, असली डेटा मिलने तक) || सरासरी तपासणी (मिनिटे, खरा डेटा मिळेपर्यंत)
+Avg rating || औसत रेटिंग || सरासरी रेटिंग
+Avg. consultation || औसत परामर्श समय || सरासरी तपासणी वेळ
+Avg. waiting time || औसत इंतज़ार || सरासरी प्रतीक्षा
+Awaiting verification || सत्यापन बाकी || पडताळणी बाकी
+BP diastolic || बीपी (नीचे का) || BP (खालचा)
+BP systolic || बीपी (ऊपर का) || BP (वरचा)
+Back || वापस || मागे
+Balance || बकाया || शिल्लक
+Barcode || बारकोड || बारकोड
+Barcode not in catalogue || बारकोड सूची में नहीं है || बारकोड यादीत नाही
+Batch || बैच || बॅच
+Batch not found || बैच नहीं मिला || बॅच सापडली नाही
+Batch number || बैच नंबर || बॅच नंबर
+Batches || बैच || बॅच
+Bed || बेड || बेड
+Bed label prefix || बेड लेबल उपसर्ग || बेड लेबल सुरुवात
+Bed occupancy || बेड भराव || बेड वापर
+Bed occupancy now || अभी बेड भराव || सध्याचा बेड वापर
+Bed updated || बेड अपडेट हुआ || बेड अद्ययावत केला
+Beds || बेड || बेड
+Beds & admissions || बेड और भर्ती || बेड व दाखल
+Beds available || उपलब्ध बेड || उपलब्ध बेड
+Beds available / occupied || उपलब्ध / भरे बेड || उपलब्ध / भरलेले बेड
+Before food || खाने से पहले || जेवणापूर्वी
+Bill || बिल || बिल
+Bill cancelled || बिल रद्द || बिल रद्द
+Bill created || बिल बना || बिल तयार झाले
+Bill not found || बिल नहीं मिला || बिल सापडले नाही
+Bill number or patient name || बिल नंबर या मरीज़ का नाम || बिल नंबर किंवा रुग्णाचे नाव
+Billed || बिल किया गया || बिल केलेले
+Billing || बिलिंग || बिलिंग
+Bills || बिल || बिले
+Bills & outstanding || बिल और बकाया || बिले व थकबाकी
+Bills & payments || बिल और भुगतान || बिले व भरणा
+Blood || खून || रक्त
+Blood glucose || ब्लड शुगर || रक्तशर्करा
+Blood group || ब्लड ग्रुप || रक्तगट
+Blood group (optional) || ब्लड ग्रुप (वैकल्पिक) || रक्तगट (ऐच्छिक)
+Book || बुक करें || बुक करा
+Book Appointment || अपॉइंटमेंट बुक करें || भेट बुक करा
+Book a visit in less than a minute || एक मिनट से कम में विज़िट बुक करें || एका मिनिटात भेट बुक करा
+Book appointment || अपॉइंटमेंट बुक करें || भेट बुक करा
+Book appointments, see token status, prescriptions, reports and bills for the whole family || पूरे परिवार के लिए अपॉइंटमेंट, टोकन स्थिति, पर्चे, रिपोर्ट और बिल || संपूर्ण कुटुंबासाठी भेटी, टोकन स्थिती, प्रिस्क्रिप्शन, रिपोर्ट व बिले
+Book → || बुक करें → || बुक करा →
+Booked || बुक हुआ || बुक केले
+Booked via || बुकिंग का माध्यम || बुकिंगचे माध्यम
+Brand colour || ब्रांड रंग || ब्रँड रंग
+Brand name || ब्रांड नाम || ब्रँड नाव
+Brought by || कौन लाया || कोणी आणले
+By || द्वारा || द्वारे
+By registering you agree that the hospital may store your health records and contact you by SMS / WhatsApp about appointments and reports. You can change this any time in Profile. || रजिस्टर करके आप सहमत हैं कि अस्पताल आपके स्वास्थ्य रिकॉर्ड रख सकता है और अपॉइंटमेंट व रिपोर्ट के बारे में SMS / WhatsApp से संपर्क कर सकता है. आप इसे कभी भी प्रोफ़ाइल में बदल सकते हैं. || नोंदणी करून तुम्ही मान्य करता की रुग्णालय तुमच्या आरोग्य नोंदी ठेवू शकते आणि भेटी व रिपोर्टबद्दल SMS / WhatsApp ने संपर्क करू शकते. तुम्ही हे कधीही प्रोफाइलमध्ये बदलू शकता.
+CSV files open in Excel / Google Sheets. Exports contain patient data – share them only with authorised people. || CSV फ़ाइल Excel / Google Sheets में खुलती हैं. इनमें मरीज़ों का डेटा होता है – केवल अधिकृत लोगों से साझा करें. || CSV फाईल Excel / Google Sheets मध्ये उघडतात. त्यात रुग्णांचा डेटा असतो – फक्त अधिकृत व्यक्तींना द्या.
+Call || कॉल करें || कॉल करा
+Call next · Token || अगला बुलाएँ · टोकन || पुढील बोलवा · टोकन
+Call reception || रिसेप्शन को कॉल करें || स्वागत कक्षाला कॉल करा
+Camera not available || कैमरा उपलब्ध नहीं || कॅमेरा उपलब्ध नाही
+Cancel || रद्द करें || रद्द करा
+Cancel appointment || अपॉइंटमेंट रद्द करें || भेट रद्द करा
+Cancel appointment? || अपॉइंटमेंट रद्द करें? || भेट रद्द करायची?
+Cancel bill || बिल रद्द करें || बिल रद्द करा
+Cancel order || ऑर्डर रद्द करें || ऑर्डर रद्द करा
+Cancel this appointment? || यह अपॉइंटमेंट रद्द करें? || ही भेट रद्द करायची?
+Cancel this bill? || यह बिल रद्द करें? || हे बिल रद्द करायचे?
+Cancel this order? || यह ऑर्डर रद्द करें? || ही ऑर्डर रद्द करायची?
+Cancelled || रद्द || रद्द
+Cancelled by patient || मरीज़ ने रद्द किया || रुग्णाने रद्द केले
+Capsule || कैप्सूल || कॅप्सूल
+Card || कार्ड || कार्ड
+Card number || कार्ड नंबर || कार्ड नंबर
+Cash || नकद || रोख
+Casual leave || आकस्मिक छुट्टी || किरकोळ रजा
+Category || श्रेणी || प्रकार
+Change number || नंबर बदलें || नंबर बदला
+Change patient || मरीज़ बदलें || रुग्ण बदला
+Changed timings || बदला हुआ समय || बदललेली वेळ
+Channel || माध्यम || माध्यम
+Charges || शुल्क || शुल्क
+Check in || चेक इन || चेक इन
+Check out || चेक आउट || चेक आउट
+Checked in || चेक इन हुआ || चेक इन झाले
+Checked in · fee added to bill || चेक इन हुआ · फ़ीस बिल में जोड़ी गई || चेक इन झाले · शुल्क बिलात जोडले
+Checked in · fee collected || चेक इन हुआ · फ़ीस ली गई || चेक इन झाले · शुल्क घेतले
+Checked out || चेक आउट हुआ || चेक आउट झाले
+Chief complaints || मुख्य शिकायत || मुख्य तक्रार
+Child || बच्चा || मूल
+Choose || चुनें || निवडा
+Choose a bed || बेड चुनें || बेड निवडा
+Choose a date || तारीख चुनें || तारीख निवडा
+Choose a free bed || खाली बेड चुनें || रिकामा बेड निवडा
+Choose a patient with a mobile number || मोबाइल नंबर वाला मरीज़ चुनें || मोबाईल नंबर असलेला रुग्ण निवडा
+Choose a time || समय चुनें || वेळ निवडा
+Choose an online payment method || ऑनलाइन भुगतान का तरीका चुनें || ऑनलाइन भरण्याची पद्धत निवडा
+Choose at least one test || कम से कम एक जाँच चुनें || किमान एक तपासणी निवडा
+Choose at least one working day || कम से कम एक कार्य दिवस चुनें || किमान एक कामाचा दिवस निवडा
+Choose the attending doctor || इलाज करने वाले डॉक्टर चुनें || उपचार करणारे डॉक्टर निवडा
+Choose the end date || अंतिम तारीख चुनें || शेवटची तारीख निवडा
+Choose the role || भूमिका चुनें || भूमिका निवडा
+Choose the start date || शुरू की तारीख चुनें || सुरुवातीची तारीख निवडा
+City || शहर || शहर
+City / village || शहर / गाँव || शहर / गाव
+Cleanliness || साफ़-सफ़ाई || स्वच्छता
+Clinical examination || क्लिनिकल जाँच || क्लिनिकल तपासणी
+Clinical notes || क्लिनिकल नोट्स || क्लिनिकल नोंदी
+Close || बंद करें || बंद करा
+Code || कोड || कोड
+Code (used in links & login) || कोड (लिंक और लॉगिन में) || कोड (लिंक व लॉगिनमध्ये)
+Collect || वसूलें || घ्या
+Collect now || अभी वसूलें || आत्ता घ्या
+Collected || वसूल || जमा
+Collected today || आज की वसूली || आजची वसुली
+Collection today || आज की वसूली || आजची वसुली
+Complaint || शिकायत || तक्रार
+Complaints || शिकायतें || तक्रारी
+Complete sale || बिक्री पूरी करें || विक्री पूर्ण करा
+Completed || पूरा हुआ || पूर्ण
+Condition at discharge || छुट्टी के समय स्थिति || डिस्चार्जच्या वेळी स्थिती
+Conference || सम्मेलन || परिषद
+Confirm || पुष्टि करें || निश्चित करा
+Confirm booking || बुकिंग पक्की करें || बुकिंग निश्चित करा
+Confirm check-in || चेक इन पक्का करें || चेक इन निश्चित करा
+Confirm refund || रिफ़ंड पक्का करें || परतावा निश्चित करा
+Consent || सहमति || संमती
+Consent, retention & patient rights (DPDP Act, 2023) || सहमति, डेटा अवधि और मरीज़ के अधिकार (DPDP अधिनियम, 2023) || संमती, डेटा कालावधी व रुग्णाचे हक्क (DPDP कायदा, 2023)
+Consultant: || कंसल्टेंट: || सल्लागार:
+Consultation || परामर्श || तपासणी
+Consultation completed || परामर्श पूरा हुआ || तपासणी पूर्ण झाली
+Consultation fee || परामर्श फ़ीस || तपासणी शुल्क
+Consultation fee (₹) || परामर्श फ़ीस (₹) || तपासणी शुल्क (₹)
+Consultation fees || परामर्श फ़ीस || तपासणी शुल्क
+Consultation hours || परामर्श का समय || तपासणीची वेळ
+Consultation notes finalised || परामर्श नोट्स अंतिम किए गए || तपासणी नोंदी अंतिम केल्या
+Consultations done || परामर्श पूरे || झालेल्या तपासण्या
+Contact Hospital || अस्पताल से संपर्क || रुग्णालयाशी संपर्क
+Contact hospital || अस्पताल से संपर्क || रुग्णालयाशी संपर्क
+Continue || जारी रखें || पुढे चालू ठेवा
+Continue consultation || परामर्श जारी रखें || तपासणी चालू ठेवा
+Copied – please review every medicine before signing || कॉपी हुआ – हस्ताक्षर से पहले हर दवा जाँचें || कॉपी झाले – सही करण्यापूर्वी प्रत्येक औषध तपासा
+Correct prescription || पर्चा सुधारें || प्रिस्क्रिप्शन दुरुस्त करा
+Correct this prescription? || यह पर्चा सुधारें? || हे प्रिस्क्रिप्शन दुरुस्त करायचे?
+Corrected prescription signed || सुधारे गए पर्चे पर हस्ताक्षर हुए || दुरुस्त प्रिस्क्रिप्शनवर सही झाली
+Corrected version of an earlier prescription – review and sign. || पिछले पर्चे का सुधरा संस्करण – जाँचकर हस्ताक्षर करें. || आधीच्या प्रिस्क्रिप्शनची दुरुस्त आवृत्ती – तपासून सही करा.
+Could not connect. Please try again. || कनेक्ट नहीं हो सका. फिर से कोशिश करें. || जोडता आले नाही. पुन्हा प्रयत्न करा.
+Could not open the document || दस्तावेज़ नहीं खुल सका || दस्तऐवज उघडता आला नाही
+Could not open the document. || दस्तावेज़ नहीं खुल सका. || दस्तऐवज उघडता आला नाही.
+Could not save your change. || आपका बदलाव सेव नहीं हो सका. || तुमचा बदल जतन झाला नाही.
+Counter sale || काउंटर बिक्री || काउंटर विक्री
+Course in hospital || अस्पताल में इलाज का विवरण || रुग्णालयातील उपचारांचा तपशील
+Create bill || बिल बनाएँ || बिल तयार करा
+Create corrected version || सुधरा संस्करण बनाएँ || दुरुस्त आवृत्ती तयार करा
+Create hospital || अस्पताल बनाएँ || रुग्णालय तयार करा
+Create my Patient ID || मेरी पेशेंट ID बनाएँ || माझा पेशंट ID तयार करा
+Create order || ऑर्डर बनाएँ || ऑर्डर तयार करा
+Current status: || वर्तमान स्थिति: || सध्याची स्थिती:
+Custom item || अन्य आइटम || इतर बाब
+Custom message || अपना संदेश || स्वतःचा संदेश
+Customer || ग्राहक || ग्राहक
+Daily collection || दैनिक वसूली || दैनंदिन वसुली
+Daily collection – last 14 days || दैनिक वसूली – पिछले 14 दिन || दैनंदिन वसुली – मागील 14 दिवस
+Dashboard || डैशबोर्ड || डॅशबोर्ड
+Dashboards, staff, pricing, reports, feedback, settings || डैशबोर्ड, स्टाफ़, दरें, रिपोर्ट, फ़ीडबैक, सेटिंग || डॅशबोर्ड, कर्मचारी, दर, अहवाल, अभिप्राय, सेटिंग्ज
+Date || तारीख || तारीख
+Date of birth || जन्म तिथि || जन्मतारीख
+Dates || तारीखें || तारखा
+Day || दिन || दिवस
+Day-care hospital || डे-केयर अस्पताल || डे-केअर रुग्णालय
+Deactivate || निष्क्रिय करें || निष्क्रिय करा
+Delete || हटाएँ || हटवा
+Demo (not sent) || डेमो (नहीं भेजा जाता) || डेमो (पाठवले जात नाही)
+Demo data reset || डेमो डेटा रीसेट हुआ || डेमो डेटा रीसेट झाला
+Demo mode – data is stored on this device only || डेमो मोड – डेटा सिर्फ़ इसी डिवाइस पर है || डेमो मोड – डेटा फक्त या डिव्हाइसवर आहे
+Demo mode: sample data stays on this device. No SMS or WhatsApp messages are sent. || डेमो मोड: नमूना डेटा इसी डिवाइस पर रहता है. कोई SMS या WhatsApp नहीं भेजा जाता. || डेमो मोड: नमुना डेटा याच डिव्हाइसवर राहतो. कोणताही SMS किंवा WhatsApp पाठवला जात नाही.
+Demo payment gateway – no money is charged. || डेमो पेमेंट गेटवे – कोई पैसा नहीं कटेगा. || डेमो पेमेंट गेटवे – पैसे कापले जात नाहीत.
+Demo: any number works; ending in 0002 is declined || डेमो: कोई भी नंबर चलेगा; 0002 पर ख़त्म होने वाला अस्वीकार होगा || डेमो: कोणताही नंबर चालेल; 0002 ने संपणारा नाकारला जाईल
+Dental || दंत || दंत
+Dental clinic || दंत क्लिनिक || दंत क्लिनिक
+Department || विभाग || विभाग
+Department-wise revenue || विभाग-वार आय || विभागनिहाय उत्पन्न
+Departments || विभाग || विभाग
+Deposit paid by || जमा का तरीका || ठेव भरण्याची पद्धत
+Description || विवरण || वर्णन
+Designation || पद || पद
+Details || विवरण || तपशील
+Details pending || विवरण बाकी || तपशील बाकी
+Details saved || विवरण सेव हुआ || तपशील जतन झाला
+Diagnosis || निदान || निदान
+Diagnosis: || निदान: || निदान:
+Diagnostic centre || डायग्नोस्टिक सेंटर || डायग्नोस्टिक सेंटर
+Diagnostic reports || जाँच रिपोर्ट || तपासणी रिपोर्ट
+Diagnostic tests || जाँचें || तपासण्या
+Did not come || नहीं आए || आले नाहीत
+Diet || आहार || आहार
+Diet instructions || आहार निर्देश || आहार सूचना
+Directions || रास्ता || मार्ग
+Directions to || रास्ता – || मार्ग –
+Disc. || छूट || सूट
+Discharge || छुट्टी || डिस्चार्ज
+Discharge or transfer the patient first || पहले मरीज़ को छुट्टी दें या दूसरी जगह भेजें || आधी रुग्णाला डिस्चार्ज द्या किंवा हलवा
+Discharge summary || डिस्चार्ज सारांश || डिस्चार्ज सारांश
+Discharge summary ready || डिस्चार्ज सारांश तैयार || डिस्चार्ज सारांश तयार
+Discharge summary saved || डिस्चार्ज सारांश सेव हुआ || डिस्चार्ज सारांश जतन झाला
+Discharge this patient? || इस मरीज़ को छुट्टी दें? || या रुग्णाला डिस्चार्ज द्यायचा?
+Discharged || छुट्टी हुई || डिस्चार्ज झाला
+Discharged against medical advice || डॉक्टर की सलाह के विरुद्ध छुट्टी || वैद्यकीय सल्ल्याविरुद्ध डिस्चार्ज
+Discount || छूट || सूट
+Discount % || छूट % || सूट %
+Discount cannot be more than the item amount || छूट आइटम की राशि से ज़्यादा नहीं हो सकती || सूट बाबीच्या रकमेपेक्षा जास्त असू शकत नाही
+Dispense & bill || दवा दें और बिल बनाएँ || औषध द्या व बिल करा
+Dispense prescription || पर्चे की दवा दें || प्रिस्क्रिप्शनची औषधे द्या
+Dispense prescriptions, stock, expiry alerts, pharmacy bills || पर्चे की दवाएँ, स्टॉक, एक्सपायरी अलर्ट, फ़ार्मेसी बिल || प्रिस्क्रिप्शनची औषधे, साठा, मुदत सूचना, फार्मसी बिले
+Do not use WhatsApp || WhatsApp का उपयोग न करें || WhatsApp वापरू नका
+Doctor || डॉक्टर || डॉक्टर
+Doctor does not have OPD on this day. || इस दिन डॉक्टर की OPD नहीं है. || या दिवशी डॉक्टरांची OPD नाही.
+Doctor experience || डॉक्टर का अनुभव || डॉक्टरांचा अनुभव
+Doctor is not available on this day || इस दिन डॉक्टर उपलब्ध नहीं हैं || या दिवशी डॉक्टर उपलब्ध नाहीत
+Doctor is on leave || डॉक्टर छुट्टी पर हैं || डॉक्टर रजेवर आहेत
+Doctor is on leave on this day. || इस दिन डॉक्टर छुट्टी पर हैं. || या दिवशी डॉक्टर रजेवर आहेत.
+Doctor not found || डॉक्टर नहीं मिले || डॉक्टर सापडले नाहीत
+Doctor performance || डॉक्टर प्रदर्शन || डॉक्टर कामगिरी
+Doctor visit || डॉक्टर विज़िट || डॉक्टर भेट
+Doctor · Pathologist || डॉक्टर · पैथोलॉजिस्ट || डॉक्टर · पॅथॉलॉजिस्ट
+Doctor-wise revenue (OPD) || डॉक्टर-वार आय (OPD) || डॉक्टरनिहाय उत्पन्न (OPD)
+Doctors || डॉक्टर || डॉक्टर
+Doctors today || आज के डॉक्टर || आजचे डॉक्टर
+Doctor’s instruction || डॉक्टर का निर्देश || डॉक्टरांची सूचना
+Doctor’s instructions || डॉक्टर के निर्देश || डॉक्टरांच्या सूचना
+Document || दस्तावेज़ || दस्तऐवज
+Done || हो गया || झाले
+Done for today || आज का काम पूरा || आजचे काम पूर्ण
+Dose || खुराक || डोस
+Draft || ड्राफ़्ट || मसुदा
+Draft saved automatically || ड्राफ़्ट अपने आप सेव हुआ || मसुदा आपोआप जतन झाला
+Draft – needs doctor review || ड्राफ़्ट – डॉक्टर की समीक्षा बाकी || मसुदा – डॉक्टरांची तपासणी बाकी
+Draft – not valid until signed || ड्राफ़्ट – हस्ताक्षर तक मान्य नहीं || मसुदा – सही होईपर्यंत वैध नाही
+Drops || ड्रॉप्स || थेंब
+Due || देय || देय
+Duration || अवधि || कालावधी
+Duration e.g. 5 days || अवधि जैसे 5 दिन || कालावधी उदा. 5 दिवस

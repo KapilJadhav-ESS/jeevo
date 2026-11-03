@@ -1,0 +1,384 @@
+# English || हिंदी || मराठी
+Each role only sees what it needs. Contact your administrator if you need access. || हर भूमिका केवल ज़रूरी जानकारी देखती है. पहुँच चाहिए तो एडमिन से संपर्क करें. || प्रत्येक भूमिकेला फक्त आवश्यक माहिती दिसते. प्रवेश हवा असल्यास प्रशासकाशी संपर्क करा.
+Earned leave || अर्जित छुट्टी || अर्जित रजा
+Edit || बदलें || संपादित करा
+Edit details || विवरण बदलें || तपशील बदला
+Edit hospital || अस्पताल बदलें || रुग्णालय संपादित करा
+Edit in Staff & HR → doctor. || स्टाफ़ और HR → डॉक्टर में बदलें. || कर्मचारी व HR → डॉक्टर मध्ये बदला.
+Edit medicine || दवा बदलें || औषध संपादित करा
+Edit patient details || मरीज़ का विवरण बदलें || रुग्णाचा तपशील बदला
+Edit staff || स्टाफ़ बदलें || कर्मचारी संपादित करा
+Edit the new version and sign again || नया संस्करण बदलें और फिर से हस्ताक्षर करें || नवीन आवृत्ती बदला व पुन्हा सही करा
+Email || ईमेल || ईमेल
+Emergency || इमरजेंसी || आपत्कालीन
+Emergency cases || इमरजेंसी केस || आपत्कालीन रुग्ण
+Emergency cases today || आज के इमरजेंसी केस || आजचे आपत्कालीन रुग्ण
+Emergency contact mobile || आपातकालीन संपर्क मोबाइल || आपत्कालीन संपर्क मोबाईल
+Emergency contact name || आपातकालीन संपर्क का नाम || आपत्कालीन संपर्काचे नाव
+Emergency contact number is not valid || आपातकालीन संपर्क नंबर सही नहीं है || आपत्कालीन संपर्क नंबर बरोबर नाही
+Emergency flag removed || इमरजेंसी निशान हटाया गया || आपत्कालीन खूण काढली
+Emergency in OPD || OPD में इमरजेंसी || OPD मध्ये आपत्कालीन
+Emergency number || इमरजेंसी नंबर || आपत्कालीन नंबर
+Emergency patient arrived || इमरजेंसी मरीज़ आया || आपत्कालीन रुग्ण आला
+Emergency patient waiting || इमरजेंसी मरीज़ इंतज़ार में || आपत्कालीन रुग्ण प्रतीक्षेत
+Emergency registration || इमरजेंसी पंजीकरण || आपत्कालीन नोंदणी
+Emergency visit || इमरजेंसी विज़िट || आपत्कालीन भेट
+Emergency: || इमरजेंसी: || आपत्कालीन:
+Empty stomach || खाली पेट || उपाशीपोटी
+End date must be on or after start date || अंतिम तारीख शुरू की तारीख के बाद होनी चाहिए || शेवटची तारीख सुरुवातीच्या तारखेनंतर असावी
+English only || केवल English || फक्त English
+Enter a short code || छोटा कोड डालें || छोटा कोड टाका
+Enter a title || शीर्षक डालें || शीर्षक टाका
+Enter a valid 10-digit Indian mobile number || सही 10 अंकों का भारतीय मोबाइल नंबर डालें || योग्य 10 अंकी भारतीय मोबाईल नंबर टाका
+Enter a valid 10-digit mobile number (used for login) || सही 10 अंकों का मोबाइल नंबर डालें (लॉगिन के लिए) || योग्य 10 अंकी मोबाईल नंबर टाका (लॉगिनसाठी)
+Enter a valid card number || सही कार्ड नंबर डालें || योग्य कार्ड नंबर टाका
+Enter a valid email address || सही ईमेल डालें || योग्य ईमेल टाका
+Enter at least one reading || कम से कम एक रीडिंग डालें || किमान एक नोंद टाका
+Enter results || परिणाम दर्ज करें || निकाल नोंदवा
+Enter the English title || अंग्रेज़ी शीर्षक डालें || इंग्रजी शीर्षक टाका
+Enter the amount received || प्राप्त राशि डालें || मिळालेली रक्कम टाका
+Enter the batch number || बैच नंबर डालें || बॅच नंबर टाका
+Enter the chief complaint or diagnosis before finishing || पूरा करने से पहले मुख्य शिकायत या निदान लिखें || पूर्ण करण्यापूर्वी मुख्य तक्रार किंवा निदान लिहा
+Enter the department name || विभाग का नाम डालें || विभागाचे नाव टाका
+Enter the dose || खुराक डालें || डोस टाका
+Enter the expiry month || एक्सपायरी महीना डालें || मुदत संपण्याचा महिना टाका
+Enter the generic name || जेनेरिक नाम डालें || जेनेरिक नाव टाका
+Enter the hospital name || अस्पताल का नाम डालें || रुग्णालयाचे नाव टाका
+Enter the medical registration number || मेडिकल पंजीकरण नंबर डालें || वैद्यकीय नोंदणी क्रमांक टाका
+Enter the medicine || दवा डालें || औषध टाका
+Enter the medicine name || दवा का नाम डालें || औषधाचे नाव टाका
+Enter the message || संदेश लिखें || संदेश लिहा
+Enter the name || नाम डालें || नाव टाका
+Enter the note || नोट लिखें || नोंद लिहा
+Enter the price || कीमत डालें || किंमत टाका
+Enter the quantity received || प्राप्त मात्रा डालें || मिळालेले प्रमाण टाका
+Enter the quantity to give || देने की मात्रा डालें || द्यायचे प्रमाण टाका
+Enter the results first || पहले परिणाम दर्ज करें || आधी निकाल नोंदवा
+Enter the selling price || बिक्री मूल्य डालें || विक्री किंमत टाका
+Enter the service name || सेवा का नाम डालें || सेवेचे नाव टाका
+Enter the task || काम लिखें || काम लिहा
+Enter the test name || जाँच का नाम डालें || तपासणीचे नाव टाका
+Enter the ward name || वार्ड का नाम डालें || वॉर्डचे नाव टाका
+Enter verification code || सत्यापन कोड डालें || पडताळणी कोड टाका
+Evening || शाम || संध्याकाळ
+Evening (2 pm – 8 pm) || शाम (2 – 8 बजे) || संध्याकाळ (2 – 8 वाजता)
+Every change to patient records, prescriptions, clinical notes and billing || मरीज़ रिकॉर्ड, पर्चे, क्लिनिकल नोट्स और बिलिंग का हर बदलाव || रुग्ण नोंदी, प्रिस्क्रिप्शन, क्लिनिकल नोंदी व बिलिंगमधील प्रत्येक बदल
+Every message is sent only with the patient’s consent and in their preferred language (English, Hindi or Marathi). || हर संदेश मरीज़ की सहमति से और उनकी पसंद की भाषा (English, हिंदी या मराठी) में ही भेजा जाता है. || प्रत्येक संदेश रुग्णाच्या संमतीनेच आणि त्यांच्या आवडीच्या भाषेत (English, हिंदी किंवा मराठी) पाठवला जातो.
+Everyone || सभी || सर्वजण
+Existing conditions: || मौजूदा बीमारियाँ: || सध्याचे आजार:
+Existing medical conditions || मौजूदा बीमारियाँ || सध्याचे आजार
+Existing medical conditions (optional) || मौजूदा बीमारियाँ (वैकल्पिक) || सध्याचे आजार (ऐच्छिक)
+Existing patient || पुराना मरीज़ || जुना रुग्ण
+Expected discharge || अनुमानित छुट्टी || अपेक्षित डिस्चार्ज
+Expected next (not yet arrived) || आगे आने वाले (अभी नहीं आए) || पुढे येणारे (अजून आले नाहीत)
+Expired batches || एक्सपायर बैच || मुदत संपलेल्या बॅच
+Expired medicines cannot be taken back into stock || एक्सपायर दवाएँ स्टॉक में वापस नहीं ली जा सकतीं || मुदत संपलेली औषधे साठ्यात परत घेता येत नाहीत
+Expired stock – remove from shelves || एक्सपायर स्टॉक – रैक से हटाएँ || मुदत संपलेला साठा – शेल्फवरून काढा
+Expired – written off || एक्सपायर – बट्टे खाते || मुदत संपली – निर्लेखित
+Expiring / expired batches || एक्सपायर होने वाले / हो चुके बैच || मुदत संपणाऱ्या / संपलेल्या बॅच
+Expiring ≤ 2 months || 2 महीने में एक्सपायर || 2 महिन्यांत मुदत संपणार
+Expiry || एक्सपायरी || मुदत
+Expiry (month) || एक्सपायरी (महीना) || मुदत (महिना)
+Export || निर्यात करें || निर्यात करा
+Failed || विफल || अयशस्वी
+Family || परिवार || कुटुंब
+Family member added || परिवार का सदस्य जोड़ा गया || कुटुंबातील सदस्य जोडला
+Fast emergency registration || तेज़ इमरजेंसी पंजीकरण || जलद आपत्कालीन नोंदणी
+Fee || फ़ीस || शुल्क
+Fee already billed. || फ़ीस का बिल बन चुका है. || शुल्काचे बिल झाले आहे.
+Feedback || फ़ीडबैक || अभिप्राय
+Feedback is private. Patient details are never shown publicly. || फ़ीडबैक निजी है. मरीज़ की जानकारी कभी सार्वजनिक नहीं होती. || अभिप्राय खाजगी आहे. रुग्णाची माहिती कधीही सार्वजनिक होत नाही.
+Female || महिला || स्त्री
+Final diagnosis || अंतिम निदान || अंतिम निदान
+Finalised notes cannot be changed. Add a dated addendum instead. || अंतिम नोट्स बदले नहीं जा सकते. तारीख के साथ परिशिष्ट नोट जोड़ें. || अंतिम नोंदी बदलता येत नाहीत. त्याऐवजी तारखेसह पुरवणी नोंद जोडा.
+Financial || वित्तीय || आर्थिक
+Find a Doctor || डॉक्टर खोजें || डॉक्टर शोधा
+Finish & sign || पूरा करें और हस्ताक्षर करें || पूर्ण करा व सही करा
+First and last name || पहला और अंतिम नाम || नाव व आडनाव
+Floor || मंज़िल || मजला
+Follow-up || फ़ॉलो-अप || फॉलो-अप
+Follow-up consultation || फ़ॉलो-अप परामर्श || फॉलो-अप तपासणी
+Follow-up date || फ़ॉलो-अप तारीख || फॉलो-अप तारीख
+Follow-up fee (₹) || फ़ॉलो-अप फ़ीस (₹) || फॉलो-अप शुल्क (₹)
+Follow-up instructions || फ़ॉलो-अप निर्देश || फॉलो-अप सूचना
+Follow-up on || फ़ॉलो-अप तारीख || फॉलो-अप तारीख
+Follow-up patients || फ़ॉलो-अप मरीज़ || फॉलो-अप रुग्ण
+Follow-up reminder || फ़ॉलो-अप रिमाइंडर || फॉलो-अपची आठवण
+Follow-up: || फ़ॉलो-अप: || फॉलो-अप:
+Footer on receipts || रसीद के नीचे का संदेश || पावतीखालील संदेश
+For || के लिए || साठी
+For holidays and leave, apply under “Leave & attendance”. Patients cannot book on approved leave days. || छुट्टी के लिए “छुट्टी और हाज़िरी” में आवेदन करें. मंज़ूर छुट्टी के दिन मरीज़ बुकिंग नहीं कर सकते. || सुट्टी व रजेसाठी “रजा व हजेरी” मध्ये अर्ज करा. मंजूर रजेच्या दिवशी रुग्ण बुकिंग करू शकत नाहीत.
+For security you are logged out automatically after 30 minutes without activity. || सुरक्षा के लिए 30 मिनट निष्क्रिय रहने पर आप अपने आप लॉग आउट हो जाते हैं. || सुरक्षेसाठी 30 मिनिटे काहीही न केल्यास तुम्ही आपोआप लॉग आउट होता.
+Form || रूप || प्रकार
+Four times daily || दिन में चार बार || दिवसातून चार वेळा
+Frequency || कितनी बार || किती वेळा
+Frequency… || कितनी बार… || किती वेळा…
+Fri || शुक्र || शुक्र
+From || से || पासून
+From the hospital phone || अस्पताल के फ़ोन से || रुग्णालयाच्या फोनवरून
+From the hospital phone (click-to-chat, free – staff tap Send) || अस्पताल के फ़ोन से (click-to-chat, मुफ़्त – स्टाफ़ भेजें दबाएँ) || रुग्णालयाच्या फोनवरून (click-to-chat, मोफत – कर्मचारी पाठवा दाबतात)
+Full name || पूरा नाम || पूर्ण नाव
+Full name * || पूरा नाम * || पूर्ण नाव *
+Full record || पूरा रिकॉर्ड || संपूर्ण नोंद
+Full registration || पूरा पंजीकरण || संपूर्ण नोंदणी
+Full screen || पूरी स्क्रीन || पूर्ण स्क्रीन
+GST % || GST % || GST %
+GSTIN (optional) || GSTIN (वैकल्पिक) || GSTIN (ऐच्छिक)
+Gel || जेल || जेल
+Gender || लिंग || लिंग
+Gender * || लिंग * || लिंग *
+General || सामान्य || सामान्य
+General (9 am – 6 pm) || सामान्य (9 – 6 बजे) || सामान्य (9 – 6 वाजता)
+General consultation || सामान्य परामर्श || सामान्य तपासणी
+General physician clinic || जनरल फ़िज़िशियन क्लिनिक || जनरल फिजिशियन क्लिनिक
+Generic || जेनेरिक || जेनेरिक
+Generic name || जेनेरिक नाम || जेनेरिक नाव
+Give medicines only as written by the treating doctor. The time and your name are recorded. || दवा केवल डॉक्टर के लिखे अनुसार दें. समय और आपका नाम दर्ज होता है. || औषधे फक्त डॉक्टरांनी लिहिल्याप्रमाणे द्या. वेळ व तुमचे नाव नोंदवले जाते.
+Go to home || होम पर जाएँ || मुख्यपृष्ठावर जा
+Good afternoon || नमस्कार || नमस्कार
+Good evening || शुभ संध्या || शुभ संध्याकाळ
+Good morning || सुप्रभात || सुप्रभात
+Google Maps link || Google Maps लिंक || Google Maps लिंक
+Health article || स्वास्थ्य लेख || आरोग्य लेख
+Health awareness || स्वास्थ्य जागरूकता || आरोग्य जनजागृती
+Health camp || स्वास्थ्य शिविर || आरोग्य शिबिर
+Health content || स्वास्थ्य जानकारी || आरोग्य माहिती
+Health content must be reviewed and approved by a doctor || स्वास्थ्य जानकारी डॉक्टर द्वारा जाँची और मंज़ूर होनी चाहिए || आरोग्य माहिती डॉक्टरांनी तपासून मंजूर केली पाहिजे
+Health content reviewed & published || स्वास्थ्य जानकारी जाँचकर प्रकाशित || आरोग्य माहिती तपासून प्रसिद्ध
+Health records || स्वास्थ्य रिकॉर्ड || आरोग्य नोंदी
+Heart rate || हृदय गति || हृदयगती
+Height || लंबाई || उंची
+Hello || नमस्ते || नमस्कार
+Hidden || छिपा हुआ || लपवलेले
+High || अधिक || जास्त
+History || इतिहास || इतिहास
+Holiday || अवकाश || सुट्टी
+Home || होम || मुख्यपृष्ठ
+Hospital || अस्पताल || रुग्णालय
+Hospital / clinic name || अस्पताल / क्लिनिक का नाम || रुग्णालय / क्लिनिकचे नाव
+Hospital Administrator || अस्पताल प्रशासक || रुग्णालय प्रशासक
+Hospital code || अस्पताल कोड || रुग्णालय कोड
+Hospital code: use 3–40 lowercase letters, numbers or dashes. || अस्पताल कोड: 3–40 छोटे अक्षर, अंक या डैश. || रुग्णालय कोड: 3–40 लहान अक्षरे, अंक किंवा डॅश.
+Hospital emergency || अस्पताल इमरजेंसी || रुग्णालय आपत्कालीन
+Hospital profile || अस्पताल प्रोफ़ाइल || रुग्णालय प्रोफाइल
+Hospital profile updated || अस्पताल प्रोफ़ाइल अपडेट हुई || रुग्णालय प्रोफाइल अद्ययावत
+Hospital staff || अस्पताल स्टाफ़ || रुग्णालय कर्मचारी
+Hospital stay || अस्पताल में भर्ती || रुग्णालयातील मुक्काम
+Hospital stays || अस्पताल में भर्ती || रुग्णालयातील मुक्काम
+Hospital updates || अस्पताल की सूचनाएँ || रुग्णालयाच्या सूचना
+Hospital web app || अस्पताल वेब ऐप || रुग्णालय वेब ॲप
+Hospital: || अस्पताल: || रुग्णालय:
+Hospitals & clinics || अस्पताल और क्लिनिक || रुग्णालये व क्लिनिक
+Hospitals & plans || अस्पताल और प्लान || रुग्णालये व प्लॅन
+Hours || समय || वेळ
+House, street, area || मकान, गली, इलाका || घर, रस्ता, परिसर
+How WhatsApp messages are sent || WhatsApp संदेश कैसे भेजे जाते हैं || WhatsApp संदेश कसे पाठवले जातात
+How patient data is protected || मरीज़ का डेटा कैसे सुरक्षित है || रुग्णाचा डेटा कसा सुरक्षित आहे
+I am a patient || मैं मरीज़ हूँ || मी रुग्ण आहे
+Icon || आइकन || चिन्ह
+If the hospital already registered you with this mobile number, your existing records are linked automatically. || अगर अस्पताल ने आपको इस नंबर से पहले से रजिस्टर किया है, तो आपके रिकॉर्ड अपने आप जुड़ जाएँगे. || रुग्णालयाने या नंबरने आधीच नोंदणी केली असल्यास तुमच्या नोंदी आपोआप जोडल्या जातील.
+Immediately, once || तुरंत, एक बार || लगेच, एकदा
+Improved || सुधार || सुधारणा
+In || अंदर || आत
+In an emergency, come directly to the Emergency department – registration can be done later. Emergency services are available 24×7. || इमरजेंसी में सीधे इमरजेंसी विभाग आएँ – पंजीकरण बाद में हो सकता है. इमरजेंसी सेवा 24×7 उपलब्ध है. || आपत्कालीन स्थितीत थेट आपत्कालीन विभागात या – नोंदणी नंतर करता येईल. आपत्कालीन सेवा 24×7 उपलब्ध आहे.
+In consultation || डॉक्टर के पास || तपासणीत
+In process || प्रक्रिया में || प्रक्रियेत
+In review || समीक्षा में || तपासणीत
+In stock || स्टॉक में || साठ्यात
+Inactive || निष्क्रिय || निष्क्रिय
+Incorrect code. Please try again. || गलत कोड. फिर से कोशिश करें. || चुकीचा कोड. पुन्हा प्रयत्न करा.
+Incorrect or expired code. Please try again. || गलत या पुराना कोड. फिर से कोशिश करें. || चुकीचा किंवा जुना कोड. पुन्हा प्रयत्न करा.
+Inhalation || साँस से || श्वासाद्वारे
+Inhaler || इनहेलर || इनहेलर
+Injection || इंजेक्शन || इंजेक्शन
+Install app on this phone || इस फ़ोन पर ऐप इंस्टॉल करें || या फोनवर ॲप इन्स्टॉल करा
+Instructions also in: || निर्देश इसमें भी: || सूचना यातही:
+Is this an existing patient? || क्या यह पुराना मरीज़ है? || हा जुना रुग्ण आहे का?
+Item || आइटम || बाब
+Items || आइटम || बाबी
+Join from a quiet place with good network, 5 minutes before your time. Keep your old reports ready. || अच्छे नेटवर्क वाली शांत जगह से, समय से 5 मिनट पहले जुड़ें. पुरानी रिपोर्ट तैयार रखें. || चांगले नेटवर्क असलेल्या शांत ठिकाणाहून, वेळेच्या 5 मिनिटे आधी जोडा. जुने रिपोर्ट तयार ठेवा.
+Join video || वीडियो से जुड़ें || व्हिडिओमध्ये सामील व्हा
+Join video consultation || वीडियो परामर्श से जुड़ें || व्हिडिओ तपासणीत सामील व्हा
+Lab Reports || लैब रिपोर्ट || लॅब रिपोर्ट
+Lab Technician || लैब तकनीशियन || लॅब तंत्रज्ञ
+Lab order || लैब ऑर्डर || लॅब ऑर्डर
+Lab report || लैब रिपोर्ट || लॅब रिपोर्ट
+Lab report ready || लैब रिपोर्ट तैयार || लॅब रिपोर्ट तयार
+Lab test || लैब जाँच || लॅब तपासणी
+Lab tests || लैब जाँचें || लॅब तपासण्या
+Laboratory || प्रयोगशाला || प्रयोगशाळा
+Laboratory report || प्रयोगशाला रिपोर्ट || प्रयोगशाळा रिपोर्ट
+Language || भाषा || भाषा
+Last updated || अंतिम अपडेट || शेवटचा बदल
+Last vitals || पिछले वाइटल्स || मागील व्हायटल्स
+Latest vitals || ताज़ा वाइटल्स || ताजे व्हायटल्स
+Leave || छुट्टी || रजा
+Leave & attendance || छुट्टी और हाज़िरी || रजा व हजेरी
+Leave approved || छुट्टी मंज़ूर || रजा मंजूर
+Leave empty for an unidentified patient || अज्ञात मरीज़ के लिए खाली छोड़ें || अनोळखी रुग्णासाठी रिकामे ठेवा
+Leave empty for full amount || पूरी राशि के लिए खाली छोड़ें || पूर्ण रकमेसाठी रिकामे ठेवा
+Leave not approved || छुट्टी मंज़ूर नहीं || रजा मंजूर नाही
+Leave rejected || छुट्टी अस्वीकार || रजा नाकारली
+Leave request || छुट्टी आवेदन || रजा अर्ज
+Leave request sent || छुट्टी आवेदन भेजा गया || रजा अर्ज पाठवला
+Log in with your mobile number || अपने मोबाइल नंबर से लॉग इन करें || तुमच्या मोबाईल नंबरने लॉग इन करा
+Log out || लॉग आउट || लॉग आउट
+Low || कम || कमी
+Low stock || कम स्टॉक || कमी साठा
+Lowercase, e.g. sai-clinic-pune || छोटे अक्षर, जैसे sai-clinic-pune || लहान अक्षरे, उदा. sai-clinic-pune
+MMC / MNC / pharmacy council || MMC / MNC / फ़ार्मेसी काउंसिल || MMC / MNC / फार्मसी कौन्सिल
+MRP / unit || MRP / इकाई || MRP / एकक
+Main problem * || मुख्य समस्या * || मुख्य समस्या *
+Male || पुरुष || पुरुष
+Manufacturer || निर्माता || उत्पादक
+Mark all read || सभी पढ़े हुए करें || सर्व वाचले म्हणून नोंदवा
+Mark arrived || आ गए दर्ज करें || आले म्हणून नोंदवा
+Mark in review || समीक्षा में डालें || तपासणीत टाका
+Mark processing || प्रक्रिया में डालें || प्रक्रियेत टाका
+Marked as did not come || नहीं आए दर्ज किया || आले नाहीत म्हणून नोंदवले
+Marked as processing || प्रक्रिया में दर्ज || प्रक्रियेत नोंदवले
+Marked completed || पूरा दर्ज किया || पूर्ण म्हणून नोंदवले
+Maximum appointments per day || प्रतिदिन अधिकतम अपॉइंटमेंट || दररोज कमाल भेटी
+Medical History || मेडिकल इतिहास || वैद्यकीय इतिहास
+Medication || दवाएँ || औषधोपचार
+Medication recorded || दवा दर्ज हुई || औषध नोंदवले
+Medicine || दवा || औषध
+Medicine name or scan barcode || दवा का नाम या बारकोड स्कैन करें || औषधाचे नाव किंवा बारकोड स्कॅन करा
+Medicine not found in catalogue || दवा सूची में नहीं मिली || औषध यादीत सापडले नाही
+Medicines || दवाएँ || औषधे
+Medicines at discharge || छुट्टी के समय दवाएँ || डिस्चार्जच्या वेळची औषधे
+Medicines have already been given. Please write a new prescription. || दवाएँ दी जा चुकी हैं. कृपया नया पर्चा लिखें. || औषधे दिली गेली आहेत. कृपया नवीन प्रिस्क्रिप्शन लिहा.
+Medicines to give || देने वाली दवाएँ || द्यायची औषधे
+Menu || मेनू || मेनू
+Message || संदेश || संदेश
+Message added || संदेश जोड़ा गया || संदेश जोडला
+Message language || संदेश की भाषा || संदेशाची भाषा
+Message queued || संदेश कतार में || संदेश रांगेत
+Method || तरीका || पद्धत
+Min || न्यूनतम || किमान
+Minimum stock level || न्यूनतम स्टॉक || किमान साठा
+Mobile || मोबाइल || मोबाईल
+Mobile (login) || मोबाइल (लॉगिन) || मोबाईल (लॉगिन)
+Mobile (patient or relative) || मोबाइल (मरीज़ या रिश्तेदार) || मोबाईल (रुग्ण किंवा नातेवाईक)
+Mobile number (used to log in) || मोबाइल नंबर (लॉगिन के लिए) || मोबाईल नंबर (लॉगिनसाठी)
+Mobile number * || मोबाइल नंबर * || मोबाईल नंबर *
+Mobile number is required (or add the patient under a family member) || मोबाइल नंबर ज़रूरी है (या मरीज़ को परिवार के सदस्य के अंतर्गत जोड़ें) || मोबाईल नंबर आवश्यक आहे (किंवा रुग्णाला कुटुंबातील सदस्याखाली जोडा)
+Mon || सोम || सोम
+Monthly subscription revenue || मासिक सदस्यता आय || मासिक सदस्यता उत्पन्न
+Morning || सुबह || सकाळ
+Morning (8 am – 2 pm) || सुबह (8 – 2 बजे) || सकाळ (8 – 2 वाजता)
+Moved to the top as emergency || इमरजेंसी के रूप में सबसे ऊपर || आपत्कालीन म्हणून सर्वात वर
+Multispecialty clinic || मल्टीस्पेशियलिटी क्लिनिक || मल्टिस्पेशालिटी क्लिनिक
+Multispecialty hospital || मल्टीस्पेशियलिटी अस्पताल || मल्टिस्पेशालिटी रुग्णालय
+Multispecialty hospitals with IPD, lab & pharmacy || IPD, लैब और फ़ार्मेसी वाले मल्टीस्पेशियलिटी अस्पताल || IPD, लॅब व फार्मसी असलेली मल्टिस्पेशालिटी रुग्णालये
+My Appointments || मेरी अपॉइंटमेंट || माझ्या भेटी
+My OPD || मेरी OPD || माझी OPD
+My OPD – today || मेरी OPD – आज || माझी OPD – आज
+My Prescriptions || मेरे पर्चे || माझी प्रिस्क्रिप्शन
+My account || मेरा खाता || माझे खाते
+My family || मेरा परिवार || माझे कुटुंब
+My feedback || मेरा फ़ीडबैक || माझा अभिप्राय
+My inpatients || मेरे भर्ती मरीज़ || माझे दाखल रुग्ण
+My pending tasks || मेरे बाकी काम || माझी बाकी कामे
+Name || नाम || नाव
+Name (if known) || नाम (यदि पता हो) || नाव (माहीत असल्यास)
+Name, mobile number, Patient ID or scan QR || नाम, मोबाइल नंबर, पेशेंट ID या QR स्कैन करें || नाव, मोबाईल नंबर, पेशंट ID किंवा QR स्कॅन करा
+National emergency number || राष्ट्रीय आपातकालीन नंबर || राष्ट्रीय आपत्कालीन नंबर
+Nearest expiry || सबसे नज़दीकी एक्सपायरी || सर्वात जवळची मुदत
+Needs attention || ध्यान दें || लक्ष द्या
+Net banking || नेट बैंकिंग || नेट बँकिंग
+New || नया || नवीन
+New / unknown patient || नया / अज्ञात मरीज़ || नवीन / अनोळखी रुग्ण
+New announcement || नई सूचना || नवीन सूचना
+New appointment || नई अपॉइंटमेंट || नवीन भेट
+New arrivals appear here automatically. || नए आए मरीज़ यहाँ अपने आप दिखेंगे. || नवीन आलेले रुग्ण येथे आपोआप दिसतील.
+New article || नया लेख || नवीन लेख
+New bill || नया बिल || नवीन बिल
+New date || नई तारीख || नवीन तारीख
+New doctor || नए डॉक्टर || नवीन डॉक्टर
+New message || नया संदेश || नवीन संदेश
+New nursing task || नया नर्सिंग काम || नवीन नर्सिंग काम
+New patient registration || नए मरीज़ का पंजीकरण || नवीन रुग्ण नोंदणी
+New patient? Enter your mobile number – you can register in one minute. || नए मरीज़? अपना मोबाइल नंबर डालें – एक मिनट में रजिस्टर करें. || नवीन रुग्ण? तुमचा मोबाईल नंबर टाका – एका मिनिटात नोंदणी करा.
+New prescription || नया पर्चा || नवीन प्रिस्क्रिप्शन
+New prescription to dispense || देने के लिए नया पर्चा || द्यायचे नवीन प्रिस्क्रिप्शन
+New test request || नई जाँच का अनुरोध || नवीन तपासणी विनंती
+New today || आज नए || आज नवीन
+Next || अगला || पुढील
+Next day || अगला दिन || पुढील दिवस
+Next tasks || अगले काम || पुढील कामे
+Night || रात || रात्र
+Night (8 pm – 8 am) || रात (8 – 8 बजे) || रात्र (8 – 8 वाजता)
+No admitted patients || कोई भर्ती मरीज़ नहीं || दाखल रुग्ण नाहीत
+No admitted patients. || कोई भर्ती मरीज़ नहीं. || दाखल रुग्ण नाहीत.
+No announcements || कोई सूचना नहीं || सूचना नाहीत
+No appointments for this day || इस दिन कोई अपॉइंटमेंट नहीं || या दिवशी भेटी नाहीत
+No bills || कोई बिल नहीं || बिले नाहीत
+No bills yet || अभी कोई बिल नहीं || अजून बिले नाहीत
+No consent – not sent || सहमति नहीं – नहीं भेजा || संमती नाही – पाठवले नाही
+No consultation notes for this visit || इस विज़िट के कोई नोट्स नहीं || या भेटीच्या नोंदी नाहीत
+No consultations yet || अभी कोई परामर्श नहीं || अजून तपासण्या नाहीत
+No doctors found || कोई डॉक्टर नहीं मिला || डॉक्टर सापडले नाहीत
+No doctors in OPD today || आज OPD में कोई डॉक्टर नहीं || आज OPD मध्ये डॉक्टर नाहीत
+No emergency cases today || आज कोई इमरजेंसी केस नहीं || आज आपत्कालीन रुग्ण नाहीत
+No feedback yet || अभी कोई फ़ीडबैक नहीं || अजून अभिप्राय नाही
+No free beds || कोई खाली बेड नहीं || रिकामे बेड नाहीत
+No free slots on this day || इस दिन कोई खाली समय नहीं || या दिवशी मोकळी वेळ नाही
+No free slots on this day. || इस दिन कोई खाली समय नहीं. || या दिवशी मोकळी वेळ नाही.
+No hospital found with that code. || इस कोड का कोई अस्पताल नहीं मिला. || या कोडचे रुग्णालय सापडले नाही.
+No internet connection || इंटरनेट कनेक्शन नहीं || इंटरनेट कनेक्शन नाही
+No known allergies || कोई ज्ञात एलर्जी नहीं || ज्ञात ॲलर्जी नाही
+No medication recorded yet. Nurses record each dose in the Nursing section. || अभी कोई दवा दर्ज नहीं. नर्स हर खुराक नर्सिंग भाग में दर्ज करती हैं. || अजून औषध नोंदवलेले नाही. परिचारिका प्रत्येक डोस नर्सिंग विभागात नोंदवतात.
+No messages || कोई संदेश नहीं || संदेश नाहीत
+No more expected patients today || आज और कोई अपेक्षित मरीज़ नहीं || आज आणखी अपेक्षित रुग्ण नाहीत
+No notes yet. || अभी कोई नोट नहीं. || अजून नोंदी नाहीत.
+No notifications || कोई सूचना नहीं || सूचना नाहीत
+No past appointments || कोई पुरानी अपॉइंटमेंट नहीं || जुन्या भेटी नाहीत
+No patient found – register a new one || मरीज़ नहीं मिला – नया रजिस्टर करें || रुग्ण सापडला नाही – नवीन नोंदणी करा
+No patient found. || मरीज़ नहीं मिला. || रुग्ण सापडला नाही.
+No patients || कोई मरीज़ नहीं || रुग्ण नाहीत
+No patients waiting || कोई मरीज़ इंतज़ार में नहीं || प्रतीक्षेत रुग्ण नाहीत
+No prescription for this visit. || इस विज़िट का कोई पर्चा नहीं. || या भेटीचे प्रिस्क्रिप्शन नाही.
+No prescriptions waiting || कोई पर्चा बाकी नहीं || प्रिस्क्रिप्शन बाकी नाहीत
+No prescriptions yet || अभी कोई पर्चा नहीं || अजून प्रिस्क्रिप्शन नाहीत
+No test reports || कोई जाँच रिपोर्ट नहीं || तपासणी रिपोर्ट नाहीत
+No upcoming appointment || कोई आगामी अपॉइंटमेंट नहीं || आगामी भेट नाही
+No upcoming appointments || कोई आगामी अपॉइंटमेंट नहीं || आगामी भेटी नाहीत
+No updates || कोई सूचना नहीं || सूचना नाहीत
+No vaccination records || कोई टीकाकरण रिकॉर्ड नहीं || लसीकरण नोंदी नाहीत
+No visits yet || अभी कोई विज़िट नहीं || अजून भेटी नाहीत
+No vitals recorded || कोई वाइटल्स दर्ज नहीं || व्हायटल्स नोंदवले नाहीत
+No vitals recorded. || कोई वाइटल्स दर्ज नहीं. || व्हायटल्स नोंदवले नाहीत.
+No – register as a new patient || नहीं – नए मरीज़ के रूप में रजिस्टर करें || नाही – नवीन रुग्ण म्हणून नोंदणी करा
+No-show || नहीं आए || आले नाहीत
+No-shows || नहीं आए || न आलेले
+None known || कोई ज्ञात नहीं || ज्ञात नाही
+Normal || सामान्य || सामान्य
+Normal text (e.g. Negative) || सामान्य पाठ (जैसे Negative) || सामान्य मजकूर (उदा. Negative)
+Not available in the next 2 weeks || अगले 2 हफ़्ते उपलब्ध नहीं || पुढील 2 आठवडे उपलब्ध नाही
+Not found || नहीं मिला || सापडले नाही
+Not in OPD || OPD में नहीं || OPD मध्ये नाहीत
+Not in catalogue (give separately): || सूची में नहीं (अलग से दें): || यादीत नाही (वेगळे द्या):
+Not known || पता नहीं || माहीत नाही
+Not marked || दर्ज नहीं || नोंद नाही
+Not paid now || अभी भुगतान नहीं || आत्ता भरलेले नाही
+Not verified – provisional || सत्यापित नहीं – अस्थायी || पडताळलेले नाही – तात्पुरते
+Note || नोट || नोंद
+Note for patient (any language) || मरीज़ के लिए नोट (किसी भी भाषा में) || रुग्णासाठी नोंद (कोणत्याही भाषेत)
+Note saved || नोट सेव हुआ || नोंद जतन झाली
+Notes || नोट्स || नोंदी
+Nothing here || यहाँ कुछ नहीं || येथे काही नाही
+Nothing to review || समीक्षा के लिए कुछ नहीं || तपासण्यासाठी काही नाही
+Nothing to show || दिखाने को कुछ नहीं || दाखवण्यासारखे काही नाही
+Nothing yet || अभी कुछ नहीं || अजून काही नाही
+Notice || सूचना || सूचना
+Notifications || सूचनाएँ || सूचना
+Now || अभी || आता
+Now (walk-in) || अभी (वॉक-इन) || आत्ता (वॉक-इन)
+Now serving || अभी चल रहा || सध्या सुरू
+Number of beds || बेड की संख्या || बेडची संख्या
+Nurse || नर्स || परिचारिका
+Nursing || नर्सिंग || नर्सिंग
+Nursing home || नर्सिंग होम || नर्सिंग होम
+Nursing note || नर्सिंग नोट || नर्सिंग नोंद
+Nursing note / observation || नर्सिंग नोट / अवलोकन || नर्सिंग नोंद / निरीक्षण
