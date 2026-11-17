@@ -1,0 +1,172 @@
+<title>JeevO Feature Flyer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one A4 landscape sheet; brand band on top, three owner columns, patient band at the foot. Print piece: single light look. */
+:root {
+  --navy: #1B1E4A;
+  --navy-2: #2A2F66;
+  --red: #D42A33;
+  --store: #17664B;
+  --lab: #7A1E2C;
+  --paper: #FFFFFF;
+  --ground: #E9EAF1;
+  --ink: #1D2033;
+  --muted: #5A5F78;
+  --line: #DCDEE8;
+  --tint-h: #EEF0F8;
+  --tint-s: #EAF4EF;
+  --tint-l: #F7ECEE;
+  --display: "Sora", "Segoe UI", system-ui, sans-serif;
+  --body: "Mukta", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body);
+  padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.sheet {
+  width: 100%; max-width: 1123px; margin: 0 auto; background: var(--paper);
+  display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(27,30,74,.14);
+}
+@media (min-width: 1000px) { .sheet { aspect-ratio: 297 / 210; } }
+
+/* top band */
+.top { display: flex; align-items: center; gap: 18px; padding: 18px 30px 16px; border-bottom: 3px solid var(--navy); }
+.top img { width: 64px; height: 64px; flex: none; }
+.brand { min-width: 0; }
+.brand h1 { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.05; margin: 0; color: var(--navy); letter-spacing: -.01em; }
+.brand .mr { font-size: 15px; color: var(--muted); margin-top: 2px; }
+.pitch { margin-left: auto; text-align: right; max-width: 470px; min-width: 0; }
+.pitch strong { display: block; font-family: var(--display); font-size: 18px; line-height: 1.25; color: var(--navy); text-wrap: balance; }
+.pitch span { font-size: 13.5px; color: var(--muted); line-height: 1.35; display: block; margin-top: 3px; }
+.pitch em { font-style: normal; color: var(--red); font-weight: 700; }
+
+/* three owner columns */
+.cols { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 16px 30px 14px; min-height: 0; }
+.col { display: flex; flex-direction: column; border: 1px solid var(--line); min-width: 0; }
+.head { color: #fff; padding: 11px 16px 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
+.head h2 { font-family: var(--display); font-size: 19px; font-weight: 700; margin: 0; line-height: 1.1; }
+.head .mr { font-size: 14px; opacity: .85; line-height: 1.1; margin-top: 2px; }
+.head .code { font-family: var(--display); font-size: 11px; font-weight: 600; letter-spacing: .08em; border: 1px solid rgba(255,255,255,.55); padding: 3px 7px; white-space: nowrap; }
+.owner { padding: 7px 16px; font-size: 13.5px; color: var(--ink); border-bottom: 1px solid var(--line); }
+.owner b { font-weight: 700; }
+ul { list-style: none; margin: 0; padding: 10px 16px 6px; display: flex; flex-direction: column; gap: 6.5px; flex: 1; }
+li { font-size: 13.5px; line-height: 1.3; padding-left: 15px; position: relative; color: var(--ink); }
+li::before { content: ""; position: absolute; left: 0; top: .5em; width: 7px; height: 7px; background: var(--c); }
+li b { font-weight: 700; }
+.only { margin: 0 12px 12px; padding: 7px 10px; font-size: 12.5px; line-height: 1.3; background: var(--tint); color: var(--ink); }
+.only b { color: var(--c); }
+.hosp { --c: var(--navy); --tint: var(--tint-h); } .hosp .head { background: var(--navy); }
+.store { --c: var(--store); --tint: var(--tint-s); } .store .head { background: var(--store); }
+.lab { --c: var(--lab); --tint: var(--tint-l); } .lab .head { background: var(--lab); }
+
+/* bottom band: shared by all three */
+.foot { background: var(--navy); color: #fff; padding: 12px 30px 13px; display: grid; grid-template-columns: auto 1fr; gap: 6px 22px; align-items: center; }
+.foot h3 { font-family: var(--display); font-size: 14px; font-weight: 700; margin: 0; letter-spacing: .02em; color: #fff; }
+.foot h3 small { display: block; font-family: var(--body); font-weight: 500; font-size: 12.5px; color: #C9CBE0; letter-spacing: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.chips span { font-size: 12.5px; line-height: 1.2; padding: 4px 9px; background: var(--navy-2); border: 1px solid #3D4385; white-space: nowrap; }
+.chips span.hl { background: var(--red); border-color: var(--red); font-weight: 600; }
+.sig b { color: #fff; font-weight: 600; }
+.sig { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 11.5px; color: #B6B9D4; border-top: 1px solid #343A78; padding-top: 6px; margin-top: 2px; }
+
+@media (max-width: 999px) {
+  .top { flex-wrap: wrap; padding: 16px; }
+  .pitch { margin-left: 0; text-align: left; max-width: none; flex-basis: 100%; }
+  .cols { grid-template-columns: 1fr; padding: 14px 16px; }
+  .foot { grid-template-columns: 1fr; padding: 14px 16px; }
+  .chips span { white-space: normal; }
+}
+@page { size: A4 landscape; margin: 0; }
+@media print {
+  body { background: #fff; padding: 0; }
+  .sheet { box-shadow: none; width: 297mm; height: 210mm; max-width: none; aspect-ratio: auto; }
+}
+.mark { width: 60px; height: 60px; flex: none; background: var(--navy); position: relative; }
+.mark span::before, .mark span::after { content: ""; position: absolute; background: #fff; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.mark span::before { width: 34px; height: 10px; } .mark span::after { width: 10px; height: 34px; }
+.mark::after { content: ""; position: absolute; right: 7px; top: 7px; width: 9px; height: 9px; background: var(--red); }
+</style>
+
+<div class="sheet">
+  <header class="top">
+    <div class="mark" aria-hidden="true"><span></span></div>
+    <div class="brand">
+      <h1>JeevO</h1>
+      <div class="mr">Hospital &amp; clinic management · हॉस्पिटल व क्लिनिक व्यवस्थापन</div>
+    </div>
+    <div class="pitch">
+      <strong>One app for the hospital, the medical store and the laboratory</strong>
+      <span>Separate owners, one shared patient file. <em>Each owner sees only their own income.</em> Works on any phone or computer, in English, हिंदी and मराठी.</span>
+    </div>
+  </header>
+
+  <main class="cols">
+    <section class="col hosp">
+      <div class="head"><div><h2>Hospital</h2><div class="mr">रुग्णालय</div></div><span class="code">BILLS BL-</span></div>
+      <div class="owner">Owner or administrator · doctors, reception, nurses</div>
+      <ul>
+        <li><b>OPD appointments & live tokens</b>, with a TV screen for the waiting hall</li>
+        <li><b>Quick registration</b> with duplicate check, walk-ins and emergency</li>
+        <li><b>Doctor's screen:</b> notes, e-prescription printed in Marathi or Hindi, allergy warnings</li>
+        <li><b>Order tests and referral letters</b> in one tap; results come back to the file</li>
+        <li><b>Beds and wards:</b> ICU, General, Semi-special and Special, with admissions, vitals, nursing notes and discharge summary</li>
+        <li><b>Insurance & cashless desk:</b> insurer list, pre-auth and claim status</li>
+        <li><b>ECG, 2D Echo, TMT and X-ray</b> reports on the hospital letterhead</li>
+        <li><b>Staff, shifts, leave and attendance;</b> reports, export to Excel, audit log</li>
+      </ul>
+      <div class="only"><b>Sees only:</b> hospital bills, income and staff</div>
+    </section>
+
+    <section class="col store">
+      <div class="head"><div><h2>Medical Store</h2><div class="mr">मेडिकल स्टोअर</div></div><span class="code">BILLS PH-</span></div>
+      <div class="owner">Store owner · pharmacists</div>
+      <ul>
+        <li><b>Doctor's prescription arrives on screen,</b> so there is no handwriting to read</li>
+        <li><b>One-tap dispensing</b> from the right batch (earliest expiry first)</li>
+        <li><b>Counter sale</b> for walk-in customers, with barcode search</li>
+        <li><b>Stock by batch,</b> with low-stock and expiry alerts</li>
+        <li><b>Bills on the store's own letterhead</b> with drug licence and GSTIN</li>
+        <li><b>Today's and this month's income</b> on the owner's dashboard</li>
+        <li><b>Refunds and cancellations</b> only by the owner</li>
+        <li><b>Own staff:</b> add pharmacists, leave and attendance</li>
+      </ul>
+      <div class="only"><b>Sees only:</b> medical store bills, income and staff</div>
+    </section>
+
+    <section class="col lab">
+      <div class="head"><div><h2>Laboratory</h2><div class="mr">प्रयोगशाळा</div></div><span class="code">BILLS LBL-</span></div>
+      <div class="owner">Lab owner · technicians</div>
+      <ul>
+        <li><b>Test orders arrive from the doctor</b> automatically, plus walk-ins "Referred by Dr."</li>
+        <li><b>Sample ID and result entry</b> with normal ranges; abnormal values are flagged</li>
+        <li><b>Second-person check:</b> the one who entered results cannot verify them</li>
+        <li><b>Report on the lab letterhead</b> with signatories, as a PDF</li>
+        <li><b>Patient gets the report on the phone</b> only after it is verified</li>
+        <li><b>Own bills and receipts,</b> today's and monthly income</li>
+        <li><b>Test price list</b> set by the lab owner</li>
+        <li><b>Own staff:</b> technicians and who may verify reports</li>
+      </ul>
+      <div class="only"><b>Sees only:</b> laboratory bills, income and staff</div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <h3>For every patient<small>रुग्णांसाठी</small></h3>
+    <div class="chips">
+      <span>Book a doctor from the phone</span>
+      <span>Live token: "your turn is near"</span>
+      <span>Prescriptions & reports on the phone</span>
+      <span>Whole family in one login</span>
+      <span>WhatsApp & SMS reminders</span>
+      <span>Pay online (UPI)</span>
+      <span class="hl">Patient data stays private (DPDP Act)</span>
+    </div>
+    <div class="sig"><span>Installs from a link, no app store needed</span><span>JeevO · hospital and clinic management</span></div>
+  </footer>
+</div>

@@ -1,0 +1,177 @@
+<title>JeevO माहितीपत्रक</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+/* Marathi edition */
+/* Layout: one A4 landscape sheet; brand band on top, three owner columns, patient band at the foot. Print piece: single light look. */
+:root {
+  --navy: #1B1E4A;
+  --navy-2: #2A2F66;
+  --red: #D42A33;
+  --store: #17664B;
+  --lab: #7A1E2C;
+  --paper: #FFFFFF;
+  --ground: #E9EAF1;
+  --ink: #1D2033;
+  --muted: #5A5F78;
+  --line: #DCDEE8;
+  --tint-h: #EEF0F8;
+  --tint-s: #EAF4EF;
+  --tint-l: #F7ECEE;
+  --display: "Sora", "Segoe UI", system-ui, sans-serif;
+  --body: "Mukta", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body);
+  padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.sheet {
+  width: 100%; max-width: 1123px; margin: 0 auto; background: var(--paper);
+  display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(27,30,74,.14);
+}
+@media (min-width: 1000px) { .sheet { aspect-ratio: 297 / 210; } }
+
+/* top band */
+.top { display: flex; align-items: center; gap: 18px; padding: 18px 30px 16px; border-bottom: 3px solid var(--navy); }
+.top img { width: 64px; height: 64px; flex: none; }
+.brand { min-width: 0; }
+.brand h1 { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.05; margin: 0; color: var(--navy); letter-spacing: -.01em; }
+.brand .mr { font-size: 15px; color: var(--muted); margin-top: 2px; }
+.pitch { margin-left: auto; text-align: right; max-width: 470px; min-width: 0; }
+.pitch strong { display: block; font-family: var(--display); font-size: 18px; line-height: 1.25; color: var(--navy); text-wrap: balance; }
+.pitch span { font-size: 13.5px; color: var(--muted); line-height: 1.35; display: block; margin-top: 3px; }
+.pitch em { font-style: normal; color: var(--red); font-weight: 700; }
+
+/* three owner columns */
+.cols { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 16px 30px 14px; min-height: 0; }
+.col { display: flex; flex-direction: column; border: 1px solid var(--line); min-width: 0; }
+.head { color: #fff; padding: 11px 16px 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
+.head h2 { font-family: var(--display); font-size: 19px; font-weight: 700; margin: 0; line-height: 1.1; }
+.head .mr { font-size: 14px; opacity: .85; line-height: 1.1; margin-top: 2px; }
+.head .code { font-family: var(--display); font-size: 11px; font-weight: 600; letter-spacing: .08em; border: 1px solid rgba(255,255,255,.55); padding: 3px 7px; white-space: nowrap; }
+.owner { padding: 7px 16px; font-size: 13.5px; color: var(--ink); border-bottom: 1px solid var(--line); }
+.owner b { font-weight: 700; }
+ul { list-style: none; margin: 0; padding: 10px 16px 6px; display: flex; flex-direction: column; gap: 6.5px; flex: 1; }
+li { font-size: 13.5px; line-height: 1.3; padding-left: 15px; position: relative; color: var(--ink); }
+li::before { content: ""; position: absolute; left: 0; top: .5em; width: 7px; height: 7px; background: var(--c); }
+li b { font-weight: 700; }
+.only { margin: 0 12px 12px; padding: 7px 10px; font-size: 12.5px; line-height: 1.3; background: var(--tint); color: var(--ink); }
+.only b { color: var(--c); }
+.hosp { --c: var(--navy); --tint: var(--tint-h); } .hosp .head { background: var(--navy); }
+.store { --c: var(--store); --tint: var(--tint-s); } .store .head { background: var(--store); }
+.lab { --c: var(--lab); --tint: var(--tint-l); } .lab .head { background: var(--lab); }
+
+/* bottom band: shared by all three */
+.foot { background: var(--navy); color: #fff; padding: 12px 30px 13px; display: grid; grid-template-columns: auto 1fr; gap: 6px 22px; align-items: center; }
+.foot h3 { font-family: var(--display); font-size: 14px; font-weight: 700; margin: 0; letter-spacing: .02em; color: #fff; }
+.foot h3 small { display: block; font-family: var(--body); font-weight: 500; font-size: 12.5px; color: #C9CBE0; letter-spacing: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.chips span { font-size: 12.5px; line-height: 1.2; padding: 4px 9px; background: var(--navy-2); border: 1px solid #3D4385; white-space: nowrap; }
+.chips span.hl { background: var(--red); border-color: var(--red); font-weight: 600; }
+.sig b { color: #fff; font-weight: 600; }
+.sig { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 11.5px; color: #B6B9D4; border-top: 1px solid #343A78; padding-top: 6px; margin-top: 2px; }
+
+@media (max-width: 999px) {
+  .top { flex-wrap: wrap; padding: 16px; }
+  .pitch { margin-left: 0; text-align: left; max-width: none; flex-basis: 100%; }
+  .cols { grid-template-columns: 1fr; padding: 14px 16px; }
+  .foot { grid-template-columns: 1fr; padding: 14px 16px; }
+  .chips span { white-space: normal; }
+}
+@page { size: A4 landscape; margin: 0; }
+@media print {
+  body { background: #fff; padding: 0; }
+  .sheet { box-shadow: none; width: 297mm; height: 210mm; max-width: none; aspect-ratio: auto; }
+}
+.cols li { font-size: 15px; line-height: 1.32; }
+.cols ul { gap: 8px; padding-top: 11px; }
+.owner { font-size: 15px; }
+.only { font-size: 14px; }
+.mark { width: 60px; height: 60px; flex: none; background: var(--navy); position: relative; }
+.mark span::before, .mark span::after { content: ""; position: absolute; background: #fff; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.mark span::before { width: 34px; height: 10px; } .mark span::after { width: 10px; height: 34px; }
+.mark::after { content: ""; position: absolute; right: 7px; top: 7px; width: 9px; height: 9px; background: var(--red); }
+</style>
+
+<div class="sheet">
+  <header class="top">
+    <div class="mark" aria-hidden="true"><span></span></div>
+    <div class="brand">
+      <h1>JeevO</h1>
+      <div class="mr">हॉस्पिटल व क्लिनिक व्यवस्थापन · Hospital &amp; clinic management</div>
+    </div>
+    <div class="pitch">
+      <strong>हॉस्पिटल, मेडिकल स्टोअर आणि लॅबसाठी एकच ॲप</strong>
+      <span>वेगवेगळे मालक, रुग्णाची एकच फाइल. <em>प्रत्येक मालकाला फक्त स्वतःचे उत्पन्न दिसते.</em> कोणत्याही फोन किंवा कॉम्प्युटरवर चालते, मराठी, हिंदी आणि English मध्ये.</span>
+    </div>
+  </header>
+
+  <main class="cols">
+    <section class="col hosp">
+      <div class="head"><div><h2>हॉस्पिटल</h2><div class="mr">Hospital</div></div><span class="code">बिल BL-</span></div>
+      <div class="owner">मालक किंवा प्रशासक · डॉक्टर, रिसेप्शन, नर्स</div>
+      <ul>
+        <li><b>OPD अपॉइंटमेंट व लाइव्ह टोकन,</b> प्रतीक्षा कक्षासाठी TV स्क्रीन</li>
+        <li><b>झटपट नोंदणी</b> (डुप्लिकेट तपासणीसह), वॉक-इन आणि इमर्जन्सी</li>
+        <li><b>डॉक्टरांची स्क्रीन:</b> नोंदी, मराठी किंवा हिंदीत छापलेले ई-प्रिस्क्रिप्शन, ॲलर्जी इशारा</li>
+        <li><b>तपासण्या व रेफरल पत्र</b> एका क्लिकवर; रिपोर्ट थेट रुग्णाच्या फाइलमध्ये</li>
+        <li><b>बेड व वॉर्ड:</b> ICU, जनरल, सेमी-स्पेशल व स्पेशल; दाखल, व्हायटल्स, नर्सिंग नोंदी आणि डिस्चार्ज समरी</li>
+        <li><b>विमा व कॅशलेस विभाग:</b> विमा कंपन्यांची यादी, प्री-ऑथ आणि क्लेमची स्थिती</li>
+        <li><b>ECG, 2D Echo, TMT व X-ray</b> रिपोर्ट हॉस्पिटलच्या लेटरहेडवर</li>
+        <li><b>स्टाफ, शिफ्ट, रजा व हजेरी;</b> रिपोर्ट, Excel मध्ये निर्यात, ऑडिट लॉग</li>
+      </ul>
+      <div class="only"><b>फक्त हेच दिसते:</b> हॉस्पिटलची बिले, उत्पन्न आणि स्टाफ</div>
+    </section>
+
+    <section class="col store">
+      <div class="head"><div><h2>मेडिकल स्टोअर</h2><div class="mr">Medical Store</div></div><span class="code">बिल PH-</span></div>
+      <div class="owner">स्टोअरचे मालक · फार्मासिस्ट</div>
+      <ul>
+        <li><b>डॉक्टरांचे प्रिस्क्रिप्शन थेट स्क्रीनवर,</b> हस्ताक्षर वाचण्याची गरज नाही</li>
+        <li><b>एका क्लिकवर औषध वितरण,</b> योग्य बॅचमधून (लवकर एक्सपायरी आधी)</li>
+        <li><b>काउंटर विक्री</b> थेट ग्राहकांसाठी, बारकोडने शोध</li>
+        <li><b>बॅचनुसार स्टॉक,</b> कमी स्टॉक व एक्सपायरीची सूचना</li>
+        <li><b>स्टोअरच्या स्वतःच्या लेटरहेडवर बिल,</b> ड्रग लायसन्स व GSTIN सह</li>
+        <li><b>आजचे व या महिन्याचे उत्पन्न</b> मालकाच्या डॅशबोर्डवर</li>
+        <li><b>परतावा व बिल रद्द करणे</b> फक्त मालकच करू शकतात</li>
+        <li><b>स्वतःचा स्टाफ:</b> फार्मासिस्ट जोडणे, रजा व हजेरी</li>
+      </ul>
+      <div class="only"><b>फक्त हेच दिसते:</b> मेडिकल स्टोअरची बिले, उत्पन्न आणि स्टाफ</div>
+    </section>
+
+    <section class="col lab">
+      <div class="head"><div><h2>लॅबोरेटरी</h2><div class="mr">Laboratory</div></div><span class="code">बिल LBL-</span></div>
+      <div class="owner">लॅबचे मालक · टेक्निशियन</div>
+      <ul>
+        <li><b>डॉक्टरांनी सांगितलेल्या तपासण्या</b> आपोआप लॅबमध्ये; बाहेरील रुग्ण "Referred by Dr." सह</li>
+        <li><b>सॅम्पल ID व रिझल्ट नोंद</b> नॉर्मल रेंजसह; असामान्य मूल्ये ठळक दिसतात</li>
+        <li><b>दुसऱ्या व्यक्तीकडून तपासणी:</b> रिझल्ट भरणारी व्यक्ती स्वतः व्हेरिफाय करू शकत नाही</li>
+        <li><b>लॅबच्या लेटरहेडवर रिपोर्ट,</b> सहीसह, PDF स्वरूपात</li>
+        <li><b>रुग्णाला रिपोर्ट फोनवर</b> फक्त व्हेरिफाय झाल्यानंतरच</li>
+        <li><b>स्वतःची बिले व पावत्या,</b> आजचे व मासिक उत्पन्न</li>
+        <li><b>तपासण्यांचे दर</b> लॅबचे मालक ठरवतात</li>
+        <li><b>स्वतःचा स्टाफ:</b> टेक्निशियन व रिपोर्ट व्हेरिफाय करण्याचा अधिकार</li>
+      </ul>
+      <div class="only"><b>फक्त हेच दिसते:</b> लॅबची बिले, उत्पन्न आणि स्टाफ</div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <h3>प्रत्येक रुग्णासाठी<small>For every patient</small></h3>
+    <div class="chips">
+      <span>डॉक्टरांची अपॉइंटमेंट फोनवरून</span>
+      <span>लाइव्ह टोकन: "तुमचा नंबर जवळ आला आहे"</span>
+      <span>प्रिस्क्रिप्शन व रिपोर्ट फोनवर</span>
+      <span>संपूर्ण कुटुंब एकाच लॉगिनमध्ये</span>
+      <span>WhatsApp व SMS द्वारे आठवण</span>
+      <span>ऑनलाइन पेमेंट (UPI)</span>
+      <span class="hl">रुग्णांची माहिती सुरक्षित व गोपनीय (DPDP कायदा)</span>
+    </div>
+    <div class="sig"><span>फक्त लिंकवरून इन्स्टॉल, ॲप स्टोअरची गरज नाही</span><span>JeevO · हॉस्पिटल व क्लिनिक व्यवस्थापन</span></div>
+  </footer>
+</div>
