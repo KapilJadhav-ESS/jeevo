@@ -1,0 +1,138 @@
+<title>JeevO Billing Quick Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one A4 portrait sheet; each section is a row with English on the left and Marathi on the right. Print piece: single light look. */
+:root {
+  --navy: #1B1E4A; --red: #D42A33; --green: #17664B; --amber: #9A5B00;
+  --paper: #FFFFFF; --ground: #E9EAF1; --ink: #1D2033; --muted: #5A5F78; --line: #DCDEE8;
+  --tint: #EEF0F8; --warn: #FFF4E0; --okt: #EAF4EF;
+  --display: "Sora", "Mukta", "Segoe UI", system-ui, sans-serif;
+  --body: "Mukta", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body);
+  padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.sheet { width: 100%; max-width: 794px; margin: 0 auto; background: var(--paper); box-shadow: 0 10px 40px rgba(27,30,74,.14); display: flex; flex-direction: column; }
+@media (min-width: 701px) { .sheet { aspect-ratio: 210 / 297; } }
+header { background: var(--navy); color: #fff; padding: 11px 22px 9px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: end; }
+header h1 { font-family: var(--display); font-size: 18px; line-height: 1.1; margin: 0; }
+header p { margin: 3px 0 0; font-size: 12px; color: #C9CBE0; line-height: 1.3; }
+.body { flex: 1; padding: 10px 22px 10px; display: flex; flex-direction: column; gap: 12px; }
+.sec { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; }
+.sec > h2 { grid-column: 1 / -1; align-items: baseline; display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; margin: 0 0 5px; padding: 3px 0 3px; border-bottom: 2px solid var(--navy); font-family: var(--display); font-size: 15px; color: var(--navy); }
+.sec > h2 span + span { font-family: var(--body); font-size: 16.5px; font-weight: 700; }
+.col { min-width: 0; font-size: 12.3px; line-height: 1.32; }
+.mr { font-size: 13.1px; line-height: 1.28; border-left: 1px solid var(--line); padding-left: 14px; }
+ol, ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+ol { counter-reset: s; }
+ol li { counter-increment: s; position: relative; padding-left: 21px; }
+ol li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 15px; height: 15px; background: var(--navy); color: #fff; font: 700 10px/15px var(--display); text-align: center; }
+ul li { position: relative; padding-left: 12px; }
+ul li::before { content: ""; position: absolute; left: 1px; top: .55em; width: 5px; height: 5px; background: var(--navy); }
+.k { display: inline-block; font-weight: 700; color: var(--navy); background: var(--tint); border: 1px solid #CDD1E6; padding: 0 4px; line-height: 1.25; white-space: nowrap; }
+.who { color: var(--red); font-weight: 600; }
+.note { margin-top: 3px; padding: 3px 7px; background: var(--okt); font-size: 11.4px; line-height: 1.3; }
+.mr .note { font-size: 12.2px; }
+.why { background: var(--warn); padding: 6px 9px; }
+.why b { color: var(--amber); }
+table { width: 100%; border-collapse: collapse; }
+td { vertical-align: top; padding: 3px 4px; border-bottom: 1px solid var(--line); }
+td:first-child { width: 37%; font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+footer { border-top: 1px solid var(--line); padding: 5px 22px 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; font-size: 10.5px; color: var(--muted); }
+@media (max-width: 700px) {
+  header, .sec, .sec > h2, footer { grid-template-columns: 1fr; }
+  .mr { border-left: 0; padding-left: 0; border-top: 1px dashed var(--line); padding-top: 6px; margin-top: 6px; }
+  .k { white-space: normal; }
+}
+@page { size: A4 portrait; margin: 0; }
+@media print { body { background: #fff; padding: 0; } .sheet { box-shadow: none; width: 210mm; height: 297mm; max-width: none; aspect-ratio: auto; } }
+</style>
+
+<div class="sheet">
+  <header>
+    <div><h1>Billing – quick guide</h1><p>For reception, medical store and lab staff. Each unit has its own bills; you see only your unit's bills.</p></div>
+    <div><h1>बिलिंग – झटपट मार्गदर्शिका</h1><p>रिसेप्शन, मेडिकल स्टोअर व लॅब कर्मचाऱ्यांसाठी. प्रत्येक विभागाची बिले वेगळी; तुम्हाला फक्त तुमच्या विभागाची बिले दिसतात.</p></div>
+  </header>
+
+  <div class="body">
+    <section class="sec">
+      <h2><span>A. Create a new bill</span><span>अ. नवीन बिल तयार करणे</span></h2>
+      <div class="col">
+        <ol>
+          <li>Open <span class="k">Billing</span> → <span class="k">New bill</span>.</li>
+          <li>Search the patient by name, mobile or Patient ID and select. Not found? Register first in <span class="k">Patients</span>.</li>
+          <li>Add items: <span class="k">+ Consultation…</span> <span class="k">+ Procedure / service…</span> <span class="k">+ Lab test…</span> or <span class="k">Custom item</span>. Change quantity/rate if needed; the bin icon removes a line.</li>
+          <li>Discount: type it in the <b>Disc.</b> box. <span class="who">Only the administrator/owner and reception can give discounts.</span></li>
+          <li>Choose the <b>Payment method</b>. <b>Amount received</b>: empty = full amount; type less for part payment. UPI/card: write the reference. Paying later? <b>Not paid now</b>.</li>
+          <li>Check the total → <span class="k">Create bill</span>. Bill number and receipt are made automatically. Use <span class="k">Print</span>, <span class="k">PDF</span> or <span class="k">Share</span>.</li>
+        </ol>
+        <div class="note"><b>Billed automatically elsewhere:</b> consultation fee at <i>Confirm check-in</i> · medicines at Pharmacy → <i>Dispense & bill</i> or <i>Counter sale</i> (stock updates there) · admitted patients at Beds → <i>Bill room charges</i>.</div>
+      </div>
+      <div class="col mr">
+        <ol>
+          <li><span class="k">बिलिंग</span> → <span class="k">नवीन बिल</span> उघडा.</li>
+          <li>रुग्णाचे नाव, मोबाइल किंवा Patient ID टाकून रुग्ण निवडा. सापडत नसेल तर आधी <span class="k">रुग्ण</span> मध्ये नोंदणी करा.</li>
+          <li>बाबी जोडा: <span class="k">+ तपासणी…</span> <span class="k">+ प्रक्रिया / सेवा…</span> <span class="k">+ लॅब तपासणी…</span> किंवा <span class="k">इतर बाब</span>. गरज असल्यास संख्या/दर बदला; कचरापेटी चिन्हाने ओळ काढा.</li>
+          <li>सूट: <b>सूट</b> रकान्यात लिहा. <span class="who">सूट फक्त प्रशासक/मालक व रिसेप्शन देऊ शकतात.</span></li>
+          <li><b>भरण्याची पद्धत</b> निवडा. <b>मिळालेली रक्कम</b>: रिकामे = पूर्ण रक्कम; अंशतः भरणा असल्यास कमी लिहा. UPI/कार्ड: संदर्भ क्रमांक लिहा. नंतर भरणार? <b>आत्ता भरलेले नाही</b>.</li>
+          <li>एकूण तपासा → <span class="k">बिल तयार करा</span>. बिल क्रमांक व पावती आपोआप तयार होते. <span class="k">प्रिंट</span>, <span class="k">PDF</span> किंवा <span class="k">शेअर करा</span> वापरा.</li>
+        </ol>
+        <div class="note"><b>आपोआप बिल होणाऱ्या जागा:</b> तपासणी फी <i>चेक इन निश्चित करा</i> वेळी · औषधे फार्मसी → <i>औषध द्या व बिल करा</i> किंवा <i>काउंटर विक्री</i> (साठा तिथेच कमी होतो) · दाखल रुग्ण बेड → <i>खोलीचे शुल्क बिल करा</i>.</div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><span>B. Work on an existing bill</span><span>ब. आधीच्या बिलावर काम</span></h2>
+      <div class="col">
+        <ul>
+          <li>Find it: <span class="k">Billing</span> → <b>Today</b>, <b>Outstanding</b> or <b>All bills</b>, or search the bill number or patient name. Tap the bill.</li>
+          <li><span class="k">Collect ₹…</span> takes the remaining balance (part payment allowed).</li>
+          <li><span class="k">Send receipt on WhatsApp</span> · <span class="k">Print</span> · <span class="k">PDF</span> · <span class="k">Share</span></li>
+          <li><span class="k">Refund</span> and <span class="k">Cancel bill</span> <span class="who">are shown only to the administrator/owner of that unit</span>, and always ask for a reason.</li>
+        </ul>
+      </div>
+      <div class="col mr">
+        <ul>
+          <li>शोधा: <span class="k">बिलिंग</span> → <b>आज</b>, <b>थकबाकी</b> किंवा <b>सर्व बिले</b>, किंवा बिल नंबर / रुग्णाचे नाव शोधा. बिलावर टॅप करा.</li>
+          <li><span class="k">₹… घ्या</span> ने उरलेली रक्कम घ्या (अंशतः भरणा चालेल).</li>
+          <li><span class="k">WhatsApp वर पावती पाठवा</span> · <span class="k">प्रिंट</span> · <span class="k">PDF</span> · <span class="k">शेअर करा</span></li>
+          <li><span class="k">परतावा</span> व <span class="k">बिल रद्द करा</span> <span class="who">फक्त त्या विभागाच्या प्रशासक/मालकांना दिसतात</span>, आणि नेहमी कारण विचारतात.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><span>C. Why can't a bill be edited?</span><span>क. बिल बदलता का येत नाही?</span></h2>
+      <div class="col why">Once created, a bill is a <b>money record</b>. The patient may already hold the receipt, and the day's cash and accounts must match it. If old bills could be changed, money could go missing without a trace. So items and amounts are <b>locked</b>. Every correction is a <b>new entry with a reason</b>, saved in the audit log with who did it and when.</div>
+      <div class="col mr why">एकदा तयार झालेले बिल ही <b>पैशांची नोंद</b> असते. रुग्णाकडे पावती गेलेली असते, आणि दिवसाची रोख व हिशोब त्याच्याशी जुळले पाहिजेत. जुनी बिले बदलता आली तर पैसे गायब होऊनही कळणार नाही. म्हणून बाबी व रक्कम <b>लॉक</b> असतात. प्रत्येक दुरुस्ती <b>कारणासह नवीन नोंद</b> म्हणून होते, आणि कोणी व कधी केली ते ऑडिट नोंदीत राहते.</div>
+    </section>
+
+    <section class="sec">
+      <h2><span>D. The bill has a mistake? Do this</span><span>ड. बिलात चूक झाली? असे करा</span></h2>
+      <div class="col">
+        <table>
+          <tr><td>Wrong item or amount, <b>not paid yet</b></td><td><span class="k">Cancel bill</span> with reason → make a new correct bill.</td></tr>
+          <tr><td>Wrong bill, <b>already paid</b></td><td><span class="k">Refund</span> the full amount → <span class="k">Cancel bill</span> → new correct bill → collect again.</td></tr>
+          <tr><td>Charged <b>too much</b>, paid</td><td><span class="k">Refund</span> only the extra amount. No need to cancel.</td></tr>
+          <tr><td>An item was <b>left out</b></td><td>Make a <b>separate new bill</b> for the missing item. No need to cancel.</td></tr>
+          <tr><td>Billed to the <b>wrong patient</b></td><td>Refund (if paid) → cancel → bill the right patient.</td></tr>
+        </table>
+        <div class="note"><b>Reception, pharmacist, lab staff:</b> you cannot refund or cancel. Tell your administrator/owner the bill number and the reason.</div>
+      </div>
+      <div class="col mr">
+        <table>
+          <tr><td>चुकीची बाब किंवा रक्कम, <b>अजून भरलेले नाही</b></td><td>कारण लिहून <span class="k">बिल रद्द करा</span> → योग्य नवीन बिल करा.</td></tr>
+          <tr><td>चुकीचे बिल, <b>पैसे भरलेले</b></td><td>पूर्ण रकमेचा <span class="k">परतावा</span> → <span class="k">बिल रद्द करा</span> → योग्य नवीन बिल → पुन्हा पैसे घ्या.</td></tr>
+          <tr><td><b>जास्त रक्कम</b> लावली, पैसे भरलेले</td><td>फक्त जास्तीच्या रकमेचा <span class="k">परतावा</span> करा. रद्द करण्याची गरज नाही.</td></tr>
+          <tr><td>एखादी बाब <b>राहून गेली</b></td><td>राहिलेल्या बाबीसाठी <b>वेगळे नवीन बिल</b> करा. रद्द करण्याची गरज नाही.</td></tr>
+          <tr><td><b>दुसऱ्याच रुग्णाच्या</b> नावावर बिल</td><td>परतावा (भरले असल्यास) → रद्द करा → योग्य रुग्णाचे बिल करा.</td></tr>
+        </table>
+        <div class="note"><b>रिसेप्शन, फार्मासिस्ट, लॅब कर्मचारी:</b> तुम्ही परतावा किंवा रद्द करू शकत नाही. बिल नंबर व कारण प्रशासक/मालकांना सांगा.</div>
+      </div>
+    </section>
+  </div>
+
+</div>

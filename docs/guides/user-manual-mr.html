@@ -1,0 +1,291 @@
+<title>JeevO वापरकर्ता पुस्तिका</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --navy: #1B1E4A; --teal: #0F6A73; --green: #17664B; --maroon: #7A1E2C; --red: #D42A33;
+  --paper: #FFFFFF; --ground: #E9EAF1; --ink: #1D2033; --muted: #5A5F78; --line: #DCDEE8; --tint: #EEF0F8; --tip: #FFF4E0;
+  --display: "Sora", "Mukta", "Segoe UI", system-ui, sans-serif;
+  --body: "Mukta", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.doc { max-width: 794px; margin: 0 auto; background: var(--paper); box-shadow: 0 10px 40px rgba(27,30,74,.14); }
+.cover { background: var(--navy); color: #fff; padding: 36px 40px 30px; }
+.cover .brand { font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: .08em; color: #C9CBE0; }
+.cover h1 { font-family: var(--display); font-size: 40px; line-height: 1.1; margin: 6px 0 8px; text-wrap: balance; }
+.cover p { margin: 0; color: #D7D9EA; max-width: 60ch; }
+.intro { padding: 22px 40px 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.intro h2 { font-family: var(--display); font-size: 15px; margin: 0 0 8px; color: var(--navy); text-transform: uppercase; letter-spacing: .06em; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; counter-reset: t; }
+.toc li { counter-increment: t; display: flex; gap: 10px; align-items: baseline; }
+.toc li::before { content: counter(t); font: 700 12px var(--display); color: #fff; background: var(--c, var(--navy)); min-width: 22px; text-align: center; line-height: 20px; }
+.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); flex: 1; }
+.toc a:hover, .toc a:focus-visible { color: var(--navy); border-color: var(--navy); outline: none; }
+section.role { padding: 26px 40px 24px; border-top: 1px solid var(--line); }
+.rh { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.rh .n { font: 800 20px/44px var(--display); color: #fff; background: var(--c); width: 44px; text-align: center; flex: none; }
+.rh h2 { font-family: var(--display); font-size: 25px; line-height: 1.15; margin: 0; color: var(--c); }
+.rh .who { font-size: 13.5px; color: var(--muted); }
+h3 { font-family: var(--display); font-size: 16px; color: var(--navy); margin: 16px 0 6px; }
+p { margin: 0 0 8px; }
+ol, ul { margin: 0 0 8px; padding: 0; list-style: none; display: grid; gap: 5px; }
+ol { counter-reset: s; }
+ol li { counter-increment: s; position: relative; padding-left: 30px; }
+ol li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 21px; height: 21px; background: var(--c, var(--navy)); color: #fff; font: 700 12px/21px var(--display); text-align: center; }
+ul li { position: relative; padding-left: 16px; }
+ul li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 6px; height: 6px; background: var(--c, var(--navy)); }
+.k { display: inline-block; font-weight: 700; color: var(--navy); background: var(--tint); border: 1px solid #CDD1E6; padding: 0 6px; line-height: 1.45; }
+.tip { background: var(--tip); padding: 9px 13px; margin: 10px 0; font-size: 14.2px; }
+table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; font-size: 14.5px; }
+td { vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+td:first-child { width: 38%; font-weight: 600; }
+footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+.navy { --c: var(--navy); } .teal { --c: var(--teal); } .green { --c: var(--green); } .maroon { --c: var(--maroon); }
+@media (max-width: 640px) {
+  .cover, .intro, section.role, footer { padding-left: 18px; padding-right: 18px; }
+  .intro { grid-template-columns: 1fr; }
+  .cover h1 { font-size: 30px; }
+  td:first-child { width: 42%; }
+}
+@page { size: A4 portrait; margin: 14mm 0 14mm; }
+@page :first { margin-top: 0; }
+@media print {
+  body { background: #fff; padding: 0; font-size: 13.4px; }
+  .doc { box-shadow: none; max-width: none; }
+  section.role { break-before: page; border-top: 0; padding-top: 0; }
+  .tip, tr, ol li, ul li { break-inside: avoid; }
+  h3 { break-after: avoid; }
+}
+</style>
+<div class="doc" lang="mr">
+  <header class="cover"><div class="brand">JEEVO</div><h1>वापरकर्ता पुस्तिका</h1><p>हॉस्पिटल व क्लिनिक ॲप · रुग्ण, डॉक्टर, रिसेप्शन, नर्स, मेडिकल स्टोअर, लॅब आणि प्रशासकांसाठी</p></header>
+  <div class="intro">
+    <div><h2>अनुक्रमणिका</h2><ol class="toc"><li class="navy"><a href="#start">सुरुवात</a></li><li class="teal"><a href="#patient">रुग्ण</a></li><li class="navy"><a href="#reception">रिसेप्शन</a></li><li class="navy"><a href="#doctor">डॉक्टर</a></li><li class="navy"><a href="#nurse">नर्स</a></li><li class="green"><a href="#pharmacist">फार्मासिस्ट</a></li><li class="maroon"><a href="#labtech">लॅब टेक्निशियन</a></li><li class="navy"><a href="#billing">बिलिंग</a></li><li class="navy"><a href="#admin">हॉस्पिटल प्रशासक</a></li><li class="green"><a href="#storeowner">मेडिकल स्टोअर मालक</a></li><li class="maroon"><a href="#labowner">लॅब मालक</a></li><li class="navy"><a href="#allstaff">सर्व कर्मचाऱ्यांसाठी</a></li><li class="navy"><a href="#faq">समस्या व उत्तरे</a></li></ol></div>
+    <div><h2>ही पुस्तिका कशी वाचावी</h2><p>अनुक्रमणिकेत तुमची भूमिका शोधा. बटणे व मेनूची नावे चौकटीत दाखवली आहेत, जसे <span class="k">बिलिंग</span> — ॲपमध्ये जशी दिसतात तशीच. ॲप English, हिंदी व मराठीत चालते; ही पुस्तिका ॲप मराठीत वापरणाऱ्यांसाठी आहे.</p></div>
+  </div>
+<section class="role navy" id="start">
+  <div class="rh"><span class="n">1</span><div><h2>सुरुवात</h2><div class="who">कोणासाठी: सर्वांसाठी</div></div></div>
+  <h3>ॲप उघडा व इन्स्टॉल करा</h3>
+<ul>
+<li>हॉस्पिटल तुम्हाला एक लिंक देते. ती कोणत्याही फोन, टॅबलेट किंवा कॉम्प्युटरवर Chrome किंवा Safari मध्ये उघडते. ॲप स्टोअरची गरज नाही.</li>
+<li><b>Android वर इन्स्टॉल:</b> Chrome मध्ये ⋮ → <b>Add to Home screen</b> (किंवा <b>Install app</b>).</li>
+<li><b>iPhone वर इन्स्टॉल:</b> Safari मध्ये Share → <b>Add to Home Screen</b>.</li>
+</ul>
+<h3>भाषा निवडा</h3>
+<p>पहिल्या स्क्रीनवर English, हिंदी किंवा मराठी निवडा. स्क्रीनच्या वरच्या भाषा बटणांनी कधीही बदलू शकता.</p>
+<h3>लॉग इन</h3>
+<ol>
+<li>हॉस्पिटलने नोंदवलेला तुमचा मोबाइल नंबर टाका.</li>
+<li><span class="k">OTP पाठवा</span> दाबा आणि आलेला ६ अंकी कोड टाका.</li>
+<li><span class="k">पडताळा व पुढे चला</span> दाबा. तुमच्या भूमिकेनुसार स्क्रीन उघडतात.</li>
+</ol>
+<p><b>नवीन रुग्ण?</b> नाव, वय, लिंग व भाषा भरा आणि <span class="k">माझा पेशंट ID तयार करा</span> दाबा.</p>
+<div class="tip"><b>सुरक्षा:</b> रुग्णांची माहिती सुरक्षित राहावी म्हणून ३० मिनिटे वापर न झाल्यास कर्मचारी आपोआप लॉग आउट होतात. तुमचे लॉगिन कोणालाही देऊ नका. सामायिक कॉम्प्युटरवर काम संपल्यावर प्रोफाइलमधून लॉग आउट करा.</div>
+<div class="tip"><b>अपडेट:</b> ॲप आपोआप अपडेट होते. जुनी स्क्रीन दिसत असल्यास ॲप पूर्ण बंद करून पुन्हा उघडा.</div>
+</section>
+<section class="role teal" id="patient">
+  <div class="rh"><span class="n">2</span><div><h2>रुग्ण</h2><div class="who">कोणासाठी: रुग्ण व त्यांचे कुटुंब</div></div></div>
+  <p>होम स्क्रीनवर तुमची पुढची भेट, लाइव्ह टोकन आणि खालील सर्व गोष्टींची झटपट बटणे दिसतात.</p>
+<h3>भेट (अपॉइंटमेंट) बुक करा</h3>
+<ol>
+<li><span class="k">भेट बुक करा</span> (किंवा <span class="k">डॉक्टर शोधा</span>) दाबा.</li>
+<li>डॉक्टर निवडा, मग तारीख व वेळ. हवे असल्यास कारण लिहा.</li>
+<li>निश्चित करा. WhatsApp किंवा SMS वर निश्चिती व आठवण येते.</li>
+</ol>
+<p><b>कुटुंबातील सदस्यासाठी:</b> बुक करण्याआधी वरच्या कुटुंब निवडीत त्यांचे नाव निवडा.</p>
+<h3>भेटीच्या दिवशी</h3>
+<ul><li>होम स्क्रीनवर तुमचा टोकन नंबर व अंदाजे प्रतीक्षा वेळ दिसते. नंबर जवळ आला की मेसेज येतो.</li>
+<li>बदल करायचा असल्यास: <span class="k">भेटी</span> → बुकिंग उघडा → <span class="k">वेळ बदला</span> किंवा <span class="k">रद्द करा</span>.</li></ul>
+<h3>तुमच्या आरोग्य नोंदी</h3>
+<ul><li><span class="k">नोंदी</span> → प्रिस्क्रिप्शन, रिपोर्ट, इतिहास (भेटी, दाखल, संदर्भ पत्रे) व लसीकरण.</li>
+<li>लॅब रिपोर्ट लॅबने तपासून व्हेरिफाय केल्यानंतरच दिसतात.</li>
+<li>झटपट चेक-इनसाठी रिसेप्शनवर तुमचा पेशंट QR कोड दाखवा (प्रोफाइल → QR दाखवा).</li></ul>
+<h3>बिले</h3>
+<p><span class="k">बिले</span> → बिल उघडा → UPI, कार्ड किंवा नेट बँकिंगने भरा → <span class="k">पावती पहा</span>.</p>
+<h3>कुटुंब व सेटिंग्ज</h3>
+<ul><li>प्रोफाइल → माझे कुटुंब → <span class="k">कुटुंबातील सदस्य जोडा</span>. एकाच लॉगिनमध्ये संपूर्ण कुटुंब.</li>
+<li>प्रोफाइल → मेसेजची भाषा निवडा आणि WhatsApp / SMS मेसेजला संमती द्या.</li>
+<li>भेटीनंतर अभिप्राय किंवा तक्रारीसाठी <span class="k">तुमच्या भेटीला रेटिंग द्या</span> दाबा.</li></ul>
+</section>
+<section class="role navy" id="reception">
+  <div class="rh"><span class="n">3</span><div><h2>रिसेप्शन</h2><div class="who">कोणासाठी: रिसेप्शन / फ्रंट डेस्क</div></div></div>
+  <h3>रुग्ण नोंदणी</h3>
+<ol>
+<li><span class="k">रुग्ण</span> → <span class="k">रुग्ण नोंदणी करा</span>. झटपट नोंदीसाठी <b>जलद (आवश्यक माहिती)</b> किंवा <b>संपूर्ण नोंदणी</b> निवडा.</li>
+<li>मोबाइल, नाव, वय व लिंग भरा. सारखा रुग्ण आढळल्यास ॲप <b>हा जुना रुग्ण आहे का?</b> विचारते. तीच व्यक्ती असल्यास जुना रुग्ण निवडा; नाहीतर <span class="k">नाही – नवीन रुग्ण म्हणून नोंदणी करा</span> दाबा.</li>
+<li>पेशंट ID तयार होतो. <span class="k">रुग्ण कार्ड</span> द्या किंवा <span class="k">WhatsApp वर पेशंट ID पाठवा</span> दाबा. WhatsApp / SMS साठी रुग्णाची संमती टिक करा.</li>
+</ol>
+<h3>भेटी (अपॉइंटमेंट)</h3>
+<p><span class="k">भेटी</span> → <span class="k">भेट बुक करा</span> → रुग्ण, डॉक्टर, तारीख व वेळ → <span class="k">बुकिंग निश्चित करा</span>. कोणतीही बुकिंग उघडून <span class="k">वेळ बदला</span>, <span class="k">रद्द करा</span> किंवा <span class="k">आठवण पाठवा</span>.</p>
+<h3>रांग व टोकन</h3>
+<ol>
+<li>रुग्ण आला: <span class="k">रांग व टोकन</span> → <span class="k">आले म्हणून नोंदवा</span> → <span class="k">चेक इन निश्चित करा</span>. तपासणी फीचे बिल इथेच होते.</li>
+<li>अपॉइंटमेंट नाही? पुढचा टोकन देण्यासाठी <span class="k">वॉक-इन</span> दाबा.</li>
+<li>डॉक्टर तयार असल्यावर: <span class="k">आत पाठवा</span>. रुग्ण आला नाही: <span class="k">आले नाहीत</span>.</li>
+<li><span class="k">TV डिस्प्ले</span> प्रतीक्षा कक्षातील TV वर टोकन बोर्ड दाखवतो.</li>
+</ol>
+<div class="tip">आपत्कालीन रुग्ण नेहमी रांगेत सर्वात वर दिसतात.</div>
+<h3>आपत्कालीन</h3>
+<p><span class="k">आपत्कालीन</span> → <span class="k">जुना रुग्ण</span> किंवा <span class="k">नवीन / अनोळखी रुग्ण</span> → मुख्य त्रास → <span class="k">आत्ता आपत्कालीन नोंदणी करा</span>. कागदपत्रांसाठी उपचार थांबवू नका; माहिती नंतर पूर्ण करा.</p>
+<h3>दाखल, व्हायटल्स, बिलिंग</h3>
+<ul><li><b>दाखल:</b> <span class="k">बेड व दाखल</span> → <span class="k">रुग्ण दाखल करा</span> → बेड, डॉक्टर, कारण, आगाऊ ठेव, विमा कंपनी (कॅशलेस असल्यास). <span class="k">बेड बदला</span> ने रुग्ण हलवा; <b>खोलीचे शुल्क बिल करा</b> ने मुक्कामाचे बिल होते.</li>
+<li><b>व्हायटल्स:</b> रुग्ण उघडा → <span class="k">व्हायटल्स नोंदवा</span>.</li>
+<li><b>बिलिंग:</b> बिलिंग विभाग व एक पानी बिलिंग मार्गदर्शिका पहा.</li>
+<li><b>विमा व कॅशलेस:</b> विमा असलेल्या रुग्णांचे प्री-ऑथ व क्लेमची स्थिती पहा.</li>
+<li><b>WhatsApp व SMS:</b> रुग्णाने संमती दिली असेल तरच मेसेज जातात.</li></ul>
+</section>
+<section class="role navy" id="doctor">
+  <div class="rh"><span class="n">4</span><div><h2>डॉक्टर</h2><div class="who">कोणासाठी: डॉक्टर</div></div></div>
+  <h3>रुग्ण तपासणी</h3>
+<ol>
+<li><span class="k">माझी OPD</span> मध्ये आजचे रुग्ण टोकनच्या क्रमाने दिसतात. <b>पुढील बोलवा · टोकन N</b> दाबा, किंवा रुग्ण उघडून <span class="k">तपासणी सुरू करा</span> दाबा.</li>
+<li>स्क्रीनवर आधीच्या भेटी, प्रिस्क्रिप्शन, रिपोर्ट आणि आजचे <b>व्हायटल साइन्स</b> दिसतात.</li>
+<li><b>क्लिनिकल नोंदी</b> लिहा: तक्रारी, तपासणी, निदान.</li>
+<li><b>प्रिस्क्रिप्शन:</b> औषधाचे नाव टाका (ब्रँड किंवा जेनेरिक), मग डोस, वारंवारता, कालावधी व संख्या. रुग्णाच्या ॲलर्जीबद्दल ॲप इशारा देते. <span class="k">पुन्हा द्या</span> ने आधीचे प्रिस्क्रिप्शन कॉपी होते. <b>सूचना यातही छापा</b> मध्ये मराठी किंवा हिंदी निवडा.</li>
+<li><b>तपासण्या:</b> तपासण्या टिक करा व <b>N तपासण्या ऑर्डर करा</b> दाबा. पॅथॉलॉजी लॅबकडे जाते; ECG, इको व एक्स-रे हॉस्पिटलकडे राहतात.</li>
+<li>गरज असल्यास फॉलो-अप तारीख द्या. <span class="k">मसुदा जतन करा</span> ने काम जतन होते; <span class="k">पूर्ण करा व सही करा</span> ने भेट पूर्ण होते. प्रिस्क्रिप्शन रुग्णाच्या फोनवर व मेडिकल स्टोअरला जाते.</li>
+</ol>
+<div class="tip"><b>सही केलेले प्रिस्क्रिप्शन बदलता येत नाही.</b> <span class="k">प्रिस्क्रिप्शन दुरुस्त करा</span> दाबा, बदल करा व दुरुस्त प्रिस्क्रिप्शनवर सही करा. जुने प्रिस्क्रिप्शन "बदललेले" म्हणून नोंदीत राहते.</div>
+<h3>संदर्भ, दाखल, डिस्चार्ज</h3>
+<ul><li><span class="k">संदर्भ द्या</span> → डॉक्टर, स्पेशालिटी, ठिकाण, कारण → <span class="k">संदर्भ पत्र तयार करा</span> → प्रिंट किंवा शेअर.</li>
+<li><span class="k">दाखल करा</span> ने रुग्ण बेड व दाखल विभागात जातो. दाखल रुग्णांसाठी: नोंदी, <span class="k">डिस्चार्ज सारांश</span> → <span class="k">डिस्चार्ज</span>.</li>
+<li><span class="k">ECG / इको / एक्स-रे</span>: हॉस्पिटलच्या स्वतःच्या तपासण्यांचे रिपोर्ट भरा व व्हेरिफाय करा.</li></ul>
+<h3>तुमच्या वेळा व माहिती</h3>
+<ul><li>माझे खाते → <b>उपलब्धता</b>: कामाचे दिवस, तपासणीची वेळ, एका भेटीचा कालावधी, दिवसाला जास्तीत जास्त रुग्ण → <span class="k">उपलब्धता जतन करा</span>.</li>
+<li><span class="k">आरोग्य माहिती</span>: रुग्णांसाठी आरोग्य लेख तपासा व प्रसिद्ध करा. फक्त डॉक्टर प्रसिद्ध करू शकतात.</li>
+<li>प्रशासक अधिकार असलेल्या डॉक्टरांना प्रशासकाचे मेनूही दिसतात (हॉस्पिटल प्रशासक विभाग पहा).</li></ul>
+</section>
+<section class="role navy" id="nurse">
+  <div class="rh"><span class="n">5</span><div><h2>नर्स</h2><div class="who">कोणासाठी: नर्सिंग कर्मचारी</div></div></div>
+  <h3>वॉर्डमधील काम</h3>
+<ol>
+<li><span class="k">नर्सिंग</span> मध्ये वॉर्डनुसार दाखल रुग्ण व कामांची यादी दिसते.</li>
+<li>प्रत्येक रुग्णासाठी: रीडिंग नोंदवण्यासाठी <span class="k">व्हायटल्स</span>, दिलेले औषध (डोस व मार्ग) नोंदवण्यासाठी <span class="k">औषध</span>, नर्सिंग नोंद किंवा निरीक्षणासाठी <span class="k">नोंद</span>.</li>
+<li>काम झाल्यावर <span class="k">झाले</span> टिक करा. उशीर झालेली कामे ठळक दिसतात.</li>
+</ol>
+<h3>याशिवाय</h3>
+<ul><li>OPD रुग्णांचे व्हायटल्स: रुग्ण उघडा → <span class="k">व्हायटल्स नोंदवा</span>.</li>
+<li><span class="k">आपत्कालीन</span> मधून आपत्कालीन नोंदणी.</li>
+<li><span class="k">ECG / इको / एक्स-रे</span> मध्ये ECG, इको व एक्स-रेची कामे.</li></ul>
+<div class="tip">जतन केलेले व्हायटल्स, औषधे व नोंदी बदलता किंवा काढता येत नाहीत. चूक झाल्यास दुरुस्ती सांगणारी नवीन नोंद लिहा.</div>
+</section>
+<section class="role green" id="pharmacist">
+  <div class="rh"><span class="n">6</span><div><h2>फार्मासिस्ट</h2><div class="who">कोणासाठी: मेडिकल स्टोअर कर्मचारी</div></div></div>
+  <h3>प्रिस्क्रिप्शनप्रमाणे औषध देणे</h3>
+<ol>
+<li><span class="k">फार्मसी</span> → <b>द्यायचे बाकी</b> मध्ये डॉक्टरांनी सही केलेली प्रिस्क्रिप्शन दिसतात.</li>
+<li>एक उघडा, स्क्रीनवरील रुग्णाची ॲलर्जी तपासा, मग <span class="k">औषध द्या व बिल करा</span> दाबा.</li>
+<li>ॲप सर्वात लवकर एक्सपायरी असलेली बॅच निवडते, साठा कमी करते व मेडिकल स्टोअरचे बिल करते.</li>
+</ol>
+<h3>काउंटर विक्री (प्रिस्क्रिप्शनशिवाय)</h3>
+<p><span class="k">काउंटर विक्री</span> → औषध शोधा किंवा बारकोड <span class="k">स्कॅन</span> करा → संख्या → <span class="k">विक्री पूर्ण करा</span>.</p>
+<h3>साठा व मुदत</h3>
+<ul><li><span class="k">औषध जोडा</span>: ब्रँड, जेनेरिक नाव, स्ट्रेंथ, प्रकार, MRP व किमान साठा.</li>
+<li><span class="k">साठा जमा</span>: नवीन मालासाठी बॅच नंबर, एक्सपायरी महिना, संख्या व खरेदी किंमत.</li>
+<li>मुदत संपलेला किंवा खराब माल <span class="k">निर्लेखित करा</span>; रुग्णाने औषध परत केल्यास <span class="k">परत नोंदवा</span>.</li>
+<li>डॅशबोर्डवर कमी साठा व मुदत संपणाऱ्या बॅच दिसतात. <span class="k">निर्यात करा</span> ने साठ्याची यादी Excel साठी मिळते.</li></ul>
+<div class="tip">तुम्हाला फक्त मेडिकल स्टोअरची बिले दिसतात. परतावा व बिल रद्द करणे स्टोअरचे मालक करतात.</div>
+</section>
+<section class="role maroon" id="labtech">
+  <div class="rh"><span class="n">7</span><div><h2>लॅब टेक्निशियन</h2><div class="who">कोणासाठी: लॅब कर्मचारी</div></div></div>
+  <h3>ऑर्डरपासून रिपोर्टपर्यंत</h3>
+<ol>
+<li><span class="k">प्रयोगशाळा</span> → <b>करायचे बाकी</b>. डॉक्टरांच्या तपासणी ऑर्डर आपोआप येतात. बाहेरच्या रुग्णासाठी <span class="k">ऑर्डर तयार करा</span> दाबा व <b>Referred by Dr.</b> भरा.</li>
+<li><span class="k">नमुना नोंदवा व ID तयार करा</span> → <span class="k">नमुना लेबल प्रिंट करा</span> व लेबल नमुन्यावर लावा.</li>
+<li>तपासणी सुरू झाल्यावर <span class="k">प्रक्रियेत टाका</span>.</li>
+<li>निकाल भरा. नॉर्मल रेंज दिसते व असामान्य मूल्ये ठळक होतात. शेरा लिहा किंवा फाईल जोडा (<span class="k">फाईल जोडा</span>), मग <span class="k">निकाल जतन करा</span>.</li>
+<li><b>दुसरी</b> अधिकृत व्यक्ती तपासून <span class="k">रिपोर्ट पडताळा</span> दाबते. तुम्ही भरलेले निकाल तुम्ही स्वतः व्हेरिफाय करू शकत नाही.</li>
+<li><span class="k">रुग्णाला पाठवा</span>. रुग्णाला ॲपमध्ये रिपोर्ट दिसतो व मेसेज जातो.</li>
+</ol>
+<div class="tip"><b>व्हेरिफाय झाल्यावर चूक दिसली?</b> अधिकृत व्यक्ती कारण लिहून <span class="k">दुरुस्तीसाठी पुन्हा उघडा</span> दाबते. निकाल दुरुस्त करा, मग पुन्हा व्हेरिफाय होतो. प्रत्येक बदल ऑडिट नोंदीत राहतो.</div>
+<p>तुम्हाला फक्त लॅबची बिले दिसतात. परतावा व बिल रद्द करणे लॅबचे मालक करतात.</p>
+</section>
+<section class="role navy" id="billing">
+  <div class="rh"><span class="n">8</span><div><h2>बिलिंग</h2><div class="who">कोणासाठी: रिसेप्शन, मेडिकल स्टोअर व लॅब कर्मचारी; मालक व प्रशासक</div></div></div>
+  <h3>बिल तयार करा</h3>
+<ol>
+<li><span class="k">बिलिंग</span> → <span class="k">नवीन बिल</span> → रुग्ण निवडा.</li>
+<li>यादीतून बाबी जोडा (तपासणी, प्रक्रिया / सेवा, लॅब तपासणी) किंवा <span class="k">इतर बाब</span>. सूट फक्त प्रशासक / मालक व रिसेप्शन देऊ शकतात.</li>
+<li>भरण्याची पद्धत व रक्कम निवडा (पूर्ण रकमेसाठी रिकामे; अंशतः भरणा असल्यास कमी; किंवा <b>आत्ता भरलेले नाही</b>) → <span class="k">बिल तयार करा</span>.</li>
+<li>प्रिंट, PDF, शेअर किंवा <span class="k">WhatsApp वर पावती पाठवा</span>.</li>
+</ol>
+<p>अनेक बिले आपोआप होतात: चेक-इनवेळी तपासणी फी, फार्मसीत औषधे, लॅबमध्ये तपासण्या व दाखल रुग्णांचे खोली शुल्क.</p>
+<h3>उरलेली रक्कम घ्या</h3>
+<p><span class="k">बिलिंग</span> → <b>थकबाकी</b> → बिल उघडा → <b>₹… घ्या</b> (अंशतः भरणा चालेल).</p>
+<h3>बिल का बदलता येत नाही, व चूक कशी दुरुस्त करावी</h3>
+<p>बिल ही पैशांची नोंद आहे: रुग्णाकडे पावती असते व दिवसाची रोख त्याच्याशी जुळली पाहिजे. म्हणून बाबी व रक्कम लॉक असतात, आणि प्रत्येक दुरुस्ती कारणासह नवीन नोंद म्हणून होते.</p>
+<table>
+<tr><td>चुकीचे बिल, अजून भरलेले नाही</td><td>कारण लिहून <span class="k">बिल रद्द करा</span> → योग्य नवीन बिल करा.</td></tr>
+<tr><td>चुकीचे बिल, पैसे भरलेले</td><td>पूर्ण रकमेचा <span class="k">परतावा</span> → <span class="k">बिल रद्द करा</span> → योग्य नवीन बिल.</td></tr>
+<tr><td>जास्त रक्कम लावली</td><td>फक्त जास्तीच्या रकमेचा <span class="k">परतावा</span>.</td></tr>
+<tr><td>बाब राहून गेली</td><td>त्या बाबीसाठी वेगळे नवीन बिल करा.</td></tr>
+</table>
+<div class="tip"><span class="k">परतावा</span> व <span class="k">बिल रद्द करा</span> फक्त त्या विभागाच्या प्रशासक / मालकांना दिसतात. कर्मचाऱ्यांनी बिल नंबर व कारण त्यांना सांगावे. एक पानी बिलिंग मार्गदर्शिकाही पहा.</div>
+</section>
+<section class="role navy" id="admin">
+  <div class="rh"><span class="n">9</span><div><h2>हॉस्पिटल प्रशासक</h2><div class="who">कोणासाठी: हॉस्पिटल मालक / प्रशासक, व प्रशासक अधिकार दिलेले डॉक्टर</div></div></div>
+  <p>डॅशबोर्डवर आजचे रुग्ण, हॉस्पिटलची वसुली, बेड व थकबाकी दिसते. तुम्हाला फक्त <b>हॉस्पिटलचे</b> पैसे दिसतात; मेडिकल स्टोअर व लॅबचे मालक वेगळे असतात.</p>
+<h3>कर्मचारी व HR</h3>
+<ul><li><span class="k">कर्मचारी जोडा</span>: नाव, भूमिका, मोबाइल नंबर (लॉगिनसाठी), विभाग, नोंदणी क्रमांक आणि डॉक्टरांसाठी फी. हॉस्पिटलच्या भूमिका: प्रशासक, डॉक्टर, रिसेप्शन, नर्स.</li>
+<li>डॉक्टरांना प्रशासक अधिकार देण्यासाठी डॉक्टर एडिट करून <span class="k">प्रशासक सुद्धा (हॉस्पिटल)</span> टिक करा.</li>
+<li>शिफ्ट; रजा अर्ज <span class="k">मंजूर करा</span> / <span class="k">नाकारा</span>; हजेरी <span class="k">हजर</span> / <span class="k">गैरहजर</span>; <span class="k">निर्यात करा</span>.</li>
+<li>कोणी नोकरी सोडल्यास त्यांना निष्क्रिय करा, म्हणजे ते लॉग इन करू शकणार नाहीत.</li></ul>
+<h3>सेटिंग्ज</h3>
+<ul><li><b>रुग्णालय</b> प्रोफाइल (पत्ता, फोन, वेळा, नकाशा लिंक); <b>विभाग</b>; <b>सेवा व दर</b> (<span class="k">सेवा जोडा</span>); <b>ECG / इको / एक्स-रे दर</b>.</li>
+<li><b>वॉर्ड</b> (<span class="k">वॉर्ड जोडा</span>; बेड आपोआप तयार होतात); <b>WhatsApp व SMS</b>; <b>लेटरहेड</b>; <b>गोपनीयता व डेटा</b>.</li></ul>
+<h3>पैसे, अहवाल व नोंदी</h3>
+<ul><li>हॉस्पिटलच्या बिलांचा परतावा व रद्द करणे (बिलिंग पहा).</li>
+<li><span class="k">अहवाल</span>: आर्थिक, भेटी व कामकाजाचे आकडे; Excel साठी <span class="k">निर्यात करा</span>.</li>
+<li><span class="k">ऑडिट नोंद</span>: कोणी काय व कधी बदलले.</li>
+<li><span class="k">विमा व कॅशलेस</span>: प्री-ऑथ व क्लेम.</li>
+<li>कर्मचारी किंवा रुग्णांसाठी <span class="k">सूचना</span> → <span class="k">नवीन सूचना</span>; <span class="k">अभिप्राय</span> → <span class="k">उत्तर द्या व निकाली काढा</span>.</li></ul>
+</section>
+<section class="role green" id="storeowner">
+  <div class="rh"><span class="n">10</span><div><h2>मेडिकल स्टोअर मालक</h2><div class="who">कोणासाठी: मेडिकल स्टोअरचे मालक</div></div></div>
+  <p>फार्मासिस्ट करू शकणारी सर्व कामे तुम्ही करू शकता, व याशिवाय खालील. तुम्हाला फक्त मेडिकल स्टोअरची बिले, उत्पन्न, कर्मचारी, अहवाल व ऑडिट नोंद दिसते.</p>
+<ul><li><b>डॅशबोर्ड:</b> स्टोअरचे आजचे व या महिन्याचे उत्पन्न, कमी साठा व मुदत संपणाऱ्या बॅच.</li>
+<li><b>कर्मचारी व HR:</b> तुमचे फार्मासिस्ट जोडा, रजा मंजूर करा, हजेरी नोंदवा.</li>
+<li><b>सेटिंग्ज → मेडिकल स्टोअर प्रोफाइल:</b> स्टोअरचे नाव, ड्रग लायसन्स नंबर, GSTIN, फोन व बिलावर छापायचा तळटीप मजकूर.</li>
+<li>मेडिकल स्टोअरच्या बिलांचा <b>परतावा व रद्द करणे</b> (बिलिंग पहा).</li>
+<li>मेडिकल स्टोअरसाठी <span class="k">अहवाल</span> व <span class="k">ऑडिट नोंद</span>.</li></ul>
+<div class="tip">स्टोअर मालकाचे खाते प्लॅटफॉर्म टीम एकदाच तयार करते, हॉस्पिटल प्रशासक नाही. त्यामुळे प्रत्येक मालकाचे स्वतःचे कर्मचारी व उत्पन्न त्यांच्याच हातात राहते.</div>
+</section>
+<section class="role maroon" id="labowner">
+  <div class="rh"><span class="n">11</span><div><h2>लॅब मालक</h2><div class="who">कोणासाठी: लॅबचे मालक</div></div></div>
+  <p>लॅब टेक्निशियन करू शकणारी सर्व कामे तुम्ही करू शकता, व याशिवाय खालील. तुम्हाला फक्त लॅबची बिले, उत्पन्न, कर्मचारी, अहवाल व ऑडिट नोंद दिसते.</p>
+<ul><li>तुमच्या टेक्निशियननी भरलेले <b>रिपोर्ट व्हेरिफाय करा</b> (<span class="k">रिपोर्ट पडताळा</span>); गरज पडल्यास व्हेरिफाय झालेला रिपोर्ट दुरुस्तीसाठी पुन्हा उघडा.</li>
+<li><b>कर्मचारी व HR:</b> टेक्निशियन जोडा; व्हेरिफाय करण्याची परवानगी असलेल्यांसाठी <span class="k">लॅब रिपोर्ट पडताळण्यास अधिकृत</span> टिक करा.</li>
+<li><b>सेटिंग्ज → लॅब तपासण्या व दर:</b> दर, निकालाचे रकाने व नॉर्मल रेंजसह <span class="k">तपासणी जोडा</span>.</li>
+<li><b>सेटिंग्ज → लॅब प्रोफाइल:</b> लॅबचे नाव, पत्ता, फोन, ईमेल, सही करणारे व रिपोर्टचा तळटीप मजकूर.</li>
+<li>लॅबच्या बिलांचा <b>परतावा व रद्द करणे</b>; लॅबसाठी <span class="k">अहवाल</span> व <span class="k">ऑडिट नोंद</span>.</li></ul>
+</section>
+<section class="role navy" id="allstaff">
+  <div class="rh"><span class="n">12</span><div><h2>सर्व कर्मचाऱ्यांसाठी</h2><div class="who">कोणासाठी: प्रत्येक कर्मचारी</div></div></div>
+  <ul><li><b>माझे खाते</b> (तुमच्या नावावर टॅप करा): सूचना, प्रोफाइल, रजा व हजेरी.</li>
+<li><b>हजेरी:</b> काम सुरू करताना <span class="k">चेक इन</span> व जाताना <span class="k">चेक आउट</span>.</li>
+<li><b>रजा:</b> प्रकार, तारखा व कारण निवडा → <span class="k">विनंती पाठवा</span>. तुमच्या विभागाचे मालक किंवा प्रशासक मंजूर करतात.</li>
+<li><span class="k">सूचना</span> मध्ये व्यवस्थापनाच्या सूचना दिसतात.</li>
+<li>तुमच्या भूमिकेला लागणारे मेनूच तुम्हाला दिसतात. काही दिसत नसल्यास प्रशासक किंवा मालकांना विचारा.</li></ul>
+<h3>गोपनीयता व चांगल्या सवयी</h3>
+<ul><li>ज्या रुग्णाचे उपचार किंवा सेवा तुम्ही करत आहात, त्याचीच नोंद उघडा.</li>
+<li>रुग्णांनी संमती दिली असेल तरच त्यांना मेसेज जातात; त्यांच्या निवडीचा आदर करा.</li>
+<li>वैद्यकीय किंवा आर्थिक नोंद कधीही काढली जात नाही. दुरुस्ती कारणासह जोडली जाते, त्यामुळे नोंद पूर्ण राहते.</li></ul>
+</section>
+<section class="role navy" id="faq">
+  <div class="rh"><span class="n">13</span><div><h2>समस्या व उत्तरे</h2><div class="who">कोणासाठी: सर्वांसाठी</div></div></div>
+  <table>
+<tr><td>ॲपचे जुने व्हर्जन दिसते</td><td>ॲप पूर्ण बंद करून पुन्हा उघडा. तरीही जुने? ब्राउझरमधील साइट डेटा क्लिअर करून लिंक पुन्हा उघडा.</td></tr>
+<tr><td>OTP आला नाही</td><td>हॉस्पिटलने नोंदवलेलाच नंबर आहे का तपासा. एक मिनिट थांबून पुन्हा OTP पाठवा दाबा.</td></tr>
+<tr><td>एकच रुग्ण दोनदा दिसतो</td><td>नोंदणी करताना ॲप <b>हा जुना रुग्ण आहे का?</b> विचारते तेव्हा जुना रुग्ण निवडा.</td></tr>
+<tr><td>बिल चुकीचे आहे</td><td>बिलिंग पहा: परतावा आणि/किंवा रद्द, मग नवीन बिल. प्रशासक / मालकांना सांगा.</td></tr>
+<tr><td>प्रिस्क्रिप्शन चुकीचे आहे</td><td>डॉक्टर <span class="k">प्रिस्क्रिप्शन दुरुस्त करा</span> वापरून दुरुस्त प्रिस्क्रिप्शनवर सही करतात.</td></tr>
+<tr><td>लॅब रिपोर्ट चुकीचा आहे</td><td>अधिकृत व्यक्ती <span class="k">दुरुस्तीसाठी पुन्हा उघडा</span> वापरते; निकाल दुरुस्त होऊन पुन्हा व्हेरिफाय होतो.</td></tr>
+<tr><td>एखादा मेनू किंवा दुसऱ्या विभागाची बिले दिसत नाहीत</td><td>प्रत्येक भूमिकेला गरजेपुरतेच दिसते, व प्रत्येक विभागाला फक्त स्वतःचे पैसे. प्रशासक / मालकांना विचारा.</td></tr>
+<tr><td>मी लॉग आउट झालो</td><td>३० मिनिटे वापर न झाल्यास कर्मचारी लॉग आउट होतात. मोबाइल नंबरने पुन्हा लॉग इन करा.</td></tr>
+</table>
+</section>
+  <footer>JeevO · वापरकर्ता पुस्तिका · मराठी आवृत्ती</footer>
+</div>

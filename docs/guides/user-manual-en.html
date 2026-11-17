@@ -1,0 +1,291 @@
+<title>JeevO User Manual</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --navy: #1B1E4A; --teal: #0F6A73; --green: #17664B; --maroon: #7A1E2C; --red: #D42A33;
+  --paper: #FFFFFF; --ground: #E9EAF1; --ink: #1D2033; --muted: #5A5F78; --line: #DCDEE8; --tint: #EEF0F8; --tip: #FFF4E0;
+  --display: "Sora", "Mukta", "Segoe UI", system-ui, sans-serif;
+  --body: "Mukta", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.doc { max-width: 794px; margin: 0 auto; background: var(--paper); box-shadow: 0 10px 40px rgba(27,30,74,.14); }
+.cover { background: var(--navy); color: #fff; padding: 36px 40px 30px; }
+.cover .brand { font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: .08em; color: #C9CBE0; }
+.cover h1 { font-family: var(--display); font-size: 40px; line-height: 1.1; margin: 6px 0 8px; text-wrap: balance; }
+.cover p { margin: 0; color: #D7D9EA; max-width: 60ch; }
+.intro { padding: 22px 40px 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.intro h2 { font-family: var(--display); font-size: 15px; margin: 0 0 8px; color: var(--navy); text-transform: uppercase; letter-spacing: .06em; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; counter-reset: t; }
+.toc li { counter-increment: t; display: flex; gap: 10px; align-items: baseline; }
+.toc li::before { content: counter(t); font: 700 12px var(--display); color: #fff; background: var(--c, var(--navy)); min-width: 22px; text-align: center; line-height: 20px; }
+.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); flex: 1; }
+.toc a:hover, .toc a:focus-visible { color: var(--navy); border-color: var(--navy); outline: none; }
+section.role { padding: 26px 40px 24px; border-top: 1px solid var(--line); }
+.rh { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.rh .n { font: 800 20px/44px var(--display); color: #fff; background: var(--c); width: 44px; text-align: center; flex: none; }
+.rh h2 { font-family: var(--display); font-size: 25px; line-height: 1.15; margin: 0; color: var(--c); }
+.rh .who { font-size: 13.5px; color: var(--muted); }
+h3 { font-family: var(--display); font-size: 16px; color: var(--navy); margin: 16px 0 6px; }
+p { margin: 0 0 8px; }
+ol, ul { margin: 0 0 8px; padding: 0; list-style: none; display: grid; gap: 5px; }
+ol { counter-reset: s; }
+ol li { counter-increment: s; position: relative; padding-left: 30px; }
+ol li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 21px; height: 21px; background: var(--c, var(--navy)); color: #fff; font: 700 12px/21px var(--display); text-align: center; }
+ul li { position: relative; padding-left: 16px; }
+ul li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 6px; height: 6px; background: var(--c, var(--navy)); }
+.k { display: inline-block; font-weight: 700; color: var(--navy); background: var(--tint); border: 1px solid #CDD1E6; padding: 0 6px; line-height: 1.45; }
+.tip { background: var(--tip); padding: 9px 13px; margin: 10px 0; font-size: 14.2px; }
+table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; font-size: 14.5px; }
+td { vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+td:first-child { width: 38%; font-weight: 600; }
+footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+.navy { --c: var(--navy); } .teal { --c: var(--teal); } .green { --c: var(--green); } .maroon { --c: var(--maroon); }
+@media (max-width: 640px) {
+  .cover, .intro, section.role, footer { padding-left: 18px; padding-right: 18px; }
+  .intro { grid-template-columns: 1fr; }
+  .cover h1 { font-size: 30px; }
+  td:first-child { width: 42%; }
+}
+@page { size: A4 portrait; margin: 14mm 0 14mm; }
+@page :first { margin-top: 0; }
+@media print {
+  body { background: #fff; padding: 0; font-size: 13.4px; }
+  .doc { box-shadow: none; max-width: none; }
+  section.role { break-before: page; border-top: 0; padding-top: 0; }
+  .tip, tr, ol li, ul li { break-inside: avoid; }
+  h3 { break-after: avoid; }
+}
+</style>
+<div class="doc" lang="en">
+  <header class="cover"><div class="brand">JEEVO</div><h1>User manual</h1><p>Hospital & clinic app · for patients, doctors, reception, nurses, medical store, laboratory and administrators</p></header>
+  <div class="intro">
+    <div><h2>Contents</h2><ol class="toc"><li class="navy"><a href="#start">Getting started</a></li><li class="teal"><a href="#patient">Patient</a></li><li class="navy"><a href="#reception">Receptionist</a></li><li class="navy"><a href="#doctor">Doctor</a></li><li class="navy"><a href="#nurse">Nurse</a></li><li class="green"><a href="#pharmacist">Pharmacist</a></li><li class="maroon"><a href="#labtech">Lab technician</a></li><li class="navy"><a href="#billing">Billing</a></li><li class="navy"><a href="#admin">Hospital administrator</a></li><li class="green"><a href="#storeowner">Medical store owner</a></li><li class="maroon"><a href="#labowner">Laboratory owner</a></li><li class="navy"><a href="#allstaff">For all staff</a></li><li class="navy"><a href="#faq">Problems and answers</a></li></ol></div>
+    <div><h2>How to read this manual</h2><p>Find your role in the contents. Buttons and menu names are shown in boxes, like <span class="k">Billing</span>, exactly as they appear on the screen. The app works in English, हिंदी and मराठी; if you use the app in Marathi, use the Marathi edition of this manual.</p></div>
+  </div>
+<section class="role navy" id="start">
+  <div class="rh"><span class="n">1</span><div><h2>Getting started</h2><div class="who">Who: Everyone</div></div></div>
+  <h3>Open and install the app</h3>
+<ul>
+<li>The hospital gives you a link. It opens in Chrome or Safari on any phone, tablet or computer. No app store is needed.</li>
+<li><b>Install on Android:</b> in Chrome tap ⋮ → <b>Add to Home screen</b> (or <b>Install app</b>).</li>
+<li><b>Install on iPhone:</b> in Safari tap Share → <b>Add to Home Screen</b>.</li>
+</ul>
+<h3>Choose your language</h3>
+<p>Pick English, हिंदी or मराठी on the first screen. You can change it any time with the language buttons at the top of the screen.</p>
+<h3>Log in</h3>
+<ol>
+<li>Enter the mobile number the hospital registered for you.</li>
+<li>Tap <span class="k">Send OTP</span> and type the 6-digit code you receive.</li>
+<li>Tap <span class="k">Verify & continue</span>. The app opens the screens for your role.</li>
+</ol>
+<p><b>New patient?</b> Fill in name, age, gender and language, then tap <span class="k">Create my Patient ID</span>.</p>
+<div class="tip"><b>Safety:</b> staff are logged out automatically after 30 minutes without use, to protect patient data. Never share your login. On a shared computer, log out from your profile when you leave.</div>
+<div class="tip"><b>Updates:</b> the app updates itself. If you still see an old screen, close the app completely and open it again.</div>
+</section>
+<section class="role teal" id="patient">
+  <div class="rh"><span class="n">2</span><div><h2>Patient</h2><div class="who">Who: Patients and their families</div></div></div>
+  <p>The home screen shows your next appointment, your live token and quick buttons for everything below.</p>
+<h3>Book an appointment</h3>
+<ol>
+<li>Tap <span class="k">Book Appointment</span> (or <span class="k">Find a Doctor</span>).</li>
+<li>Choose the doctor, then the date and time. Add a reason if you like.</li>
+<li>Confirm. You get a confirmation and reminders on WhatsApp or SMS.</li>
+</ol>
+<p><b>For a family member:</b> choose their name in the family switch at the top before booking.</p>
+<h3>On the day</h3>
+<ul><li>The home screen shows your token number and the expected waiting time. You get a message when your turn is near.</li>
+<li>To change plans: <span class="k">Appointments</span> → open the booking → <span class="k">Reschedule</span> or <span class="k">Cancel</span>.</li></ul>
+<h3>Your health records</h3>
+<ul><li><span class="k">Records</span> → Prescriptions, Reports, History (visits, hospital stays, referral letters) and Vaccines.</li>
+<li>Lab reports appear only after the laboratory has checked and verified them.</li>
+<li>Show your Patient QR code at the reception (Profile → Show QR) for quick check-in.</li></ul>
+<h3>Bills</h3>
+<p><span class="k">Bills</span> → open a bill → pay by UPI, card or net banking → <span class="k">View receipt</span>.</p>
+<h3>Family and settings</h3>
+<ul><li>Profile → My family → <span class="k">Add family member</span>. One login covers the whole family.</li>
+<li>Profile → choose your message language and whether you agree to WhatsApp / SMS messages.</li>
+<li>After a visit, tap <span class="k">Rate your visit</span> to give feedback or raise a complaint.</li></ul>
+</section>
+<section class="role navy" id="reception">
+  <div class="rh"><span class="n">3</span><div><h2>Receptionist</h2><div class="who">Who: Front desk</div></div></div>
+  <h3>Register a patient</h3>
+<ol>
+<li><span class="k">Patients</span> → <span class="k">Register patient</span>. Choose <b>Quick (essential details)</b> for a fast entry or <b>Full registration</b>.</li>
+<li>Enter mobile, name, age and gender. If the app finds a similar patient it asks <b>Is this an existing patient?</b> Pick the existing one if it is the same person; otherwise tap <span class="k">No – register as a new patient</span>.</li>
+<li>The Patient ID is created. Give the <span class="k">Patient card</span> or tap <span class="k">Send Patient ID on WhatsApp</span>. Tick the patient's consent for WhatsApp / SMS.</li>
+</ol>
+<h3>Appointments</h3>
+<p><span class="k">Appointments</span> → <span class="k">Book appointment</span> → patient, doctor, date and time → <span class="k">Confirm booking</span>. Open any booking to <span class="k">Reschedule</span>, <span class="k">Cancel</span> or <span class="k">Send reminder</span>.</p>
+<h3>Queue and tokens</h3>
+<ol>
+<li>Patient arrives: <span class="k">Queue & tokens</span> → <span class="k">Mark arrived</span> → <span class="k">Confirm check-in</span>. The consultation fee is billed here.</li>
+<li>No appointment? Tap <span class="k">Walk-in</span> to give the next token.</li>
+<li>When the doctor is ready: <span class="k">Send in</span>. Patient did not come: <span class="k">No-show</span>.</li>
+<li><span class="k">TV display</span> shows the token board on the waiting-hall TV.</li>
+</ol>
+<div class="tip">Emergency patients always appear at the top of the queue.</div>
+<h3>Emergency</h3>
+<p><span class="k">Emergency</span> → <span class="k">Existing patient</span> or <span class="k">New / unknown patient</span> → main problem → <span class="k">Register emergency now</span>. Never delay treatment for paperwork; complete the details later.</p>
+<h3>Admissions, vitals, billing</h3>
+<ul><li><b>Admit:</b> <span class="k">Beds & admissions</span> → <span class="k">Admit patient</span> → bed, doctor, reason, advance deposit, insurer (if cashless). <span class="k">Transfer bed</span> moves a patient; <b>Bill room charges</b> bills the stay.</li>
+<li><b>Vitals:</b> open the patient → <span class="k">Record vitals</span>.</li>
+<li><b>Billing:</b> see the Billing section and the one-page billing guide.</li>
+<li><b>Insurance & cashless:</b> track pre-authorisation and claim status for insured patients.</li>
+<li><b>WhatsApp & SMS:</b> messages to patients are sent only if the patient agreed.</li></ul>
+</section>
+<section class="role navy" id="doctor">
+  <div class="rh"><span class="n">4</span><div><h2>Doctor</h2><div class="who">Who: Doctors</div></div></div>
+  <h3>See patients</h3>
+<ol>
+<li><span class="k">My OPD</span> lists today's patients in token order. Tap <b>Call next · Token N</b>, or open a patient and tap <span class="k">Start consultation</span>.</li>
+<li>The screen shows earlier visits, prescriptions and reports, and today's <b>Vital signs</b>.</li>
+<li>Write <b>Clinical notes</b>: complaints, examination, diagnosis.</li>
+<li><b>Prescription:</b> type a medicine (brand or generic), then dose, frequency, duration and quantity. The app warns about the patient's allergies. <span class="k">Repeat</span> copies an earlier prescription. Choose <b>Print instructions also in</b> Marathi or Hindi.</li>
+<li><b>Diagnostic tests:</b> tick the tests and tap <b>Order N test(s)</b>. Pathology goes to the laboratory; ECG, echo and X-ray stay with the hospital.</li>
+<li>Set a follow-up date if needed. <span class="k">Save draft</span> keeps your work; <span class="k">Finish & sign</span> completes the visit. The prescription reaches the patient's phone and the medical store.</li>
+</ol>
+<div class="tip"><b>A signed prescription cannot be edited.</b> Tap <span class="k">Correct prescription</span>, make the change and sign the corrected one. The old one stays in the record, marked as replaced.</div>
+<h3>Refer, admit, discharge</h3>
+<ul><li><span class="k">Refer</span> → doctor, speciality, place, reason → <span class="k">Create referral letter</span> → print or share.</li>
+<li><span class="k">Admit</span> sends the patient to Beds & admissions. For admitted patients: notes, <span class="k">Discharge summary</span> → <span class="k">Discharge</span>.</li>
+<li><span class="k">ECG / Echo / X-ray</span>: enter and verify the hospital's own investigation reports.</li></ul>
+<h3>Your timings and content</h3>
+<ul><li>My account → <b>Availability</b>: working days, consultation hours, appointment length, maximum per day → <span class="k">Save availability</span>.</li>
+<li><span class="k">Health content</span>: review and publish health articles for patients. Only a doctor can publish.</li>
+<li>A doctor with administrator rights also sees the administrator menus (see Hospital administrator).</li></ul>
+</section>
+<section class="role navy" id="nurse">
+  <div class="rh"><span class="n">5</span><div><h2>Nurse</h2><div class="who">Who: Nursing staff</div></div></div>
+  <h3>Ward work</h3>
+<ol>
+<li><span class="k">Nursing</span> shows admitted patients and the task list, by ward.</li>
+<li>For each patient: <span class="k">Vitals</span> to record readings, <span class="k">Medicine</span> to record a medicine given (dose and route), <span class="k">Note</span> for a nursing note or observation.</li>
+<li>Tick a task <span class="k">Done</span> when it is finished. Overdue tasks are highlighted.</li>
+</ol>
+<h3>Also</h3>
+<ul><li>Record vitals for OPD patients: open the patient → <span class="k">Record vitals</span>.</li>
+<li>Register an emergency from <span class="k">Emergency</span>.</li>
+<li>Work on ECG, echo and X-ray orders in <span class="k">ECG / Echo / X-ray</span>.</li></ul>
+<div class="tip">Saved vitals, medicines and notes cannot be changed or deleted. If something was wrong, add a new note that explains the correction.</div>
+</section>
+<section class="role green" id="pharmacist">
+  <div class="rh"><span class="n">6</span><div><h2>Pharmacist</h2><div class="who">Who: Medical store staff</div></div></div>
+  <h3>Dispense a prescription</h3>
+<ol>
+<li><span class="k">Pharmacy</span> → <b>To dispense</b> lists prescriptions signed by doctors.</li>
+<li>Open one, check the patient's allergies shown on screen, then tap <span class="k">Dispense & bill</span>.</li>
+<li>The app picks the batch with the earliest expiry, reduces stock and makes the medical store bill.</li>
+</ol>
+<h3>Counter sale (without prescription)</h3>
+<p><span class="k">Counter sale</span> → search the medicine or <span class="k">Scan</span> the barcode → quantity → <span class="k">Complete sale</span>.</p>
+<h3>Stock and expiry</h3>
+<ul><li><span class="k">Add medicine</span>: brand, generic name, strength, form, MRP and minimum stock level.</li>
+<li><span class="k">Stock in</span>: batch number, expiry month, quantity and purchase price for new stock.</li>
+<li><span class="k">Write off</span> expired or damaged stock; <span class="k">Record return</span> when a patient returns medicine.</li>
+<li>The dashboard shows low-stock and expiring batches. <span class="k">Export</span> gives the stock list for Excel.</li></ul>
+<div class="tip">You see only the medical store's bills. Refunds and cancellations are done by the store owner.</div>
+</section>
+<section class="role maroon" id="labtech">
+  <div class="rh"><span class="n">7</span><div><h2>Lab technician</h2><div class="who">Who: Laboratory staff</div></div></div>
+  <h3>From order to report</h3>
+<ol>
+<li><span class="k">Laboratory</span> → <b>To do</b>. Doctors' test orders arrive automatically. For an outside patient, tap <span class="k">Create order</span> and fill <b>Referred by Dr.</b></li>
+<li><span class="k">Register sample & generate ID</span> → <span class="k">Print sample label</span> and stick it on the sample.</li>
+<li><span class="k">Mark processing</span> when the test is running.</li>
+<li>Enter results. Normal ranges are shown and abnormal values are flagged. Add remarks or attach a file (<span class="k">Add file</span>), then <span class="k">Save results</span>.</li>
+<li>A <b>different</b> authorised person checks and taps <span class="k">Verify report</span>. You cannot verify results you entered yourself.</li>
+<li><span class="k">Publish to patient</span>. The patient sees the report in the app and gets a message.</li>
+</ol>
+<div class="tip"><b>Mistake after verification?</b> An authorised person taps <span class="k">Reopen for correction</span> and gives a reason. Correct the result, then it is verified again. Every change is kept in the audit log.</div>
+<p>You see only laboratory bills. Refunds and cancellations are done by the lab owner.</p>
+</section>
+<section class="role navy" id="billing">
+  <div class="rh"><span class="n">8</span><div><h2>Billing</h2><div class="who">Who: Reception, medical store and lab staff; owners and administrators</div></div></div>
+  <h3>Create a bill</h3>
+<ol>
+<li><span class="k">Billing</span> → <span class="k">New bill</span> → select the patient.</li>
+<li>Add items from the lists (consultation, procedure / service, lab test) or a <span class="k">Custom item</span>. Discounts can be given only by the administrator / owner and reception.</li>
+<li>Choose the payment method and amount (leave empty for the full amount; less for part payment; or <b>Not paid now</b>) → <span class="k">Create bill</span>.</li>
+<li>Print, PDF, Share or <span class="k">Send receipt on WhatsApp</span>.</li>
+</ol>
+<p>Many bills are made automatically: the consultation fee at check-in, medicines at the pharmacy, tests in the lab, and room charges for admitted patients.</p>
+<h3>Collect a balance</h3>
+<p><span class="k">Billing</span> → <b>Outstanding</b> → open the bill → <b>Collect ₹…</b> (part payment allowed).</p>
+<h3>Why bills cannot be edited, and how to correct a mistake</h3>
+<p>A bill is a money record: the patient may already hold the receipt and the day's cash must match it. So items and amounts are locked, and every correction is a new entry with a reason.</p>
+<table>
+<tr><td>Wrong bill, not paid yet</td><td><span class="k">Cancel bill</span> with reason → make a new correct bill.</td></tr>
+<tr><td>Wrong bill, already paid</td><td><span class="k">Refund</span> the full amount → <span class="k">Cancel bill</span> → new correct bill.</td></tr>
+<tr><td>Charged too much</td><td><span class="k">Refund</span> only the extra amount.</td></tr>
+<tr><td>Item left out</td><td>Make a separate new bill for that item.</td></tr>
+</table>
+<div class="tip">Only the administrator / owner of the unit sees <span class="k">Refund</span> and <span class="k">Cancel bill</span>. Staff: tell them the bill number and reason. See also the one-page billing guide.</div>
+</section>
+<section class="role navy" id="admin">
+  <div class="rh"><span class="n">9</span><div><h2>Hospital administrator</h2><div class="who">Who: Hospital owner / administrator, and a doctor given administrator rights</div></div></div>
+  <p>The dashboard shows today's patients, hospital collection, beds and outstanding payments. You see only the <b>hospital's</b> money; the medical store and laboratory have their own owners.</p>
+<h3>Staff & HR</h3>
+<ul><li><span class="k">Add staff</span>: name, role, mobile number (used to log in), department, registration number and, for doctors, fees. Hospital roles: administrator, doctor, receptionist, nurse.</li>
+<li>To give a doctor administrator rights, edit the doctor and tick <span class="k">Also administrator (hospital)</span>.</li>
+<li>Shifts; leave requests <span class="k">Approve</span> / <span class="k">Reject</span>; attendance <span class="k">Present</span> / <span class="k">Absent</span>; <span class="k">Export</span>.</li>
+<li>When someone leaves, deactivate them so they can no longer log in.</li></ul>
+<h3>Settings</h3>
+<ul><li><b>Hospital</b> profile (address, phones, timings, map link); <b>Departments</b>; <b>Services & pricing</b> (<span class="k">Add service</span>); <b>ECG / echo / X-ray prices</b>.</li>
+<li><b>Wards</b> (<span class="k">Add ward</span>; beds are created automatically); <b>WhatsApp & SMS</b>; <b>Letterhead</b>; <b>Privacy & data</b>.</li></ul>
+<h3>Money, reports and records</h3>
+<ul><li>Refund and cancel hospital bills (see Billing).</li>
+<li><span class="k">Reports</span>: financial, appointments and operational figures; <span class="k">Export</span> for Excel.</li>
+<li><span class="k">Audit log</span>: who changed what, and when.</li>
+<li><span class="k">Insurance & cashless</span>: pre-authorisation and claims.</li>
+<li><span class="k">Announcements</span> → <span class="k">New announcement</span> for staff or patients; <span class="k">Feedback</span> → <span class="k">Reply & resolve</span>.</li></ul>
+</section>
+<section class="role green" id="storeowner">
+  <div class="rh"><span class="n">10</span><div><h2>Medical store owner</h2><div class="who">Who: Owner of the medical store</div></div></div>
+  <p>You can do everything a pharmacist can, plus the following. You see only the medical store's bills, income, staff, reports and audit log.</p>
+<ul><li><b>Dashboard:</b> today's and this month's store income, low stock and expiring batches.</li>
+<li><b>Staff & HR:</b> add your pharmacists, approve their leave, mark attendance.</li>
+<li><b>Settings → Medical Store profile:</b> store name, drug licence number, GSTIN, phone and the footer printed on bills.</li>
+<li><b>Refunds and cancellations</b> of medical store bills (see Billing).</li>
+<li><span class="k">Reports</span> and <span class="k">Audit log</span> for the medical store.</li></ul>
+<div class="tip">The store owner account is set up once by the platform team, not by the hospital administrator. This keeps each owner in control of their own staff and income.</div>
+</section>
+<section class="role maroon" id="labowner">
+  <div class="rh"><span class="n">11</span><div><h2>Laboratory owner</h2><div class="who">Who: Owner of the laboratory</div></div></div>
+  <p>You can do everything a lab technician can, plus the following. You see only the laboratory's bills, income, staff, reports and audit log.</p>
+<ul><li><b>Verify reports</b> entered by your technicians (<span class="k">Verify report</span>); reopen a verified report for correction when needed.</li>
+<li><b>Staff & HR:</b> add technicians; tick <span class="k">Authorised to verify lab reports</span> for those allowed to verify.</li>
+<li><b>Settings → Lab tests & prices:</b> <span class="k">Add test</span> with price, result fields and normal ranges.</li>
+<li><b>Settings → Laboratory profile:</b> lab name, address, phone, email, signatories and report footer.</li>
+<li><b>Refunds and cancellations</b> of laboratory bills; <span class="k">Reports</span> and <span class="k">Audit log</span> for the laboratory.</li></ul>
+</section>
+<section class="role navy" id="allstaff">
+  <div class="rh"><span class="n">12</span><div><h2>For all staff</h2><div class="who">Who: Every staff member</div></div></div>
+  <ul><li><b>My account</b> (tap your name): notifications, profile, leave and attendance.</li>
+<li><b>Attendance:</b> <span class="k">Check in</span> when you start and <span class="k">Check out</span> when you leave.</li>
+<li><b>Leave:</b> choose type, dates and reason → <span class="k">Send request</span>. Your unit's owner or administrator approves it.</li>
+<li><span class="k">Announcements</span> shows notices from the management.</li>
+<li>You see only the menus your role needs. If something is missing, ask your administrator or owner.</li></ul>
+<h3>Privacy and good practice</h3>
+<ul><li>Open a patient's record only when you are treating or serving that patient.</li>
+<li>Messages go to patients only when they have agreed; respect their choice.</li>
+<li>Nothing medical or financial is ever deleted. Corrections are added with a reason, so the record stays complete.</li></ul>
+</section>
+<section class="role navy" id="faq">
+  <div class="rh"><span class="n">13</span><div><h2>Problems and answers</h2><div class="who">Who: Everyone</div></div></div>
+  <table>
+<tr><td>I see an old version of the app</td><td>Close the app completely and open it again. Still old? Clear the site data in the browser and open the link again.</td></tr>
+<tr><td>The OTP did not arrive</td><td>Check the number is the one the hospital registered. Wait a minute and tap Send OTP again.</td></tr>
+<tr><td>The same patient appears twice</td><td>When registering, choose the existing patient when the app asks <b>Is this an existing patient?</b></td></tr>
+<tr><td>A bill is wrong</td><td>See Billing: refund and/or cancel, then make a new bill. Ask your administrator / owner.</td></tr>
+<tr><td>A prescription is wrong</td><td>The doctor uses <span class="k">Correct prescription</span> and signs the corrected one.</td></tr>
+<tr><td>A lab report is wrong</td><td>An authorised person uses <span class="k">Reopen for correction</span>; the result is corrected and verified again.</td></tr>
+<tr><td>I cannot see a menu or another unit's bills</td><td>Each role sees only what it needs, and each unit sees only its own money. Ask your administrator / owner.</td></tr>
+<tr><td>I was logged out</td><td>Staff are logged out after 30 minutes without use. Log in again with your mobile number.</td></tr>
+</table>
+</section>
+  <footer>JeevO · user manual · English edition</footer>
+</div>
