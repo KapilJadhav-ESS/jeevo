@@ -30,7 +30,7 @@ reports and audit trail. Patients are shared, so one patient file covers all thr
 | Demo account | What to try |
 |---|---|
 | **Patient** – Sunil Kadam (family of 4) | Book with Dr. Umesh or Dr. Kavita, live token, prescriptions in Marathi/Hindi, lab reports, referral letter, pay a pending bill (simulated UPI) |
-| **Hospital owner** – Sanjay Aher | Hospital dashboard and income (consultation, IPD, ECG/echo/X-ray), hospital staff and HR, beds, insurance and cashless desk, reports, settings |
+| **Hospital administrator** – Sanjay Aher | Hospital dashboard and income (consultation, IPD, ECG/echo/X-ray), hospital staff and HR, beds, insurance and cashless desk, reports, settings |
 | **Main doctor + administrator** – Dr. Umesh Aher | My OPD → consult → e-prescription, order tests, **Refer**, plus the hospital administrator's overview |
 | **Medical store owner** – Avinash Aher | Medical store income and bills only, own 2 pharmacists, stock, store letterhead (DL / GSTIN) |
 | **Laboratory owner** – Bapuji Dhomse | Laboratory income and bills only, own 2 technicians, verify reports, test prices, lab letterhead |

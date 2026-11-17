@@ -75,7 +75,7 @@ export function buildSeed() {
   const opd = { days: [0, 1, 2, 3, 4, 5], sessions: [{ start: '11:00', end: '16:00' }, { start: '18:00', end: '20:00' }], slotMins: 10, maxPerDay: 60, online: true }
   const STAFF = [
     // id, name, role, unit, designation, dept, qualification, regNo, fee, availability, extra
-    ['st-sanjay', 'Sanjay Aher', 'admin', 'hospital', 'Hospital Owner & Administrator', null, '', '', 0, null, {}],
+    ['st-sanjay', 'Sanjay Aher', 'admin', 'hospital', 'Hospital Administrator', null, '', '', 0, null, {}],
     ['st-umesh', 'Dr. Umesh Aher', 'doctor', 'hospital', 'Consultant Physician & Echocardiologist', 'dep-med', 'FCPS (Medicine), M.D. Medicine (J.J.H. Mumbai)', '2006/01/236', 400, opd,
       { extraRoles: ['admin'], experience: 18, languages: ['Marathi', 'Hindi', 'English'], qualificationNote: 'Certified Course on Echocardiography, JROP Institute of Echocardiography Delhi · Accredited by Indian Academy of Echocardiography' }],
     ['st-kavita', 'Dr. Kavita Umesh Aher', 'doctor', 'hospital', 'Consultant Gynaecologist & Obstetrician', 'dep-obgy', 'M.B.B.S., D.G.O.', '2010/09/2862', 400, { ...opd, slotMins: 15, maxPerDay: 40 },

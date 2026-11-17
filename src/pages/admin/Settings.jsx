@@ -224,7 +224,7 @@ function UnitProfile() {
         <h3 className="font-bold mb-3">{unit === 'lab' ? 'Laboratory letterhead' : unit === 'pharmacy' ? 'Medical store details' : 'Hospital letterhead'}</h3>
         <Grid cols={2}>
           <Field label="Name"><Input value={v.name || ''} onChange={set('name')} /></Field>
-          <Field label="Owner"><Input value={v.owner || ''} onChange={set('owner')} /></Field>
+          <Field label={unit === 'hospital' ? 'Administrator' : 'Owner'}><Input value={v.owner || ''} onChange={set('owner')} /></Field>
           {unit === 'pharmacy' && <><Field label="Drug licence number"><Input value={v.drugLicence || ''} onChange={set('drugLicence')} /></Field><Field label="GSTIN"><Input value={v.gstin || ''} onChange={set('gstin')} /></Field><Field label="Phone"><Input value={v.phone || ''} onChange={set('phone')} /></Field></>}
           {unit === 'lab' && <><Field label="Address" className="sm:col-span-2"><Input value={v.address || ''} onChange={set('address')} /></Field><Field label="Phone"><Input value={v.phone || ''} onChange={set('phone')} /></Field><Field label="Email"><Input value={v.email || ''} onChange={set('email')} /></Field></>}
           <Field label="Footer (printed on bills / reports)" className="sm:col-span-2"><Input value={v.footer || ''} onChange={set('footer')} /></Field>

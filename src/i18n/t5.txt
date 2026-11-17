@@ -6,7 +6,7 @@ Pimpalgaon Baswant · Appointments · Reports · Bills || पिंपलगा�
 Appointments, tokens, prescriptions, lab reports, medical store and bills — in English, हिंदी and मराठी. || अपॉइंटमेंट, टोकन, पर्चे, लैब रिपोर्ट, मेडिकल स्टोर और बिल — English, हिंदी और मराठी में. || भेटी, टोकन, प्रिस्क्रिप्शन, लॅब रिपोर्ट, मेडिकल स्टोअर आणि बिले — English, हिंदी आणि मराठीत.
 Owners || मालिक || मालक
 Staff || स्टाफ़ || कर्मचारी
-Hospital owner – OPD, beds, hospital billing & income, hospital staff, settings || अस्पताल मालिक – OPD, बेड, अस्पताल बिलिंग और आय, अस्पताल स्टाफ़, सेटिंग || रुग्णालय मालक – OPD, बेड, रुग्णालय बिलिंग व उत्पन्न, रुग्णालय कर्मचारी, सेटिंग्ज
+Hospital administrator – OPD, beds, hospital billing & income, hospital staff, settings || अस्पताल प्रशासक – OPD, बेड, अस्पताल बिलिंग और आय, अस्पताल स्टाफ़, सेटिंग || रुग्णालय प्रशासक – OPD, बेड, रुग्णालय बिलिंग व उत्पन्न, रुग्णालय कर्मचारी, सेटिंग्ज
 Main doctor and administrator – today’s OPD, prescriptions, ECG / 2D echo, plus admin || मुख्य डॉक्टर और प्रशासक – आज की OPD, पर्चे, ECG / 2D इको, साथ में प्रशासन || मुख्य डॉक्टर व प्रशासक – आजची OPD, प्रिस्क्रिप्शन, ECG / 2D इको, तसेच प्रशासन
 Medical store owner – stock, sales and income of the medical store only || मेडिकल स्टोर मालिक – केवल मेडिकल स्टोर का स्टॉक, बिक्री और आय || मेडिकल स्टोअर मालक – फक्त मेडिकल स्टोअरचा साठा, विक्री व उत्पन्न
 Laboratory owner – verifies reports, lab prices, lab income and staff only || लैब मालिक – रिपोर्ट सत्यापन, लैब दरें, केवल लैब की आय और स्टाफ़ || लॅब मालक – रिपोर्ट पडताळणी, लॅब दर, फक्त लॅबचे उत्पन्न व कर्मचारी
@@ -188,3 +188,5 @@ Fire safety drill || अग्नि सुरक्षा अभ्यास ||
 Also administrator (hospital) || प्रशासक भी (अस्पताल) || प्रशासक सुद्धा (हॉस्पिटल)
 Only the hospital administrator can give administrator rights || प्रशासक अधिकार केवल अस्पताल प्रशासक दे सकते हैं || प्रशासक अधिकार फक्त हॉस्पिटल प्रशासक देऊ शकतात
 You cannot change your own role || आप अपनी भूमिका नहीं बदल सकते || तुम्ही स्वतःची भूमिका बदलू शकत नाही
+Management || प्रबंधन || व्यवस्थापन
+Administrator || प्रशासक || प्रशासक

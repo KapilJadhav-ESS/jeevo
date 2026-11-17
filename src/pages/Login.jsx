@@ -68,7 +68,7 @@ export function Hero({ title, sub }) {
 const DEMO = {
   patient: [['u-patient', 'Book appointments, see token status, prescriptions, reports and bills for the whole family']],
   owners: [
-    ['u-sanjay', 'Hospital owner – OPD, beds, hospital billing & income, hospital staff, settings'],
+    ['u-sanjay', 'Hospital administrator – OPD, beds, hospital billing & income, hospital staff, settings'],
     ['u-umesh', 'Main doctor and administrator – today’s OPD, prescriptions, ECG / 2D echo, plus admin'],
     ['u-avinash', 'Medical store owner – stock, sales and income of the medical store only'],
     ['u-bapuji', 'Laboratory owner – verifies reports, lab prices, lab income and staff only']
@@ -150,7 +150,7 @@ function DemoLogin() {
                 <p className="text-xs text-ink-500 mt-3 text-center">New patient? Enter your mobile number – you can register in one minute.</p>
 
                 <div className="flex items-center gap-3 my-6"><span className="flex-1 h-px bg-ink-200" /><span className="text-xs font-semibold text-ink-400 uppercase tracking-wide">or try a demo account</span><span className="flex-1 h-px bg-ink-200" /></div>
-                <Tabs className="mb-3" value={tab} onChange={setTab} tabs={[{ value: 'patient', label: 'Patient app' }, { value: 'owners', label: 'Owners' }, { value: 'staff', label: 'Staff' }]} />
+                <Tabs className="mb-3" value={tab} onChange={setTab} tabs={[{ value: 'patient', label: 'Patient app' }, { value: 'owners', label: 'Management' }, { value: 'staff', label: 'Staff' }]} />
                 <div className="space-y-2">
                   {DEMO[tab].map(([id, desc]) => {
                     const u = db.getAny('users', id)

@@ -15,7 +15,7 @@ import { buildSeed } from './seed'
 import { CLOUD } from './config'
 import { api, subscribeChanges } from './cloud'
 
-const KEY = 'jeevo-db-v2-radhakrishna'
+const KEY = 'jeevo-db-v3-radhakrishna'
 export const COLLECTIONS = [
   'hospitals', 'departments', 'users', 'staff', 'patients', 'appointments', 'consultations',
   'prescriptions', 'medicines', 'labTests', 'labOrders', 'services', 'bills', 'payments',
