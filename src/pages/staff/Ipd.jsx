@@ -9,7 +9,7 @@ import { VitalsForm, VitalChips } from './Patients'
 import { useAuth } from '../../lib/auth'
 import { db, useData } from '../../lib/db'
 import { can } from '../../lib/rbac'
-import { visibleBills, saveAdmissionInsurance, insurers, PREAUTH_STATUS, CLAIM_STATUS, admitPatient, transferBed, setBedStatus, saveDischargeSummary, discharge, daysAdmitted, stayCharges, billStay, admissionBalance, addAdmissionNote, addNursingTask, BED_STATUS, PAY_METHODS } from '../../lib/actions'
+import { visibleBills, saveAdmissionInsurance, insurers, PREAUTH_STATUS, CLAIM_STATUS, admitPatient, transferBed, setBedStatus, saveDischargeSummary, discharge, daysAdmitted, stayCharges, billStay, admissionBalance, depositHeld, addAdmissionNote, addNursingTask, BED_STATUS, PAY_METHODS } from '../../lib/actions'
 import { fmtDate, fmtDateTime, inr, addDays, today, timeAgo, cls } from '../../lib/utils'
 
 const BED_TONE = { available: 'bg-accent-50 border-accent-200 text-accent-800', occupied: 'bg-brand-600 border-brand-600 text-white', reserved: 'bg-amber-50 border-amber-300 text-amber-800', maintenance: 'bg-ink-100 border-ink-200 text-ink-400' }
@@ -140,6 +140,8 @@ function Admission() {
           <Card className="p-5">
             <div className="flex justify-between items-center mb-2"><h3 className="font-bold">Charges</h3><span className={cls('font-bold', admissionBalance(a.id) > 0 ? 'text-red-600' : 'text-accent-700')}>Balance {inr(admissionBalance(a.id))}</span></div>
             {bills.map((b) => <button key={b.id} onClick={() => nav(`/s/billing/${b.id}`)} className="w-full flex justify-between text-sm py-1.5 border-b border-ink-100"><span translate="no">{b.billNo}</span><span>{inr(b.total)}</span></button>)}
+            {depositHeld(a) > 0 && <div className="flex justify-between text-sm py-1.5 text-accent-700"><span>Advance deposit not yet adjusted</span><span>{inr(depositHeld(a))}</span></div>}
+            {!admitted && depositHeld(a) > 0 && <p className="text-xs text-ink-500">Refund the unused deposit from the deposit bill.</p>}
             {admitted && can(user, 'billing.create') && stayCharges(a).length > 0 && <Button size="sm" variant="secondary" icon={Receipt} className="mt-3" onClick={() => run(() => billStay(a.id), 'Room charges billed')}>{`Bill room charges (${stayCharges(a)[0].qty} day(s))`}</Button>}
           </Card>
         </div>

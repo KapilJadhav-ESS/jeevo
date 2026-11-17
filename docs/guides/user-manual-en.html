@@ -43,6 +43,18 @@ table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; font-size: 14
 td { vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 td:first-child { width: 38%; font-weight: 600; }
 footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+.flow { display: grid; gap: 0; margin: 10px 0; }
+.fs { display: grid; grid-template-columns: 30px 1fr; gap: 12px; break-inside: avoid; }
+.fn { font: 800 13px/28px var(--display); color: #fff; background: var(--c); width: 28px; height: 28px; text-align: center; position: relative; z-index: 1; }
+.fs:not(:last-child) .fn { box-shadow: 0 0 0 0 transparent; }
+.fs { position: relative; }
+.fs:not(:last-child)::before { content: ""; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--line); }
+.fb { padding: 2px 0 14px; min-width: 0; }
+.ft { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 3px; }
+.ft b { font-family: var(--display); font-size: 15px; color: var(--ink); }
+.fw { font-size: 12.5px; font-weight: 700; color: #fff; background: var(--navy); padding: 1px 8px; }
+.fx { font-size: 14.2px; }
+.fr { font-size: 13.6px; color: var(--teal); margin-top: 3px; padding-left: 10px; border-left: 3px solid var(--teal); }
 .navy { --c: var(--navy); } .teal { --c: var(--teal); } .green { --c: var(--green); } .maroon { --c: var(--maroon); }
 @media (max-width: 640px) {
   .cover, .intro, section.role, footer { padding-left: 18px; padding-right: 18px; }
@@ -58,12 +70,14 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
   section.role { break-before: page; border-top: 0; padding-top: 0; }
   .tip, tr, ol li, ul li { break-inside: avoid; }
   h3 { break-after: avoid; }
+  .fb { padding-bottom: 8px; } .fx { font-size: 12.6px; line-height: 1.38; } .fr { font-size: 12.2px; } .ft b { font-size: 13.6px; }
+  .flow + .tip, .flow ~ .tip { font-size: 12.4px; }
 }
 </style>
 <div class="doc" lang="en">
   <header class="cover"><div class="brand">JEEVO</div><h1>User manual</h1><p>Hospital & clinic app · for patients, doctors, reception, nurses, medical store, laboratory and administrators</p></header>
   <div class="intro">
-    <div><h2>Contents</h2><ol class="toc"><li class="navy"><a href="#start">Getting started</a></li><li class="teal"><a href="#patient">Patient</a></li><li class="navy"><a href="#reception">Receptionist</a></li><li class="navy"><a href="#doctor">Doctor</a></li><li class="navy"><a href="#nurse">Nurse</a></li><li class="green"><a href="#pharmacist">Pharmacist</a></li><li class="maroon"><a href="#labtech">Lab technician</a></li><li class="navy"><a href="#billing">Billing</a></li><li class="navy"><a href="#admin">Hospital administrator</a></li><li class="green"><a href="#storeowner">Medical store owner</a></li><li class="maroon"><a href="#labowner">Laboratory owner</a></li><li class="navy"><a href="#allstaff">For all staff</a></li><li class="navy"><a href="#faq">Problems and answers</a></li></ol></div>
+    <div><h2>Contents</h2><ol class="toc"><li class="navy"><a href="#start">Getting started</a></li><li class="teal"><a href="#ex-opd">Example 1: an OPD visit, start to finish</a></li><li class="teal"><a href="#ex-ipd">Example 2: admission, treatment and discharge</a></li><li class="teal"><a href="#patient">Patient</a></li><li class="navy"><a href="#reception">Receptionist</a></li><li class="navy"><a href="#doctor">Doctor</a></li><li class="navy"><a href="#nurse">Nurse</a></li><li class="green"><a href="#pharmacist">Pharmacist</a></li><li class="maroon"><a href="#labtech">Lab technician</a></li><li class="navy"><a href="#billing">Billing</a></li><li class="navy"><a href="#admin">Hospital administrator</a></li><li class="green"><a href="#storeowner">Medical store owner</a></li><li class="maroon"><a href="#labowner">Laboratory owner</a></li><li class="navy"><a href="#allstaff">For all staff</a></li><li class="navy"><a href="#faq">Problems and answers</a></li></ol></div>
     <div><h2>How to read this manual</h2><p>Find your role in the contents. Buttons and menu names are shown in boxes, like <span class="k">Billing</span>, exactly as they appear on the screen. The app works in English, हिंदी and मराठी; if you use the app in Marathi, use the Marathi edition of this manual.</p></div>
   </div>
 <section class="role navy" id="start">
@@ -86,8 +100,16 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip"><b>Safety:</b> staff are logged out automatically after 30 minutes without use, to protect patient data. Never share your login. On a shared computer, log out from your profile when you leave.</div>
 <div class="tip"><b>Updates:</b> the app updates itself. If you still see an old screen, close the app completely and open it again.</div>
 </section>
+<section class="role teal" id="ex-opd">
+  <div class="rh"><span class="n">2</span><div><h2>Example 1: an OPD visit, start to finish</h2><div class="who">Who: Everyone: see who does what</div></div></div>
+  <p>A patient with fever books a visit, sees the doctor, buys medicines and gets a blood test. Each step shows <b>who</b> does it and <b>what the patient gets</b>.</p><div class="flow"><div class="fs"><div class="fn">1</div><div class="fb"><div class="ft"><b>Book the appointment</b><span class="fw">Patient or Receptionist</span></div><div class="fx">Patient: <span class="k">Book Appointment</span> → doctor → date and time → confirm.<br>Or reception (patient phones or walks in): <span class="k">Appointments</span> → <span class="k">Book appointment</span> → <span class="k">Confirm booking</span>.</div><div class="fr">Patient gets: booking confirmation, token number and reminders on WhatsApp / SMS.</div></div></div><div class="fs"><div class="fn">2</div><div class="fb"><div class="ft"><b>Arrive at the hospital</b><span class="fw">Receptionist</span></div><div class="fx">Find the patient by mobile number, Patient ID or QR code. New patient: <span class="k">Patients</span> → <span class="k">Register patient</span> → <b>Quick (essential details)</b>.</div><div class="fr">Patient gets: Patient ID (card or WhatsApp).</div></div></div><div class="fs"><div class="fn">3</div><div class="fb"><div class="ft"><b>Check in and pay the consultation fee</b><span class="fw">Receptionist</span></div><div class="fx"><span class="k">Queue & tokens</span> → <span class="k">Mark arrived</span> → <span class="k">Confirm check-in</span> → take the fee (cash or UPI). No booking? Use <span class="k">Walk-in</span>.</div><div class="fr">Hospital bill (BL-) and receipt. The live token appears on the patient's phone and the waiting-hall TV.</div></div></div><div class="fs"><div class="fn">4</div><div class="fb"><div class="ft"><b>Vitals</b><span class="fw">Nurse or Receptionist</span></div><div class="fx">Open the patient → <span class="k">Record vitals</span>: BP, pulse, temperature, weight.</div></div></div><div class="fs"><div class="fn">5</div><div class="fb"><div class="ft"><b>Consultation</b><span class="fw">Doctor</span></div><div class="fx"><span class="k">My OPD</span> → <b>Call next</b> (or reception taps <span class="k">Send in</span>) → notes and diagnosis → prescription → tick blood tests → <b>Order N test(s)</b> → <span class="k">Finish & sign</span>.</div><div class="fr">Patient gets: the prescription on the phone. The lab bill (LBL-) is made automatically for the tests.</div></div></div><div class="fs"><div class="fn">6</div><div class="fb"><div class="ft"><b>Medicines</b><span class="fw">Pharmacist</span></div><div class="fx"><span class="k">Pharmacy</span> → <b>To dispense</b> → open the prescription → check allergies → <span class="k">Dispense & bill</span> → take payment.</div><div class="fr">Medical store bill (PH-) and receipt; stock is reduced.</div></div></div><div class="fs"><div class="fn">7</div><div class="fb"><div class="ft"><b>Blood test</b><span class="fw">Lab technician</span></div><div class="fx"><span class="k">Laboratory</span> → <b>To do</b> → take payment on the lab bill → <span class="k">Register sample & generate ID</span> → <span class="k">Print sample label</span> → <span class="k">Mark processing</span> → enter results → <span class="k">Save results</span>.</div></div></div><div class="fs"><div class="fn">8</div><div class="fb"><div class="ft"><b>Check and send the report</b><span class="fw">Lab owner or authorised technician</span></div><div class="fx">A different person checks the results → <span class="k">Verify report</span> → <span class="k">Publish to patient</span>.</div><div class="fr">Patient gets: the report in the app and a WhatsApp / SMS message. The doctor sees it in the patient's record.</div></div></div><div class="fs"><div class="fn">9</div><div class="fb"><div class="ft"><b>Follow-up</b><span class="fw">Doctor and Patient</span></div><div class="fx">The doctor set a follow-up date while signing. The patient books again from the app or at the desk.</div><div class="fr">Patient gets: a follow-up reminder.</div></div></div></div><div class="tip"><b>Three receipts, three owners.</b> The consultation fee goes to the hospital (BL-), medicines to the medical store (PH-) and tests to the laboratory (LBL-). ECG, echo or X-ray ordered by the doctor are hospital tests, done in <span class="k">ECG / Echo / X-ray</span> and billed by the hospital.</div>
+</section>
+<section class="role teal" id="ex-ipd">
+  <div class="rh"><span class="n">3</span><div><h2>Example 2: admission, treatment and discharge</h2><div class="who">Who: Everyone: see who does what</div></div></div>
+  <p>A patient is admitted for 2 days, treated in the ward, discharged and billed. Each step shows <b>who</b> does it.</p><div class="flow"><div class="fs"><div class="fn">1</div><div class="fb"><div class="ft"><b>Arrival and consultation</b><span class="fw">Receptionist, then Doctor</span></div><div class="fx">Reception checks the patient in as in Example 1 (or registers an <span class="k">Emergency</span>). The doctor examines the patient and decides to admit: <span class="k">Admit</span> on the consultation screen.</div></div></div><div class="fs"><div class="fn">2</div><div class="fb"><div class="ft"><b>Bed and admission</b><span class="fw">Receptionist (or Doctor / Administrator)</span></div><div class="fx"><span class="k">Beds & admissions</span> → <span class="k">Admit patient</span> → choose a free bed (ICU, general, semi-special or special) → attending doctor → reason and provisional diagnosis → expected discharge → <b>advance deposit</b> and how it was paid → insurer and policy number if cashless → save.</div><div class="fr">Admission number (IP-), deposit receipt (BL-). The bed shows as occupied on the bed board. The family gets a message.</div></div></div><div class="fs"><div class="fn">3</div><div class="fb"><div class="ft"><b>Cashless approval (if insured)</b><span class="fw">Receptionist or Administrator</span></div><div class="fx"><span class="k">Insurance & cashless</span> → open the admission → record the pre-authorisation request and the approved amount.</div></div></div><div class="fs"><div class="fn">4</div><div class="fb"><div class="ft"><b>Treatment, day 1 and day 2</b><span class="fw">Doctor and Nurse</span></div><div class="fx"><b>Doctor:</b> ward round notes in the admission (Notes), tasks for nurses (Tasks), discharge plan.<br><b>Nurse:</b> <span class="k">Nursing</span> → <span class="k">Vitals</span> every shift → <span class="k">Medicine</span> each time a medicine is given → <span class="k">Note</span> for observations → tick tasks <span class="k">Done</span>.</div></div></div><div class="fs"><div class="fn">5</div><div class="fb"><div class="ft"><b>Medicines and tests in the ward</b><span class="fw">Pharmacist and Lab technician</span></div><div class="fx"><b>Medicines:</b> <span class="k">Pharmacy</span> → <span class="k">Counter sale</span> against the patient's name (medical store bill PH-).<br><b>Tests:</b> <span class="k">Laboratory</span> → <span class="k">Create order</span> with <b>Referred by Dr.</b> → same steps as Example 1 (lab bill LBL-).</div><div class="fr">The ward team sees the results in the patient's record.</div></div></div><div class="fs"><div class="fn">6</div><div class="fb"><div class="ft"><b>Discharge summary</b><span class="fw">Doctor</span></div><div class="fx">Admission → <span class="k">Discharge summary</span>: final diagnosis, course in hospital, procedures, medicines at discharge, advice, follow-up date, condition at discharge → <span class="k">Save summary</span>.</div></div></div><div class="fs"><div class="fn">7</div><div class="fb"><div class="ft"><b>Final hospital bill</b><span class="fw">Receptionist</span></div><div class="fx">Admission → <b>Bill room charges (N days)</b>. Room and nursing charges are calculated from the ward rate, and the <b>advance deposit is deducted automatically</b>. Collect the balance (or choose <b>Insurance (cashless)</b>).</div><div class="fr">Final hospital bill and receipt. Any deposit not used is shown as "Advance deposit not yet adjusted".</div></div></div><div class="fs"><div class="fn">8</div><div class="fb"><div class="ft"><b>Discharge</b><span class="fw">Doctor</span></div><div class="fx">Admission → <span class="k">Discharge</span>. The app shows any pending balance before confirming.</div><div class="fr">The bed becomes free. Patient gets the discharge summary in the app (Records → History) and a WhatsApp / SMS message.</div></div></div><div class="fs"><div class="fn">9</div><div class="fb"><div class="ft"><b>After discharge</b><span class="fw">Administrator, Pharmacist, Lab</span></div><div class="fx">Unused deposit: the administrator opens the deposit bill → <span class="k">Refund</span> with reason. Cashless: update the claim status. Medicine and lab bills are settled at the medical store and the lab.</div></div></div></div><div class="tip">Bill the room charges <b>before</b> pressing <span class="k">Discharge</span>: the room-charge button is available only while the patient is admitted. You can also bill room charges during the stay (for example every 2–3 days); each bill covers only the days not billed before.</div>
+</section>
 <section class="role teal" id="patient">
-  <div class="rh"><span class="n">2</span><div><h2>Patient</h2><div class="who">Who: Patients and their families</div></div></div>
+  <div class="rh"><span class="n">4</span><div><h2>Patient</h2><div class="who">Who: Patients and their families</div></div></div>
   <p>The home screen shows your next appointment, your live token and quick buttons for everything below.</p>
 <h3>Book an appointment</h3>
 <ol>
@@ -111,7 +133,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li>After a visit, tap <span class="k">Rate your visit</span> to give feedback or raise a complaint.</li></ul>
 </section>
 <section class="role navy" id="reception">
-  <div class="rh"><span class="n">3</span><div><h2>Receptionist</h2><div class="who">Who: Front desk</div></div></div>
+  <div class="rh"><span class="n">5</span><div><h2>Receptionist</h2><div class="who">Who: Front desk</div></div></div>
   <h3>Register a patient</h3>
 <ol>
 <li><span class="k">Patients</span> → <span class="k">Register patient</span>. Choose <b>Quick (essential details)</b> for a fast entry or <b>Full registration</b>.</li>
@@ -138,7 +160,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li><b>WhatsApp & SMS:</b> messages to patients are sent only if the patient agreed.</li></ul>
 </section>
 <section class="role navy" id="doctor">
-  <div class="rh"><span class="n">4</span><div><h2>Doctor</h2><div class="who">Who: Doctors</div></div></div>
+  <div class="rh"><span class="n">6</span><div><h2>Doctor</h2><div class="who">Who: Doctors</div></div></div>
   <h3>See patients</h3>
 <ol>
 <li><span class="k">My OPD</span> lists today's patients in token order. Tap <b>Call next · Token N</b>, or open a patient and tap <span class="k">Start consultation</span>.</li>
@@ -159,7 +181,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li>A doctor with administrator rights also sees the administrator menus (see Hospital administrator).</li></ul>
 </section>
 <section class="role navy" id="nurse">
-  <div class="rh"><span class="n">5</span><div><h2>Nurse</h2><div class="who">Who: Nursing staff</div></div></div>
+  <div class="rh"><span class="n">7</span><div><h2>Nurse</h2><div class="who">Who: Nursing staff</div></div></div>
   <h3>Ward work</h3>
 <ol>
 <li><span class="k">Nursing</span> shows admitted patients and the task list, by ward.</li>
@@ -173,7 +195,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip">Saved vitals, medicines and notes cannot be changed or deleted. If something was wrong, add a new note that explains the correction.</div>
 </section>
 <section class="role green" id="pharmacist">
-  <div class="rh"><span class="n">6</span><div><h2>Pharmacist</h2><div class="who">Who: Medical store staff</div></div></div>
+  <div class="rh"><span class="n">8</span><div><h2>Pharmacist</h2><div class="who">Who: Medical store staff</div></div></div>
   <h3>Dispense a prescription</h3>
 <ol>
 <li><span class="k">Pharmacy</span> → <b>To dispense</b> lists prescriptions signed by doctors.</li>
@@ -190,7 +212,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip">You see only the medical store's bills. Refunds and cancellations are done by the store owner.</div>
 </section>
 <section class="role maroon" id="labtech">
-  <div class="rh"><span class="n">7</span><div><h2>Lab technician</h2><div class="who">Who: Laboratory staff</div></div></div>
+  <div class="rh"><span class="n">9</span><div><h2>Lab technician</h2><div class="who">Who: Laboratory staff</div></div></div>
   <h3>From order to report</h3>
 <ol>
 <li><span class="k">Laboratory</span> → <b>To do</b>. Doctors' test orders arrive automatically. For an outside patient, tap <span class="k">Create order</span> and fill <b>Referred by Dr.</b></li>
@@ -204,7 +226,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <p>You see only laboratory bills. Refunds and cancellations are done by the lab owner.</p>
 </section>
 <section class="role navy" id="billing">
-  <div class="rh"><span class="n">8</span><div><h2>Billing</h2><div class="who">Who: Reception, medical store and lab staff; owners and administrators</div></div></div>
+  <div class="rh"><span class="n">10</span><div><h2>Billing</h2><div class="who">Who: Reception, medical store and lab staff; owners and administrators</div></div></div>
   <h3>Create a bill</h3>
 <ol>
 <li><span class="k">Billing</span> → <span class="k">New bill</span> → select the patient.</li>
@@ -226,7 +248,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip">Only the administrator / owner of the unit sees <span class="k">Refund</span> and <span class="k">Cancel bill</span>. Staff: tell them the bill number and reason. See also the one-page billing guide.</div>
 </section>
 <section class="role navy" id="admin">
-  <div class="rh"><span class="n">9</span><div><h2>Hospital administrator</h2><div class="who">Who: Hospital owner / administrator, and a doctor given administrator rights</div></div></div>
+  <div class="rh"><span class="n">11</span><div><h2>Hospital administrator</h2><div class="who">Who: Hospital owner / administrator, and a doctor given administrator rights</div></div></div>
   <p>The dashboard shows today's patients, hospital collection, beds and outstanding payments. You see only the <b>hospital's</b> money; the medical store and laboratory have their own owners.</p>
 <h3>Staff & HR</h3>
 <ul><li><span class="k">Add staff</span>: name, role, mobile number (used to log in), department, registration number and, for doctors, fees. Hospital roles: administrator, doctor, receptionist, nurse.</li>
@@ -244,7 +266,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li><span class="k">Announcements</span> → <span class="k">New announcement</span> for staff or patients; <span class="k">Feedback</span> → <span class="k">Reply & resolve</span>.</li></ul>
 </section>
 <section class="role green" id="storeowner">
-  <div class="rh"><span class="n">10</span><div><h2>Medical store owner</h2><div class="who">Who: Owner of the medical store</div></div></div>
+  <div class="rh"><span class="n">12</span><div><h2>Medical store owner</h2><div class="who">Who: Owner of the medical store</div></div></div>
   <p>You can do everything a pharmacist can, plus the following. You see only the medical store's bills, income, staff, reports and audit log.</p>
 <ul><li><b>Dashboard:</b> today's and this month's store income, low stock and expiring batches.</li>
 <li><b>Staff & HR:</b> add your pharmacists, approve their leave, mark attendance.</li>
@@ -254,7 +276,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip">The store owner account is set up once by the platform team, not by the hospital administrator. This keeps each owner in control of their own staff and income.</div>
 </section>
 <section class="role maroon" id="labowner">
-  <div class="rh"><span class="n">11</span><div><h2>Laboratory owner</h2><div class="who">Who: Owner of the laboratory</div></div></div>
+  <div class="rh"><span class="n">13</span><div><h2>Laboratory owner</h2><div class="who">Who: Owner of the laboratory</div></div></div>
   <p>You can do everything a lab technician can, plus the following. You see only the laboratory's bills, income, staff, reports and audit log.</p>
 <ul><li><b>Verify reports</b> entered by your technicians (<span class="k">Verify report</span>); reopen a verified report for correction when needed.</li>
 <li><b>Staff & HR:</b> add technicians; tick <span class="k">Authorised to verify lab reports</span> for those allowed to verify.</li>
@@ -263,7 +285,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li><b>Refunds and cancellations</b> of laboratory bills; <span class="k">Reports</span> and <span class="k">Audit log</span> for the laboratory.</li></ul>
 </section>
 <section class="role navy" id="allstaff">
-  <div class="rh"><span class="n">12</span><div><h2>For all staff</h2><div class="who">Who: Every staff member</div></div></div>
+  <div class="rh"><span class="n">14</span><div><h2>For all staff</h2><div class="who">Who: Every staff member</div></div></div>
   <ul><li><b>My account</b> (tap your name): notifications, profile, leave and attendance.</li>
 <li><b>Attendance:</b> <span class="k">Check in</span> when you start and <span class="k">Check out</span> when you leave.</li>
 <li><b>Leave:</b> choose type, dates and reason → <span class="k">Send request</span>. Your unit's owner or administrator approves it.</li>
@@ -275,7 +297,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li>Nothing medical or financial is ever deleted. Corrections are added with a reason, so the record stays complete.</li></ul>
 </section>
 <section class="role navy" id="faq">
-  <div class="rh"><span class="n">13</span><div><h2>Problems and answers</h2><div class="who">Who: Everyone</div></div></div>
+  <div class="rh"><span class="n">15</span><div><h2>Problems and answers</h2><div class="who">Who: Everyone</div></div></div>
   <table>
 <tr><td>I see an old version of the app</td><td>Close the app completely and open it again. Still old? Clear the site data in the browser and open the link again.</td></tr>
 <tr><td>The OTP did not arrive</td><td>Check the number is the one the hospital registered. Wait a minute and tap Send OTP again.</td></tr>

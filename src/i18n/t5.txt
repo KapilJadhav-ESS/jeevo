@@ -190,3 +190,6 @@ Only the hospital administrator can give administrator rights || प्रशा
 You cannot change your own role || आप अपनी भूमिका नहीं बदल सकते || तुम्ही स्वतःची भूमिका बदलू शकत नाही
 Management || प्रबंधन || व्यवस्थापन
 Administrator || प्रशासक || प्रशासक
+Advance deposit not yet adjusted || अभी तक समायोजित न हुई अग्रिम जमा राशि || अजून वजा न झालेली आगाऊ ठेव
+Refund the unused deposit from the deposit bill. || बची हुई जमा राशि जमा-बिल से रिफ़ंड करें. || उरलेली ठेव ठेवीच्या बिलातून परत करा.
+Less: advance deposit adjusted || घटाएँ: अग्रिम जमा समायोजित || वजा: आगाऊ ठेव समायोजित

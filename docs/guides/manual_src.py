@@ -61,6 +61,62 @@ sec('start', 'navy',
 <div class="tip"><b>अपडेट:</b> ॲप आपोआप अपडेट होते. जुनी स्क्रीन दिसत असल्यास ॲप पूर्ण बंद करून पुन्हा उघडा.</div>
 '''))
 
+# ---------------------------------------------------------------- Examples
+def flow(rows):
+    # rows: (step title, who, what html, result html)
+    out = '<div class="flow">'
+    for n, (t, who, what, res) in enumerate(rows, 1):
+        out += f'<div class="fs"><div class="fn">{n}</div><div class="fb"><div class="ft"><b>{t}</b><span class="fw">{who}</span></div><div class="fx">{what}</div>' + (f'<div class="fr">{res}</div>' if res else '') + '</div></div>'
+    return out + '</div>'
+
+sec('ex-opd', 'teal',
+('Example 1: an OPD visit, start to finish', 'Everyone: see who does what', '<p>A patient with fever books a visit, sees the doctor, buys medicines and gets a blood test. Each step shows <b>who</b> does it and <b>what the patient gets</b>.</p>' + flow([
+ ('Book the appointment', 'Patient or Receptionist', 'Patient: [[Book Appointment]] → doctor → date and time → confirm.<br>Or reception (patient phones or walks in): [[Appointments]] → [[Book appointment]] → [[Confirm booking]].', 'Patient gets: booking confirmation, token number and reminders on WhatsApp / SMS.'),
+ ('Arrive at the hospital', 'Receptionist', 'Find the patient by mobile number, Patient ID or QR code. New patient: [[Patients]] → [[Register patient]] → <b>Quick (essential details)</b>.', 'Patient gets: Patient ID (card or WhatsApp).'),
+ ('Check in and pay the consultation fee', 'Receptionist', '[[Queue & tokens]] → [[Mark arrived]] → [[Confirm check-in]] → take the fee (cash or UPI). No booking? Use [[Walk-in]].', 'Hospital bill (BL-) and receipt. The live token appears on the patient\'s phone and the waiting-hall TV.'),
+ ('Vitals', 'Nurse or Receptionist', 'Open the patient → [[Record vitals]]: BP, pulse, temperature, weight.', ''),
+ ('Consultation', 'Doctor', '[[My OPD]] → <b>Call next</b> (or reception taps [[Send in]]) → notes and diagnosis → prescription → tick blood tests → <b>Order N test(s)</b> → [[Finish & sign]].', 'Patient gets: the prescription on the phone. The lab bill (LBL-) is made automatically for the tests.'),
+ ('Medicines', 'Pharmacist', '[[Pharmacy]] → <b>To dispense</b> → open the prescription → check allergies → [[Dispense & bill]] → take payment.', 'Medical store bill (PH-) and receipt; stock is reduced.'),
+ ('Blood test', 'Lab technician', '[[Laboratory]] → <b>To do</b> → take payment on the lab bill → [[Register sample & generate ID]] → [[Print sample label]] → [[Mark processing]] → enter results → [[Save results]].', ''),
+ ('Check and send the report', 'Lab owner or authorised technician', 'A different person checks the results → [[Verify report]] → [[Publish to patient]].', 'Patient gets: the report in the app and a WhatsApp / SMS message. The doctor sees it in the patient\'s record.'),
+ ('Follow-up', 'Doctor and Patient', 'The doctor set a follow-up date while signing. The patient books again from the app or at the desk.', 'Patient gets: a follow-up reminder.'),
+]) + '<div class="tip"><b>Three receipts, three owners.</b> The consultation fee goes to the hospital (BL-), medicines to the medical store (PH-) and tests to the laboratory (LBL-). ECG, echo or X-ray ordered by the doctor are hospital tests, done in [[ECG / Echo / X-ray]] and billed by the hospital.</div>'),
+('उदाहरण १: OPD भेट, सुरुवातीपासून शेवटपर्यंत', 'सर्वांसाठी: कोण काय करते', '<p>तापाचा रुग्ण भेट बुक करतो, डॉक्टरांना दाखवतो, औषधे घेतो व रक्ताची तपासणी करतो. प्रत्येक टप्प्यात <b>कोण</b> काम करते व <b>रुग्णाला काय मिळते</b> ते दाखवले आहे.</p>' + flow([
+ ('भेट बुक करणे', 'रुग्ण किंवा रिसेप्शन', 'रुग्ण: [[भेट बुक करा]] → डॉक्टर → तारीख व वेळ → निश्चित करा.<br>किंवा रिसेप्शन (फोनवर किंवा प्रत्यक्ष): [[भेटी]] → [[भेट बुक करा]] → [[बुकिंग निश्चित करा]].', 'रुग्णाला मिळते: बुकिंगची निश्चिती, टोकन नंबर व WhatsApp / SMS वर आठवण.'),
+ ('हॉस्पिटलमध्ये आगमन', 'रिसेप्शन', 'मोबाइल नंबर, पेशंट ID किंवा QR कोडने रुग्ण शोधा. नवीन रुग्ण: [[रुग्ण]] → [[रुग्ण नोंदणी करा]] → <b>जलद (आवश्यक माहिती)</b>.', 'रुग्णाला मिळते: पेशंट ID (कार्ड किंवा WhatsApp).'),
+ ('चेक-इन व तपासणी फी', 'रिसेप्शन', '[[रांग व टोकन]] → [[आले म्हणून नोंदवा]] → [[चेक इन निश्चित करा]] → फी घ्या (रोख किंवा UPI). बुकिंग नाही? [[वॉक-इन]] वापरा.', 'हॉस्पिटलचे बिल (BL-) व पावती. लाइव्ह टोकन रुग्णाच्या फोनवर व प्रतीक्षा कक्षातील TV वर दिसतो.'),
+ ('व्हायटल्स', 'नर्स किंवा रिसेप्शन', 'रुग्ण उघडा → [[व्हायटल्स नोंदवा]]: BP, नाडी, तापमान, वजन.', ''),
+ ('डॉक्टरांची तपासणी', 'डॉक्टर', '[[माझी OPD]] → <b>पुढील बोलवा</b> (किंवा रिसेप्शन [[आत पाठवा]] दाबते) → नोंदी व निदान → प्रिस्क्रिप्शन → रक्त तपासण्या टिक करा → <b>N तपासण्या ऑर्डर करा</b> → [[पूर्ण करा व सही करा]].', 'रुग्णाला मिळते: फोनवर प्रिस्क्रिप्शन. तपासण्यांचे लॅब बिल (LBL-) आपोआप तयार होते.'),
+ ('औषधे', 'फार्मासिस्ट', '[[फार्मसी]] → <b>द्यायचे बाकी</b> → प्रिस्क्रिप्शन उघडा → ॲलर्जी तपासा → [[औषध द्या व बिल करा]] → पैसे घ्या.', 'मेडिकल स्टोअरचे बिल (PH-) व पावती; साठा कमी होतो.'),
+ ('रक्त तपासणी', 'लॅब टेक्निशियन', '[[प्रयोगशाळा]] → <b>करायचे बाकी</b> → लॅब बिलाचे पैसे घ्या → [[नमुना नोंदवा व ID तयार करा]] → [[नमुना लेबल प्रिंट करा]] → [[प्रक्रियेत टाका]] → निकाल भरा → [[निकाल जतन करा]].', ''),
+ ('रिपोर्ट तपासणे व पाठवणे', 'लॅब मालक किंवा अधिकृत टेक्निशियन', 'दुसरी व्यक्ती निकाल तपासते → [[रिपोर्ट पडताळा]] → [[रुग्णाला पाठवा]].', 'रुग्णाला मिळते: ॲपमध्ये रिपोर्ट व WhatsApp / SMS मेसेज. डॉक्टरांना रुग्णाच्या नोंदीत रिपोर्ट दिसतो.'),
+ ('फॉलो-अप', 'डॉक्टर व रुग्ण', 'सही करताना डॉक्टरांनी फॉलो-अप तारीख दिली. रुग्ण ॲपमधून किंवा रिसेप्शनवर पुन्हा बुक करतो.', 'रुग्णाला मिळते: फॉलो-अपची आठवण.'),
+]) + '<div class="tip"><b>तीन पावत्या, तीन मालक.</b> तपासणी फी हॉस्पिटलकडे (BL-), औषधे मेडिकल स्टोअरकडे (PH-) व तपासण्या लॅबकडे (LBL-). डॉक्टरांनी सांगितलेले ECG, इको किंवा एक्स-रे हॉस्पिटलच्या तपासण्या आहेत; त्या [[ECG / इको / एक्स-रे]] मध्ये होतात व हॉस्पिटल बिल करते.</div>'))
+
+sec('ex-ipd', 'teal',
+('Example 2: admission, treatment and discharge', 'Everyone: see who does what', '<p>A patient is admitted for 2 days, treated in the ward, discharged and billed. Each step shows <b>who</b> does it.</p>' + flow([
+ ('Arrival and consultation', 'Receptionist, then Doctor', 'Reception checks the patient in as in Example 1 (or registers an [[Emergency]]). The doctor examines the patient and decides to admit: [[Admit]] on the consultation screen.', ''),
+ ('Bed and admission', 'Receptionist (or Doctor / Administrator)', '[[Beds & admissions]] → [[Admit patient]] → choose a free bed (ICU, general, semi-special or special) → attending doctor → reason and provisional diagnosis → expected discharge → <b>advance deposit</b> and how it was paid → insurer and policy number if cashless → save.', 'Admission number (IP-), deposit receipt (BL-). The bed shows as occupied on the bed board. The family gets a message.'),
+ ('Cashless approval (if insured)', 'Receptionist or Administrator', '[[Insurance & cashless]] → open the admission → record the pre-authorisation request and the approved amount.', ''),
+ ('Treatment, day 1 and day 2', 'Doctor and Nurse', '<b>Doctor:</b> ward round notes in the admission (Notes), tasks for nurses (Tasks), discharge plan.<br><b>Nurse:</b> [[Nursing]] → [[Vitals]] every shift → [[Medicine]] each time a medicine is given → [[Note]] for observations → tick tasks [[Done]].', ''),
+ ('Medicines and tests in the ward', 'Pharmacist and Lab technician', '<b>Medicines:</b> [[Pharmacy]] → [[Counter sale]] against the patient\'s name (medical store bill PH-).<br><b>Tests:</b> [[Laboratory]] → [[Create order]] with <b>Referred by Dr.</b> → same steps as Example 1 (lab bill LBL-).', 'The ward team sees the results in the patient\'s record.'),
+ ('Discharge summary', 'Doctor', 'Admission → [[Discharge summary]]: final diagnosis, course in hospital, procedures, medicines at discharge, advice, follow-up date, condition at discharge → [[Save summary]].', ''),
+ ('Final hospital bill', 'Receptionist', 'Admission → <b>Bill room charges (N days)</b>. Room and nursing charges are calculated from the ward rate, and the <b>advance deposit is deducted automatically</b>. Collect the balance (or choose <b>Insurance (cashless)</b>).', 'Final hospital bill and receipt. Any deposit not used is shown as "Advance deposit not yet adjusted".'),
+ ('Discharge', 'Doctor', 'Admission → [[Discharge]]. The app shows any pending balance before confirming.', 'The bed becomes free. Patient gets the discharge summary in the app (Records → History) and a WhatsApp / SMS message.'),
+ ('After discharge', 'Administrator, Pharmacist, Lab', 'Unused deposit: the administrator opens the deposit bill → [[Refund]] with reason. Cashless: update the claim status. Medicine and lab bills are settled at the medical store and the lab.', ''),
+]) + '<div class="tip">Bill the room charges <b>before</b> pressing [[Discharge]]: the room-charge button is available only while the patient is admitted. You can also bill room charges during the stay (for example every 2–3 days); each bill covers only the days not billed before.</div>'),
+('उदाहरण २: दाखल, उपचार व डिस्चार्ज', 'सर्वांसाठी: कोण काय करते', '<p>रुग्ण २ दिवस दाखल होतो, वॉर्डमध्ये उपचार होतात, डिस्चार्ज व बिल होते. प्रत्येक टप्प्यात <b>कोण</b> काम करते ते दाखवले आहे.</p>' + flow([
+ ('आगमन व तपासणी', 'रिसेप्शन, मग डॉक्टर', 'उदाहरण १ प्रमाणे रिसेप्शन चेक-इन करते (किंवा [[आपत्कालीन]] नोंदणी). डॉक्टर तपासून दाखल करण्याचा निर्णय घेतात: तपासणी स्क्रीनवर [[दाखल करा]].', ''),
+ ('बेड व दाखल', 'रिसेप्शन (किंवा डॉक्टर / प्रशासक)', '[[बेड व दाखल]] → [[रुग्ण दाखल करा]] → रिकामा बेड निवडा (ICU, जनरल, सेमी-स्पेशल किंवा स्पेशल) → जबाबदार डॉक्टर → कारण व प्राथमिक निदान → अपेक्षित डिस्चार्ज → <b>आगाऊ ठेव</b> व भरण्याची पद्धत → कॅशलेस असल्यास विमा कंपनी व पॉलिसी नंबर → जतन करा.', 'दाखल क्रमांक (IP-), ठेवीची पावती (BL-). बेड बोर्डवर बेड "व्यापलेला" दिसतो. नातेवाईकांना मेसेज जातो.'),
+ ('कॅशलेस मंजुरी (विमा असल्यास)', 'रिसेप्शन किंवा प्रशासक', '[[विमा व कॅशलेस]] → दाखल उघडा → प्री-ऑथ विनंती व मंजूर रक्कम नोंदवा.', ''),
+ ('उपचार, दिवस १ व दिवस २', 'डॉक्टर व नर्स', '<b>डॉक्टर:</b> दाखलमध्ये राउंडच्या नोंदी (नोंदी), नर्ससाठी कामे (कामे), डिस्चार्जची योजना.<br><b>नर्स:</b> [[नर्सिंग]] → प्रत्येक शिफ्टला [[व्हायटल्स]] → प्रत्येक वेळी औषध दिल्यावर [[औषध]] → निरीक्षणासाठी [[नोंद]] → कामे [[झाले]] टिक करा.', ''),
+ ('वॉर्डमधील औषधे व तपासण्या', 'फार्मासिस्ट व लॅब टेक्निशियन', '<b>औषधे:</b> [[फार्मसी]] → रुग्णाच्या नावावर [[काउंटर विक्री]] (मेडिकल स्टोअर बिल PH-).<br><b>तपासण्या:</b> [[प्रयोगशाळा]] → <b>Referred by Dr.</b> सह [[ऑर्डर तयार करा]] → उदाहरण १ प्रमाणे पुढील टप्पे (लॅब बिल LBL-).', 'वॉर्ड टीमला रुग्णाच्या नोंदीत निकाल दिसतात.'),
+ ('डिस्चार्ज सारांश', 'डॉक्टर', 'दाखल → [[डिस्चार्ज सारांश]]: अंतिम निदान, हॉस्पिटलमधील उपचार, प्रक्रिया, डिस्चार्जवेळची औषधे, सल्ला, फॉलो-अप तारीख, डिस्चार्जवेळची स्थिती → [[सारांश जतन करा]].', ''),
+ ('हॉस्पिटलचे अंतिम बिल', 'रिसेप्शन', 'दाखल → <b>खोलीचे शुल्क बिल करा (N दिवस)</b>. वॉर्डच्या दराने खोली व नर्सिंग शुल्क मोजले जाते, व <b>आगाऊ ठेव आपोआप वजा होते</b>. उरलेली रक्कम घ्या (किंवा <b>विमा (कॅशलेस)</b> निवडा).', 'हॉस्पिटलचे अंतिम बिल व पावती. न वापरलेली ठेव "अजून वजा न झालेली आगाऊ ठेव" म्हणून दिसते.'),
+ ('डिस्चार्ज', 'डॉक्टर', 'दाखल → [[डिस्चार्ज]]. निश्चित करण्याआधी ॲप बाकी रक्कम दाखवते.', 'बेड रिकामा होतो. रुग्णाला ॲपमध्ये (नोंदी → इतिहास) डिस्चार्ज सारांश व WhatsApp / SMS मेसेज मिळतो.'),
+ ('डिस्चार्जनंतर', 'प्रशासक, फार्मासिस्ट, लॅब', 'न वापरलेली ठेव: प्रशासक ठेवीचे बिल उघडून कारणासह [[परतावा]] करतात. कॅशलेस: क्लेमची स्थिती अपडेट करा. औषधे व लॅबची बिले मेडिकल स्टोअर व लॅबमध्ये भरली जातात.', ''),
+]) + '<div class="tip">[[डिस्चार्ज]] दाबण्या<b>आधी</b> खोलीचे शुल्क बिल करा: रुग्ण दाखल असेपर्यंतच हे बटण दिसते. मुक्कामादरम्यानही (उदा. दर २–३ दिवसांनी) खोलीचे शुल्क बिल करता येते; प्रत्येक बिल आधी बिल न झालेल्या दिवसांचेच असते.</div>'))
+
 # ---------------------------------------------------------------- 2. Patient
 sec('patient', 'teal',
 ('Patient', 'Patients and their families', '''
@@ -517,6 +573,18 @@ table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; font-size: 14
 td { vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 td:first-child { width: 38%; font-weight: 600; }
 footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+.flow { display: grid; gap: 0; margin: 10px 0; }
+.fs { display: grid; grid-template-columns: 30px 1fr; gap: 12px; break-inside: avoid; }
+.fn { font: 800 13px/28px var(--display); color: #fff; background: var(--c); width: 28px; height: 28px; text-align: center; position: relative; z-index: 1; }
+.fs:not(:last-child) .fn { box-shadow: 0 0 0 0 transparent; }
+.fs { position: relative; }
+.fs:not(:last-child)::before { content: ""; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--line); }
+.fb { padding: 2px 0 14px; min-width: 0; }
+.ft { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 3px; }
+.ft b { font-family: var(--display); font-size: 15px; color: var(--ink); }
+.fw { font-size: 12.5px; font-weight: 700; color: #fff; background: var(--navy); padding: 1px 8px; }
+.fx { font-size: 14.2px; }
+.fr { font-size: 13.6px; color: var(--teal); margin-top: 3px; padding-left: 10px; border-left: 3px solid var(--teal); }
 .navy { --c: var(--navy); } .teal { --c: var(--teal); } .green { --c: var(--green); } .maroon { --c: var(--maroon); }
 @media (max-width: 640px) {
   .cover, .intro, section.role, footer { padding-left: 18px; padding-right: 18px; }
@@ -532,6 +600,8 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
   section.role { break-before: page; border-top: 0; padding-top: 0; }
   .tip, tr, ol li, ul li { break-inside: avoid; }
   h3 { break-after: avoid; }
+  .fb { padding-bottom: 8px; } .fx { font-size: 12.6px; line-height: 1.38; } .fr { font-size: 12.2px; } .ft b { font-size: 13.6px; }
+  .flow + .tip, .flow ~ .tip { font-size: 12.4px; }
 }
 '''
 

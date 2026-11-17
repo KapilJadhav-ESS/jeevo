@@ -43,6 +43,18 @@ table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; font-size: 14
 td { vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 td:first-child { width: 38%; font-weight: 600; }
 footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+.flow { display: grid; gap: 0; margin: 10px 0; }
+.fs { display: grid; grid-template-columns: 30px 1fr; gap: 12px; break-inside: avoid; }
+.fn { font: 800 13px/28px var(--display); color: #fff; background: var(--c); width: 28px; height: 28px; text-align: center; position: relative; z-index: 1; }
+.fs:not(:last-child) .fn { box-shadow: 0 0 0 0 transparent; }
+.fs { position: relative; }
+.fs:not(:last-child)::before { content: ""; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--line); }
+.fb { padding: 2px 0 14px; min-width: 0; }
+.ft { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 3px; }
+.ft b { font-family: var(--display); font-size: 15px; color: var(--ink); }
+.fw { font-size: 12.5px; font-weight: 700; color: #fff; background: var(--navy); padding: 1px 8px; }
+.fx { font-size: 14.2px; }
+.fr { font-size: 13.6px; color: var(--teal); margin-top: 3px; padding-left: 10px; border-left: 3px solid var(--teal); }
 .navy { --c: var(--navy); } .teal { --c: var(--teal); } .green { --c: var(--green); } .maroon { --c: var(--maroon); }
 @media (max-width: 640px) {
   .cover, .intro, section.role, footer { padding-left: 18px; padding-right: 18px; }
@@ -58,12 +70,14 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
   section.role { break-before: page; border-top: 0; padding-top: 0; }
   .tip, tr, ol li, ul li { break-inside: avoid; }
   h3 { break-after: avoid; }
+  .fb { padding-bottom: 8px; } .fx { font-size: 12.6px; line-height: 1.38; } .fr { font-size: 12.2px; } .ft b { font-size: 13.6px; }
+  .flow + .tip, .flow ~ .tip { font-size: 12.4px; }
 }
 </style>
 <div class="doc" lang="mr">
   <header class="cover"><div class="brand">JEEVO</div><h1>वापरकर्ता पुस्तिका</h1><p>हॉस्पिटल व क्लिनिक ॲप · रुग्ण, डॉक्टर, रिसेप्शन, नर्स, मेडिकल स्टोअर, लॅब आणि प्रशासकांसाठी</p></header>
   <div class="intro">
-    <div><h2>अनुक्रमणिका</h2><ol class="toc"><li class="navy"><a href="#start">सुरुवात</a></li><li class="teal"><a href="#patient">रुग्ण</a></li><li class="navy"><a href="#reception">रिसेप्शन</a></li><li class="navy"><a href="#doctor">डॉक्टर</a></li><li class="navy"><a href="#nurse">नर्स</a></li><li class="green"><a href="#pharmacist">फार्मासिस्ट</a></li><li class="maroon"><a href="#labtech">लॅब टेक्निशियन</a></li><li class="navy"><a href="#billing">बिलिंग</a></li><li class="navy"><a href="#admin">हॉस्पिटल प्रशासक</a></li><li class="green"><a href="#storeowner">मेडिकल स्टोअर मालक</a></li><li class="maroon"><a href="#labowner">लॅब मालक</a></li><li class="navy"><a href="#allstaff">सर्व कर्मचाऱ्यांसाठी</a></li><li class="navy"><a href="#faq">समस्या व उत्तरे</a></li></ol></div>
+    <div><h2>अनुक्रमणिका</h2><ol class="toc"><li class="navy"><a href="#start">सुरुवात</a></li><li class="teal"><a href="#ex-opd">उदाहरण १: OPD भेट, सुरुवातीपासून शेवटपर्यंत</a></li><li class="teal"><a href="#ex-ipd">उदाहरण २: दाखल, उपचार व डिस्चार्ज</a></li><li class="teal"><a href="#patient">रुग्ण</a></li><li class="navy"><a href="#reception">रिसेप्शन</a></li><li class="navy"><a href="#doctor">डॉक्टर</a></li><li class="navy"><a href="#nurse">नर्स</a></li><li class="green"><a href="#pharmacist">फार्मासिस्ट</a></li><li class="maroon"><a href="#labtech">लॅब टेक्निशियन</a></li><li class="navy"><a href="#billing">बिलिंग</a></li><li class="navy"><a href="#admin">हॉस्पिटल प्रशासक</a></li><li class="green"><a href="#storeowner">मेडिकल स्टोअर मालक</a></li><li class="maroon"><a href="#labowner">लॅब मालक</a></li><li class="navy"><a href="#allstaff">सर्व कर्मचाऱ्यांसाठी</a></li><li class="navy"><a href="#faq">समस्या व उत्तरे</a></li></ol></div>
     <div><h2>ही पुस्तिका कशी वाचावी</h2><p>अनुक्रमणिकेत तुमची भूमिका शोधा. बटणे व मेनूची नावे चौकटीत दाखवली आहेत, जसे <span class="k">बिलिंग</span> — ॲपमध्ये जशी दिसतात तशीच. ॲप English, हिंदी व मराठीत चालते; ही पुस्तिका ॲप मराठीत वापरणाऱ्यांसाठी आहे.</p></div>
   </div>
 <section class="role navy" id="start">
@@ -86,8 +100,16 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip"><b>सुरक्षा:</b> रुग्णांची माहिती सुरक्षित राहावी म्हणून ३० मिनिटे वापर न झाल्यास कर्मचारी आपोआप लॉग आउट होतात. तुमचे लॉगिन कोणालाही देऊ नका. सामायिक कॉम्प्युटरवर काम संपल्यावर प्रोफाइलमधून लॉग आउट करा.</div>
 <div class="tip"><b>अपडेट:</b> ॲप आपोआप अपडेट होते. जुनी स्क्रीन दिसत असल्यास ॲप पूर्ण बंद करून पुन्हा उघडा.</div>
 </section>
+<section class="role teal" id="ex-opd">
+  <div class="rh"><span class="n">2</span><div><h2>उदाहरण १: OPD भेट, सुरुवातीपासून शेवटपर्यंत</h2><div class="who">कोणासाठी: सर्वांसाठी: कोण काय करते</div></div></div>
+  <p>तापाचा रुग्ण भेट बुक करतो, डॉक्टरांना दाखवतो, औषधे घेतो व रक्ताची तपासणी करतो. प्रत्येक टप्प्यात <b>कोण</b> काम करते व <b>रुग्णाला काय मिळते</b> ते दाखवले आहे.</p><div class="flow"><div class="fs"><div class="fn">1</div><div class="fb"><div class="ft"><b>भेट बुक करणे</b><span class="fw">रुग्ण किंवा रिसेप्शन</span></div><div class="fx">रुग्ण: <span class="k">भेट बुक करा</span> → डॉक्टर → तारीख व वेळ → निश्चित करा.<br>किंवा रिसेप्शन (फोनवर किंवा प्रत्यक्ष): <span class="k">भेटी</span> → <span class="k">भेट बुक करा</span> → <span class="k">बुकिंग निश्चित करा</span>.</div><div class="fr">रुग्णाला मिळते: बुकिंगची निश्चिती, टोकन नंबर व WhatsApp / SMS वर आठवण.</div></div></div><div class="fs"><div class="fn">2</div><div class="fb"><div class="ft"><b>हॉस्पिटलमध्ये आगमन</b><span class="fw">रिसेप्शन</span></div><div class="fx">मोबाइल नंबर, पेशंट ID किंवा QR कोडने रुग्ण शोधा. नवीन रुग्ण: <span class="k">रुग्ण</span> → <span class="k">रुग्ण नोंदणी करा</span> → <b>जलद (आवश्यक माहिती)</b>.</div><div class="fr">रुग्णाला मिळते: पेशंट ID (कार्ड किंवा WhatsApp).</div></div></div><div class="fs"><div class="fn">3</div><div class="fb"><div class="ft"><b>चेक-इन व तपासणी फी</b><span class="fw">रिसेप्शन</span></div><div class="fx"><span class="k">रांग व टोकन</span> → <span class="k">आले म्हणून नोंदवा</span> → <span class="k">चेक इन निश्चित करा</span> → फी घ्या (रोख किंवा UPI). बुकिंग नाही? <span class="k">वॉक-इन</span> वापरा.</div><div class="fr">हॉस्पिटलचे बिल (BL-) व पावती. लाइव्ह टोकन रुग्णाच्या फोनवर व प्रतीक्षा कक्षातील TV वर दिसतो.</div></div></div><div class="fs"><div class="fn">4</div><div class="fb"><div class="ft"><b>व्हायटल्स</b><span class="fw">नर्स किंवा रिसेप्शन</span></div><div class="fx">रुग्ण उघडा → <span class="k">व्हायटल्स नोंदवा</span>: BP, नाडी, तापमान, वजन.</div></div></div><div class="fs"><div class="fn">5</div><div class="fb"><div class="ft"><b>डॉक्टरांची तपासणी</b><span class="fw">डॉक्टर</span></div><div class="fx"><span class="k">माझी OPD</span> → <b>पुढील बोलवा</b> (किंवा रिसेप्शन <span class="k">आत पाठवा</span> दाबते) → नोंदी व निदान → प्रिस्क्रिप्शन → रक्त तपासण्या टिक करा → <b>N तपासण्या ऑर्डर करा</b> → <span class="k">पूर्ण करा व सही करा</span>.</div><div class="fr">रुग्णाला मिळते: फोनवर प्रिस्क्रिप्शन. तपासण्यांचे लॅब बिल (LBL-) आपोआप तयार होते.</div></div></div><div class="fs"><div class="fn">6</div><div class="fb"><div class="ft"><b>औषधे</b><span class="fw">फार्मासिस्ट</span></div><div class="fx"><span class="k">फार्मसी</span> → <b>द्यायचे बाकी</b> → प्रिस्क्रिप्शन उघडा → ॲलर्जी तपासा → <span class="k">औषध द्या व बिल करा</span> → पैसे घ्या.</div><div class="fr">मेडिकल स्टोअरचे बिल (PH-) व पावती; साठा कमी होतो.</div></div></div><div class="fs"><div class="fn">7</div><div class="fb"><div class="ft"><b>रक्त तपासणी</b><span class="fw">लॅब टेक्निशियन</span></div><div class="fx"><span class="k">प्रयोगशाळा</span> → <b>करायचे बाकी</b> → लॅब बिलाचे पैसे घ्या → <span class="k">नमुना नोंदवा व ID तयार करा</span> → <span class="k">नमुना लेबल प्रिंट करा</span> → <span class="k">प्रक्रियेत टाका</span> → निकाल भरा → <span class="k">निकाल जतन करा</span>.</div></div></div><div class="fs"><div class="fn">8</div><div class="fb"><div class="ft"><b>रिपोर्ट तपासणे व पाठवणे</b><span class="fw">लॅब मालक किंवा अधिकृत टेक्निशियन</span></div><div class="fx">दुसरी व्यक्ती निकाल तपासते → <span class="k">रिपोर्ट पडताळा</span> → <span class="k">रुग्णाला पाठवा</span>.</div><div class="fr">रुग्णाला मिळते: ॲपमध्ये रिपोर्ट व WhatsApp / SMS मेसेज. डॉक्टरांना रुग्णाच्या नोंदीत रिपोर्ट दिसतो.</div></div></div><div class="fs"><div class="fn">9</div><div class="fb"><div class="ft"><b>फॉलो-अप</b><span class="fw">डॉक्टर व रुग्ण</span></div><div class="fx">सही करताना डॉक्टरांनी फॉलो-अप तारीख दिली. रुग्ण ॲपमधून किंवा रिसेप्शनवर पुन्हा बुक करतो.</div><div class="fr">रुग्णाला मिळते: फॉलो-अपची आठवण.</div></div></div></div><div class="tip"><b>तीन पावत्या, तीन मालक.</b> तपासणी फी हॉस्पिटलकडे (BL-), औषधे मेडिकल स्टोअरकडे (PH-) व तपासण्या लॅबकडे (LBL-). डॉक्टरांनी सांगितलेले ECG, इको किंवा एक्स-रे हॉस्पिटलच्या तपासण्या आहेत; त्या <span class="k">ECG / इको / एक्स-रे</span> मध्ये होतात व हॉस्पिटल बिल करते.</div>
+</section>
+<section class="role teal" id="ex-ipd">
+  <div class="rh"><span class="n">3</span><div><h2>उदाहरण २: दाखल, उपचार व डिस्चार्ज</h2><div class="who">कोणासाठी: सर्वांसाठी: कोण काय करते</div></div></div>
+  <p>रुग्ण २ दिवस दाखल होतो, वॉर्डमध्ये उपचार होतात, डिस्चार्ज व बिल होते. प्रत्येक टप्प्यात <b>कोण</b> काम करते ते दाखवले आहे.</p><div class="flow"><div class="fs"><div class="fn">1</div><div class="fb"><div class="ft"><b>आगमन व तपासणी</b><span class="fw">रिसेप्शन, मग डॉक्टर</span></div><div class="fx">उदाहरण १ प्रमाणे रिसेप्शन चेक-इन करते (किंवा <span class="k">आपत्कालीन</span> नोंदणी). डॉक्टर तपासून दाखल करण्याचा निर्णय घेतात: तपासणी स्क्रीनवर <span class="k">दाखल करा</span>.</div></div></div><div class="fs"><div class="fn">2</div><div class="fb"><div class="ft"><b>बेड व दाखल</b><span class="fw">रिसेप्शन (किंवा डॉक्टर / प्रशासक)</span></div><div class="fx"><span class="k">बेड व दाखल</span> → <span class="k">रुग्ण दाखल करा</span> → रिकामा बेड निवडा (ICU, जनरल, सेमी-स्पेशल किंवा स्पेशल) → जबाबदार डॉक्टर → कारण व प्राथमिक निदान → अपेक्षित डिस्चार्ज → <b>आगाऊ ठेव</b> व भरण्याची पद्धत → कॅशलेस असल्यास विमा कंपनी व पॉलिसी नंबर → जतन करा.</div><div class="fr">दाखल क्रमांक (IP-), ठेवीची पावती (BL-). बेड बोर्डवर बेड "व्यापलेला" दिसतो. नातेवाईकांना मेसेज जातो.</div></div></div><div class="fs"><div class="fn">3</div><div class="fb"><div class="ft"><b>कॅशलेस मंजुरी (विमा असल्यास)</b><span class="fw">रिसेप्शन किंवा प्रशासक</span></div><div class="fx"><span class="k">विमा व कॅशलेस</span> → दाखल उघडा → प्री-ऑथ विनंती व मंजूर रक्कम नोंदवा.</div></div></div><div class="fs"><div class="fn">4</div><div class="fb"><div class="ft"><b>उपचार, दिवस १ व दिवस २</b><span class="fw">डॉक्टर व नर्स</span></div><div class="fx"><b>डॉक्टर:</b> दाखलमध्ये राउंडच्या नोंदी (नोंदी), नर्ससाठी कामे (कामे), डिस्चार्जची योजना.<br><b>नर्स:</b> <span class="k">नर्सिंग</span> → प्रत्येक शिफ्टला <span class="k">व्हायटल्स</span> → प्रत्येक वेळी औषध दिल्यावर <span class="k">औषध</span> → निरीक्षणासाठी <span class="k">नोंद</span> → कामे <span class="k">झाले</span> टिक करा.</div></div></div><div class="fs"><div class="fn">5</div><div class="fb"><div class="ft"><b>वॉर्डमधील औषधे व तपासण्या</b><span class="fw">फार्मासिस्ट व लॅब टेक्निशियन</span></div><div class="fx"><b>औषधे:</b> <span class="k">फार्मसी</span> → रुग्णाच्या नावावर <span class="k">काउंटर विक्री</span> (मेडिकल स्टोअर बिल PH-).<br><b>तपासण्या:</b> <span class="k">प्रयोगशाळा</span> → <b>Referred by Dr.</b> सह <span class="k">ऑर्डर तयार करा</span> → उदाहरण १ प्रमाणे पुढील टप्पे (लॅब बिल LBL-).</div><div class="fr">वॉर्ड टीमला रुग्णाच्या नोंदीत निकाल दिसतात.</div></div></div><div class="fs"><div class="fn">6</div><div class="fb"><div class="ft"><b>डिस्चार्ज सारांश</b><span class="fw">डॉक्टर</span></div><div class="fx">दाखल → <span class="k">डिस्चार्ज सारांश</span>: अंतिम निदान, हॉस्पिटलमधील उपचार, प्रक्रिया, डिस्चार्जवेळची औषधे, सल्ला, फॉलो-अप तारीख, डिस्चार्जवेळची स्थिती → <span class="k">सारांश जतन करा</span>.</div></div></div><div class="fs"><div class="fn">7</div><div class="fb"><div class="ft"><b>हॉस्पिटलचे अंतिम बिल</b><span class="fw">रिसेप्शन</span></div><div class="fx">दाखल → <b>खोलीचे शुल्क बिल करा (N दिवस)</b>. वॉर्डच्या दराने खोली व नर्सिंग शुल्क मोजले जाते, व <b>आगाऊ ठेव आपोआप वजा होते</b>. उरलेली रक्कम घ्या (किंवा <b>विमा (कॅशलेस)</b> निवडा).</div><div class="fr">हॉस्पिटलचे अंतिम बिल व पावती. न वापरलेली ठेव "अजून वजा न झालेली आगाऊ ठेव" म्हणून दिसते.</div></div></div><div class="fs"><div class="fn">8</div><div class="fb"><div class="ft"><b>डिस्चार्ज</b><span class="fw">डॉक्टर</span></div><div class="fx">दाखल → <span class="k">डिस्चार्ज</span>. निश्चित करण्याआधी ॲप बाकी रक्कम दाखवते.</div><div class="fr">बेड रिकामा होतो. रुग्णाला ॲपमध्ये (नोंदी → इतिहास) डिस्चार्ज सारांश व WhatsApp / SMS मेसेज मिळतो.</div></div></div><div class="fs"><div class="fn">9</div><div class="fb"><div class="ft"><b>डिस्चार्जनंतर</b><span class="fw">प्रशासक, फार्मासिस्ट, लॅब</span></div><div class="fx">न वापरलेली ठेव: प्रशासक ठेवीचे बिल उघडून कारणासह <span class="k">परतावा</span> करतात. कॅशलेस: क्लेमची स्थिती अपडेट करा. औषधे व लॅबची बिले मेडिकल स्टोअर व लॅबमध्ये भरली जातात.</div></div></div></div><div class="tip"><span class="k">डिस्चार्ज</span> दाबण्या<b>आधी</b> खोलीचे शुल्क बिल करा: रुग्ण दाखल असेपर्यंतच हे बटण दिसते. मुक्कामादरम्यानही (उदा. दर २–३ दिवसांनी) खोलीचे शुल्क बिल करता येते; प्रत्येक बिल आधी बिल न झालेल्या दिवसांचेच असते.</div>
+</section>
 <section class="role teal" id="patient">
-  <div class="rh"><span class="n">2</span><div><h2>रुग्ण</h2><div class="who">कोणासाठी: रुग्ण व त्यांचे कुटुंब</div></div></div>
+  <div class="rh"><span class="n">4</span><div><h2>रुग्ण</h2><div class="who">कोणासाठी: रुग्ण व त्यांचे कुटुंब</div></div></div>
   <p>होम स्क्रीनवर तुमची पुढची भेट, लाइव्ह टोकन आणि खालील सर्व गोष्टींची झटपट बटणे दिसतात.</p>
 <h3>भेट (अपॉइंटमेंट) बुक करा</h3>
 <ol>
@@ -111,7 +133,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li>भेटीनंतर अभिप्राय किंवा तक्रारीसाठी <span class="k">तुमच्या भेटीला रेटिंग द्या</span> दाबा.</li></ul>
 </section>
 <section class="role navy" id="reception">
-  <div class="rh"><span class="n">3</span><div><h2>रिसेप्शन</h2><div class="who">कोणासाठी: रिसेप्शन / फ्रंट डेस्क</div></div></div>
+  <div class="rh"><span class="n">5</span><div><h2>रिसेप्शन</h2><div class="who">कोणासाठी: रिसेप्शन / फ्रंट डेस्क</div></div></div>
   <h3>रुग्ण नोंदणी</h3>
 <ol>
 <li><span class="k">रुग्ण</span> → <span class="k">रुग्ण नोंदणी करा</span>. झटपट नोंदीसाठी <b>जलद (आवश्यक माहिती)</b> किंवा <b>संपूर्ण नोंदणी</b> निवडा.</li>
@@ -138,7 +160,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li><b>WhatsApp व SMS:</b> रुग्णाने संमती दिली असेल तरच मेसेज जातात.</li></ul>
 </section>
 <section class="role navy" id="doctor">
-  <div class="rh"><span class="n">4</span><div><h2>डॉक्टर</h2><div class="who">कोणासाठी: डॉक्टर</div></div></div>
+  <div class="rh"><span class="n">6</span><div><h2>डॉक्टर</h2><div class="who">कोणासाठी: डॉक्टर</div></div></div>
   <h3>रुग्ण तपासणी</h3>
 <ol>
 <li><span class="k">माझी OPD</span> मध्ये आजचे रुग्ण टोकनच्या क्रमाने दिसतात. <b>पुढील बोलवा · टोकन N</b> दाबा, किंवा रुग्ण उघडून <span class="k">तपासणी सुरू करा</span> दाबा.</li>
@@ -159,7 +181,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li>प्रशासक अधिकार असलेल्या डॉक्टरांना प्रशासकाचे मेनूही दिसतात (हॉस्पिटल प्रशासक विभाग पहा).</li></ul>
 </section>
 <section class="role navy" id="nurse">
-  <div class="rh"><span class="n">5</span><div><h2>नर्स</h2><div class="who">कोणासाठी: नर्सिंग कर्मचारी</div></div></div>
+  <div class="rh"><span class="n">7</span><div><h2>नर्स</h2><div class="who">कोणासाठी: नर्सिंग कर्मचारी</div></div></div>
   <h3>वॉर्डमधील काम</h3>
 <ol>
 <li><span class="k">नर्सिंग</span> मध्ये वॉर्डनुसार दाखल रुग्ण व कामांची यादी दिसते.</li>
@@ -173,7 +195,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip">जतन केलेले व्हायटल्स, औषधे व नोंदी बदलता किंवा काढता येत नाहीत. चूक झाल्यास दुरुस्ती सांगणारी नवीन नोंद लिहा.</div>
 </section>
 <section class="role green" id="pharmacist">
-  <div class="rh"><span class="n">6</span><div><h2>फार्मासिस्ट</h2><div class="who">कोणासाठी: मेडिकल स्टोअर कर्मचारी</div></div></div>
+  <div class="rh"><span class="n">8</span><div><h2>फार्मासिस्ट</h2><div class="who">कोणासाठी: मेडिकल स्टोअर कर्मचारी</div></div></div>
   <h3>प्रिस्क्रिप्शनप्रमाणे औषध देणे</h3>
 <ol>
 <li><span class="k">फार्मसी</span> → <b>द्यायचे बाकी</b> मध्ये डॉक्टरांनी सही केलेली प्रिस्क्रिप्शन दिसतात.</li>
@@ -190,7 +212,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip">तुम्हाला फक्त मेडिकल स्टोअरची बिले दिसतात. परतावा व बिल रद्द करणे स्टोअरचे मालक करतात.</div>
 </section>
 <section class="role maroon" id="labtech">
-  <div class="rh"><span class="n">7</span><div><h2>लॅब टेक्निशियन</h2><div class="who">कोणासाठी: लॅब कर्मचारी</div></div></div>
+  <div class="rh"><span class="n">9</span><div><h2>लॅब टेक्निशियन</h2><div class="who">कोणासाठी: लॅब कर्मचारी</div></div></div>
   <h3>ऑर्डरपासून रिपोर्टपर्यंत</h3>
 <ol>
 <li><span class="k">प्रयोगशाळा</span> → <b>करायचे बाकी</b>. डॉक्टरांच्या तपासणी ऑर्डर आपोआप येतात. बाहेरच्या रुग्णासाठी <span class="k">ऑर्डर तयार करा</span> दाबा व <b>Referred by Dr.</b> भरा.</li>
@@ -204,7 +226,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <p>तुम्हाला फक्त लॅबची बिले दिसतात. परतावा व बिल रद्द करणे लॅबचे मालक करतात.</p>
 </section>
 <section class="role navy" id="billing">
-  <div class="rh"><span class="n">8</span><div><h2>बिलिंग</h2><div class="who">कोणासाठी: रिसेप्शन, मेडिकल स्टोअर व लॅब कर्मचारी; मालक व प्रशासक</div></div></div>
+  <div class="rh"><span class="n">10</span><div><h2>बिलिंग</h2><div class="who">कोणासाठी: रिसेप्शन, मेडिकल स्टोअर व लॅब कर्मचारी; मालक व प्रशासक</div></div></div>
   <h3>बिल तयार करा</h3>
 <ol>
 <li><span class="k">बिलिंग</span> → <span class="k">नवीन बिल</span> → रुग्ण निवडा.</li>
@@ -226,7 +248,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip"><span class="k">परतावा</span> व <span class="k">बिल रद्द करा</span> फक्त त्या विभागाच्या प्रशासक / मालकांना दिसतात. कर्मचाऱ्यांनी बिल नंबर व कारण त्यांना सांगावे. एक पानी बिलिंग मार्गदर्शिकाही पहा.</div>
 </section>
 <section class="role navy" id="admin">
-  <div class="rh"><span class="n">9</span><div><h2>हॉस्पिटल प्रशासक</h2><div class="who">कोणासाठी: हॉस्पिटल मालक / प्रशासक, व प्रशासक अधिकार दिलेले डॉक्टर</div></div></div>
+  <div class="rh"><span class="n">11</span><div><h2>हॉस्पिटल प्रशासक</h2><div class="who">कोणासाठी: हॉस्पिटल मालक / प्रशासक, व प्रशासक अधिकार दिलेले डॉक्टर</div></div></div>
   <p>डॅशबोर्डवर आजचे रुग्ण, हॉस्पिटलची वसुली, बेड व थकबाकी दिसते. तुम्हाला फक्त <b>हॉस्पिटलचे</b> पैसे दिसतात; मेडिकल स्टोअर व लॅबचे मालक वेगळे असतात.</p>
 <h3>कर्मचारी व HR</h3>
 <ul><li><span class="k">कर्मचारी जोडा</span>: नाव, भूमिका, मोबाइल नंबर (लॉगिनसाठी), विभाग, नोंदणी क्रमांक आणि डॉक्टरांसाठी फी. हॉस्पिटलच्या भूमिका: प्रशासक, डॉक्टर, रिसेप्शन, नर्स.</li>
@@ -244,7 +266,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li>कर्मचारी किंवा रुग्णांसाठी <span class="k">सूचना</span> → <span class="k">नवीन सूचना</span>; <span class="k">अभिप्राय</span> → <span class="k">उत्तर द्या व निकाली काढा</span>.</li></ul>
 </section>
 <section class="role green" id="storeowner">
-  <div class="rh"><span class="n">10</span><div><h2>मेडिकल स्टोअर मालक</h2><div class="who">कोणासाठी: मेडिकल स्टोअरचे मालक</div></div></div>
+  <div class="rh"><span class="n">12</span><div><h2>मेडिकल स्टोअर मालक</h2><div class="who">कोणासाठी: मेडिकल स्टोअरचे मालक</div></div></div>
   <p>फार्मासिस्ट करू शकणारी सर्व कामे तुम्ही करू शकता, व याशिवाय खालील. तुम्हाला फक्त मेडिकल स्टोअरची बिले, उत्पन्न, कर्मचारी, अहवाल व ऑडिट नोंद दिसते.</p>
 <ul><li><b>डॅशबोर्ड:</b> स्टोअरचे आजचे व या महिन्याचे उत्पन्न, कमी साठा व मुदत संपणाऱ्या बॅच.</li>
 <li><b>कर्मचारी व HR:</b> तुमचे फार्मासिस्ट जोडा, रजा मंजूर करा, हजेरी नोंदवा.</li>
@@ -254,7 +276,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <div class="tip">स्टोअर मालकाचे खाते प्लॅटफॉर्म टीम एकदाच तयार करते, हॉस्पिटल प्रशासक नाही. त्यामुळे प्रत्येक मालकाचे स्वतःचे कर्मचारी व उत्पन्न त्यांच्याच हातात राहते.</div>
 </section>
 <section class="role maroon" id="labowner">
-  <div class="rh"><span class="n">11</span><div><h2>लॅब मालक</h2><div class="who">कोणासाठी: लॅबचे मालक</div></div></div>
+  <div class="rh"><span class="n">13</span><div><h2>लॅब मालक</h2><div class="who">कोणासाठी: लॅबचे मालक</div></div></div>
   <p>लॅब टेक्निशियन करू शकणारी सर्व कामे तुम्ही करू शकता, व याशिवाय खालील. तुम्हाला फक्त लॅबची बिले, उत्पन्न, कर्मचारी, अहवाल व ऑडिट नोंद दिसते.</p>
 <ul><li>तुमच्या टेक्निशियननी भरलेले <b>रिपोर्ट व्हेरिफाय करा</b> (<span class="k">रिपोर्ट पडताळा</span>); गरज पडल्यास व्हेरिफाय झालेला रिपोर्ट दुरुस्तीसाठी पुन्हा उघडा.</li>
 <li><b>कर्मचारी व HR:</b> टेक्निशियन जोडा; व्हेरिफाय करण्याची परवानगी असलेल्यांसाठी <span class="k">लॅब रिपोर्ट पडताळण्यास अधिकृत</span> टिक करा.</li>
@@ -263,7 +285,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li>लॅबच्या बिलांचा <b>परतावा व रद्द करणे</b>; लॅबसाठी <span class="k">अहवाल</span> व <span class="k">ऑडिट नोंद</span>.</li></ul>
 </section>
 <section class="role navy" id="allstaff">
-  <div class="rh"><span class="n">12</span><div><h2>सर्व कर्मचाऱ्यांसाठी</h2><div class="who">कोणासाठी: प्रत्येक कर्मचारी</div></div></div>
+  <div class="rh"><span class="n">14</span><div><h2>सर्व कर्मचाऱ्यांसाठी</h2><div class="who">कोणासाठी: प्रत्येक कर्मचारी</div></div></div>
   <ul><li><b>माझे खाते</b> (तुमच्या नावावर टॅप करा): सूचना, प्रोफाइल, रजा व हजेरी.</li>
 <li><b>हजेरी:</b> काम सुरू करताना <span class="k">चेक इन</span> व जाताना <span class="k">चेक आउट</span>.</li>
 <li><b>रजा:</b> प्रकार, तारखा व कारण निवडा → <span class="k">विनंती पाठवा</span>. तुमच्या विभागाचे मालक किंवा प्रशासक मंजूर करतात.</li>
@@ -275,7 +297,7 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 <li>वैद्यकीय किंवा आर्थिक नोंद कधीही काढली जात नाही. दुरुस्ती कारणासह जोडली जाते, त्यामुळे नोंद पूर्ण राहते.</li></ul>
 </section>
 <section class="role navy" id="faq">
-  <div class="rh"><span class="n">13</span><div><h2>समस्या व उत्तरे</h2><div class="who">कोणासाठी: सर्वांसाठी</div></div></div>
+  <div class="rh"><span class="n">15</span><div><h2>समस्या व उत्तरे</h2><div class="who">कोणासाठी: सर्वांसाठी</div></div></div>
   <table>
 <tr><td>ॲपचे जुने व्हर्जन दिसते</td><td>ॲप पूर्ण बंद करून पुन्हा उघडा. तरीही जुने? ब्राउझरमधील साइट डेटा क्लिअर करून लिंक पुन्हा उघडा.</td></tr>
 <tr><td>OTP आला नाही</td><td>हॉस्पिटलने नोंदवलेलाच नंबर आहे का तपासा. एक मिनिट थांबून पुन्हा OTP पाठवा दाबा.</td></tr>

@@ -15,7 +15,7 @@ export function admitPatient({ patientId, doctorId, deptId, bedId, reason, diagn
   if (!['available', 'reserved'].includes(bed.status)) fail('This bed is not available')
   const a = db.insert('admissions', { id: uid('ad'), admNo: nextNo('IP'), patientId, doctorId, deptId: deptId || db.get('staff', doctorId)?.deptId, bedId, reason, diagnosis, expectedDischarge, emergency: !!emergency, status: 'admitted', admittedAt: new Date().toISOString(), notes: [], admittedBy: me().id })
   db.update('beds', bedId, { status: 'occupied', admissionId: a.id, reservedFor: '' })
-  if (Number(deposit) > 0) createBill({ patientId, admissionId: a.id, items: [{ type: 'room', refId: a.id, desc: 'Advance deposit – ' + a.admNo, qty: 1, rate: Number(deposit), discount: 0, taxPct: 0 }], unit: 'hospital' }, { amount: Number(deposit), method: method || 'cash' }, { internal: true })
+  if (Number(deposit) > 0) createBill({ patientId, admissionId: a.id, items: [{ type: 'room', refId: a.id, desc: 'Advance deposit – ' + a.admNo, qty: 1, rate: Number(deposit), discount: 0, taxPct: 0 }], unit: 'hospital', deposit: true }, { amount: Number(deposit), method: method || 'cash' }, { internal: true })
   audit('admit', 'admissions', a.id, `Admitted to ${bed.label}`)
   notifyPatient(patientId, 'Admission', `Admitted – bed ${bed.label}`, '/p/history', 'admission')
   return a
@@ -57,13 +57,21 @@ export function stayCharges(a) {
     ...(nursing ? [{ type: 'room', refId: a.id, desc: `Nursing charges – ${n} day(s)`, qty: n, rate: nursing.price, discount: 0, taxPct: 0 }] : [])
   ]
 }
+// The advance deposit is money paid ahead, not a charge: it is deducted from the
+// room-charge bills of the same admission until it is used up.
+const isDepositBill = (b) => b.deposit || (b.items || []).some((i) => /^Advance deposit/.test(i.desc))
+export const depositHeld = (a) => round2(db.list('bills', (b) => b.admissionId === a.id && b.status !== 'cancelled' && isDepositBill(b))
+  .reduce((s, b) => s + (b.paid || 0) - (b.refunded || 0), 0) - (a.depositUsed || 0))
 export function billStay(admissionId) {
   need('billing.create')
   const a = db.get('admissions', admissionId)
   const items = stayCharges(a)
   if (!items.length) fail('Room charges are already billed up to today')
+  const charges = round2(items.reduce((s, i) => s + i.qty * i.rate, 0))
+  const use = Math.min(Math.max(depositHeld(a), 0), charges)
+  if (use > 0) items.push({ type: 'room', refId: a.id, desc: 'Less: advance deposit adjusted', qty: 1, rate: -use, discount: 0, taxPct: 0 })
   const b = createBill({ patientId: a.patientId, admissionId, items, unit: 'hospital' })
-  db.update('admissions', admissionId, { billedDays: daysAdmitted(a) })
+  db.update('admissions', admissionId, { billedDays: daysAdmitted(a), depositUsed: round2((a.depositUsed || 0) + use) })
   return b
 }
 export const admissionBalance = (admissionId) => round2(db.list('bills', (b) => b.admissionId === admissionId && b.status !== 'cancelled').reduce((s, b) => s + balanceOf(b), 0))

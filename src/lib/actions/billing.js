@@ -24,7 +24,7 @@ const statusOf = (total, paid, refunded) => (refunded > 0 && paid - refunded <= 
 
 // `internal`: bills created automatically by another workflow (test orders,
 // check-in fees, admission deposits) – any staff member may trigger those.
-export function createBill({ patientId, items, apptId, doctorId, labOrderId, prescriptionId, admissionId, notes = '', unit }, payment, { internal = false } = {}) {
+export function createBill({ patientId, items, apptId, doctorId, labOrderId, prescriptionId, admissionId, deposit, notes = '', unit }, payment, { internal = false } = {}) {
   const u = me()
   unit = unit || unitOf(u) || 'hospital'
   if (!internal) { need('billing.create'); if (u.role !== 'super_admin' && unitOf(u) !== unit) fail('You can only create bills for your own unit') }
@@ -32,10 +32,10 @@ export function createBill({ patientId, items, apptId, doctorId, labOrderId, pre
   if (!db.get('patients', patientId)) fail('Please choose a patient')
   const clean = items.filter((i) => i.desc && Number(i.qty) > 0).map((i) => ({ ...i, qty: Number(i.qty), rate: round2(i.rate), discount: round2(i.discount || 0), taxPct: Number(i.taxPct || 0) }))
   if (!clean.length) fail('Add at least one item')
-  if (clean.some((i) => i.discount > i.qty * i.rate)) fail('Discount cannot be more than the item amount')
+  if (clean.some((i) => i.discount > 0 && i.discount > i.qty * i.rate)) fail('Discount cannot be more than the item amount')
   if (clean.some((i) => i.discount > 0) && !can(u, 'billing.discount')) fail('You do not have permission to give discounts.')
   const t = totals(clean)
-  const b = db.insert('bills', { id: uid('bl'), billNo: nextNo(BILL_PREFIX[unit]), unit, patientId, date: today(), items: clean, ...t, paid: 0, refunded: 0, status: t.total > 0 ? 'unpaid' : 'paid', apptId, doctorId, labOrderId, prescriptionId, admissionId, notes, createdBy: me().id })
+  const b = db.insert('bills', { id: uid('bl'), billNo: nextNo(BILL_PREFIX[unit]), unit, patientId, date: today(), items: clean, ...t, paid: 0, refunded: 0, status: t.total > 0 ? 'unpaid' : 'paid', apptId, doctorId, labOrderId, prescriptionId, admissionId, ...(deposit ? { deposit: true } : {}), notes, createdBy: me().id })
   audit('create', 'bills', b.id, `Bill ${b.billNo} for ${inr(b.total)}`)
   if (payment?.amount > 0) recordPayment(b.id, payment)
   return db.get('bills', b.id)
