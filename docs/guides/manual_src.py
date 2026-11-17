@@ -4,16 +4,53 @@
 import re, pathlib
 
 HERE = pathlib.Path(__file__).parent
+VERSION = '1.0.0'          # app version (package.json)
+FOR = ''                   # hospital / clinic name; leave empty to print a blank line to fill in
+LOGO = '<svg class="mark" viewBox="0 0 96 96" aria-hidden="true"><rect width="96" height="96" fill="#1B1E4A"/><rect x="21" y="40" width="54" height="16" fill="#fff"/><rect x="40" y="21" width="16" height="54" fill="#fff"/><rect x="72" y="10" width="14" height="14" fill="#D42A33"/></svg>'
 
 T = {
  'en': dict(title='JeevO User Manual', lang='en', h1='User manual', sub='Hospital & clinic app · for patients, doctors, reception, nurses, medical store, laboratory and administrators',
             contents='Contents', who='Who', how='How to read this manual',
             howtext='Find your role in the contents. Buttons and menu names are shown in boxes, like [[Billing]], exactly as they appear on the screen. The app works in English, हिंदी and मराठी; if you use the app in Marathi, use the Marathi edition of this manual.',
-            foot='JeevO · user manual · English edition'),
+            foot='JeevO · user manual · English edition',
+            edition='English edition', dev='Developed by', forl='For', ver='App version', date='Date', datev='17 November 2026', forhint='hospital / clinic name',
+            tag='Hospital & clinic management', about='About JeevO',
+            abouttext='''<p class="lead">JeevO is a hospital and clinic management app for small and medium hospitals, clinics, nursing homes, medical stores and laboratories. It keeps every patient's visits, prescriptions, reports, admissions and bills in one place, and connects the patient, the doctor, the front desk, the medical store and the laboratory.</p>
+<h3>Three ways to use it</h3>
+<ul>
+<li><b>Patient app (on the phone):</b> book appointments, see the live token, prescriptions, lab reports and bills, and pay online, for the whole family with one login.</li>
+<li><b>WhatsApp &amp; SMS:</b> confirmations, reminders, "your turn is near", report-ready messages and receipts, in the patient's language and only with consent. Works even without a smartphone.</li>
+<li><b>Hospital web app:</b> for doctors, reception, nurses, pharmacy, laboratory and administrators, on any computer, tablet or phone. Each role sees only what it needs.</li>
+</ul>
+<h3>Why hospitals use it</h3>
+<ul>
+<li><b>English, हिंदी and मराठी</b> on every screen; prescriptions print with Marathi or Hindi instructions.</li>
+<li><b>Separate owners, one patient file:</b> the hospital, medical store and laboratory can be owned separately. Each owner sees only their own bills, income and staff.</li>
+<li><b>Simple to start:</b> installs from a link, no app store; works on slow internet.</li>
+<li><b>Safe records:</b> each hospital's data is kept apart, access depends on role, and every change is in the audit log. Nothing medical or financial is deleted; corrections are added with a reason. Built for the DPDP Act 2023.</li>
+<li><b>The doctor decides:</b> the app does not suggest diagnoses or medicines. All clinical decisions are made by the doctor.</li>
+</ul>'''),
  'mr': dict(title='JeevO वापरकर्ता पुस्तिका', lang='mr', h1='वापरकर्ता पुस्तिका', sub='हॉस्पिटल व क्लिनिक ॲप · रुग्ण, डॉक्टर, रिसेप्शन, नर्स, मेडिकल स्टोअर, लॅब आणि प्रशासकांसाठी',
             contents='अनुक्रमणिका', who='कोणासाठी', how='ही पुस्तिका कशी वाचावी',
             howtext='अनुक्रमणिकेत तुमची भूमिका शोधा. बटणे व मेनूची नावे चौकटीत दाखवली आहेत, जसे [[बिलिंग]] — ॲपमध्ये जशी दिसतात तशीच. ॲप English, हिंदी व मराठीत चालते; ही पुस्तिका ॲप मराठीत वापरणाऱ्यांसाठी आहे.',
-            foot='JeevO · वापरकर्ता पुस्तिका · मराठी आवृत्ती'),
+            foot='JeevO · वापरकर्ता पुस्तिका · मराठी आवृत्ती',
+            edition='मराठी आवृत्ती', dev='विकसक', forl='यांच्यासाठी', ver='ॲप आवृत्ती', date='दिनांक', datev='१७ नोव्हेंबर २०२६', forhint='हॉस्पिटल / क्लिनिकचे नाव',
+            tag='हॉस्पिटल व क्लिनिक व्यवस्थापन', about='JeevO बद्दल',
+            abouttext='''<p class="lead">JeevO हे लहान व मध्यम हॉस्पिटल, क्लिनिक, नर्सिंग होम, मेडिकल स्टोअर व लॅबसाठी व्यवस्थापन ॲप आहे. प्रत्येक रुग्णाच्या भेटी, प्रिस्क्रिप्शन, रिपोर्ट, दाखल व बिले एकाच ठिकाणी राहतात, आणि रुग्ण, डॉक्टर, रिसेप्शन, मेडिकल स्टोअर व लॅब एकमेकांशी जोडले जातात.</p>
+<h3>वापरण्याचे तीन मार्ग</h3>
+<ul>
+<li><b>रुग्णांसाठी ॲप (फोनवर):</b> भेट बुक करा, लाइव्ह टोकन, प्रिस्क्रिप्शन, लॅब रिपोर्ट व बिले पहा, ऑनलाइन पैसे भरा; संपूर्ण कुटुंबासाठी एकच लॉगिन.</li>
+<li><b>WhatsApp व SMS:</b> निश्चिती, आठवण, "तुमचा नंबर जवळ आला आहे", रिपोर्ट तयार असल्याचा मेसेज व पावत्या, रुग्णाच्या भाषेत व फक्त संमतीने. स्मार्टफोन नसतानाही चालते.</li>
+<li><b>हॉस्पिटलसाठी वेब ॲप:</b> डॉक्टर, रिसेप्शन, नर्स, फार्मसी, लॅब व प्रशासकांसाठी, कोणत्याही कॉम्प्युटर, टॅबलेट किंवा फोनवर. प्रत्येक भूमिकेला गरजेपुरतेच दिसते.</li>
+</ul>
+<h3>हॉस्पिटल हे ॲप का वापरतात</h3>
+<ul>
+<li>प्रत्येक स्क्रीन <b>English, हिंदी व मराठीत</b>; प्रिस्क्रिप्शनवर मराठी किंवा हिंदी सूचना छापल्या जातात.</li>
+<li><b>वेगवेगळे मालक, रुग्णाची एकच फाइल:</b> हॉस्पिटल, मेडिकल स्टोअर व लॅबचे मालक वेगवेगळे असू शकतात. प्रत्येक मालकाला फक्त स्वतःची बिले, उत्पन्न व कर्मचारी दिसतात.</li>
+<li><b>सुरू करायला सोपे:</b> लिंकवरून इन्स्टॉल, ॲप स्टोअरची गरज नाही; कमी इंटरनेटवरही चालते.</li>
+<li><b>सुरक्षित नोंदी:</b> प्रत्येक हॉस्पिटलची माहिती वेगळी, भूमिकेनुसार प्रवेश, आणि प्रत्येक बदल ऑडिट नोंदीत. वैद्यकीय किंवा आर्थिक नोंद काढली जात नाही; दुरुस्ती कारणासह जोडली जाते. DPDP कायदा २०२३ लक्षात घेऊन बनवलेले.</li>
+<li><b>निर्णय डॉक्टरांचाच:</b> ॲप निदान किंवा औषधे सुचवत नाही. सर्व वैद्यकीय निर्णय डॉक्टर घेतात.</li>
+</ul>'''),
 }
 
 # (id, colour, {en: (title, who, body), mr: (title, who, body)})
@@ -543,17 +580,30 @@ CSS = '''
 body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
   padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .doc { max-width: 794px; margin: 0 auto; background: var(--paper); box-shadow: 0 10px 40px rgba(27,30,74,.14); }
-.cover { background: var(--navy); color: #fff; padding: 36px 40px 30px; }
-.cover .brand { font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: .08em; color: #C9CBE0; }
-.cover h1 { font-family: var(--display); font-size: 40px; line-height: 1.1; margin: 6px 0 8px; text-wrap: balance; }
-.cover p { margin: 0; color: #D7D9EA; max-width: 60ch; }
-.intro { padding: 22px 40px 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
-.intro h2 { font-family: var(--display); font-size: 15px; margin: 0 0 8px; color: var(--navy); text-transform: uppercase; letter-spacing: .06em; }
-.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; counter-reset: t; }
-.toc li { counter-increment: t; display: flex; gap: 10px; align-items: baseline; }
-.toc li::before { content: counter(t); font: 700 12px var(--display); color: #fff; background: var(--c, var(--navy)); min-width: 22px; text-align: center; line-height: 20px; }
-.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); flex: 1; }
+.cover { background: var(--navy); color: #fff; padding: 44px 44px 36px; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; min-height: 620px; }
+.logo { display: flex; align-items: center; gap: 18px; }
+.mark { width: 84px; height: 84px; flex: none; outline: 2px solid rgba(255,255,255,.25); }
+.wm { font-family: var(--display); font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -.01em; }
+.tg { color: #C9CBE0; font-size: 16px; margin-top: 4px; }
+.cover h1 { font-family: var(--display); font-size: 52px; line-height: 1.05; margin: 64px 0 12px; text-wrap: balance; }
+.cover .sub { margin: 0; color: #D7D9EA; font-size: 17px; max-width: 46ch; }
+.cover .ed { display: inline-block; margin-top: 18px; font-weight: 700; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.45); padding: 4px 10px; }
+.meta { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; border-top: 1px solid rgba(255,255,255,.25); padding-top: 22px; }
+.meta dt { font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: #AEB1CF; }
+.meta dd { margin: 2px 0 0; font-family: var(--display); font-size: 20px; font-weight: 700; }
+.meta .blank { display: block; height: 28px; border-bottom: 1.5px solid rgba(255,255,255,.7); }
+.meta .hint { display: block; font-family: var(--body); font-size: 12px; font-weight: 400; color: #AEB1CF; margin-top: 3px; }
+.pg { padding: 32px 44px 26px; border-top: 1px solid var(--line); }
+.ph { font-family: var(--display); font-size: 28px; color: var(--navy); margin: 0 0 14px; }
+.about .lead { font-size: 17px; line-height: 1.55; margin-bottom: 6px; }
+.intro { display: grid; grid-template-columns: 1fr; gap: 22px; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: t; font-size: 16px; }
+.toc li { counter-increment: t; display: flex; gap: 12px; align-items: baseline; }
+.toc li::before { content: counter(t); font: 700 13px var(--display); color: #fff; background: var(--c, var(--navy)); min-width: 26px; text-align: center; line-height: 24px; }
+.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted #B9BDD3; flex: 1; padding-bottom: 2px; }
 .toc a:hover, .toc a:focus-visible { color: var(--navy); border-color: var(--navy); outline: none; }
+.howbox { background: var(--tint); padding: 14px 18px; }
+.howbox h3 { margin-top: 0; }
 section.role { padding: 26px 40px 24px; border-top: 1px solid var(--line); }
 .rh { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
 .rh .n { font: 800 20px/44px var(--display); color: #fff; background: var(--c); width: 44px; text-align: center; flex: none; }
@@ -587,17 +637,19 @@ footer { padding: 14px 40px 18px; border-top: 1px solid var(--line); font-size: 
 .fr { font-size: 13.6px; color: var(--teal); margin-top: 3px; padding-left: 10px; border-left: 3px solid var(--teal); }
 .navy { --c: var(--navy); } .teal { --c: var(--teal); } .green { --c: var(--green); } .maroon { --c: var(--maroon); }
 @media (max-width: 640px) {
-  .cover, .intro, section.role, footer { padding-left: 18px; padding-right: 18px; }
-  .intro { grid-template-columns: 1fr; }
-  .cover h1 { font-size: 30px; }
+  .cover, .pg, section.role, footer { padding-left: 18px; padding-right: 18px; }
+  .meta { grid-template-columns: 1fr; }
+  .cover h1 { font-size: 34px; margin-top: 36px; }
+  .wm { font-size: 32px; } .mark { width: 64px; height: 64px; }
   td:first-child { width: 42%; }
 }
 @page { size: A4 portrait; margin: 14mm 0 14mm; }
-@page :first { margin-top: 0; }
+@page :first { margin: 0; }
 @media print {
   body { background: #fff; padding: 0; font-size: 13.4px; }
   .doc { box-shadow: none; max-width: none; }
-  section.role { break-before: page; border-top: 0; padding-top: 0; }
+  section.role, .pg { break-before: page; border-top: 0; padding-top: 0; }
+  .cover { height: 297mm; min-height: 0; padding: 22mm 20mm 20mm; }
   .tip, tr, ol li, ul li { break-inside: avoid; }
   h3 { break-after: avoid; }
   .fb { padding-bottom: 8px; } .fx { font-size: 12.6px; line-height: 1.38; } .fr { font-size: 12.2px; } .ft b { font-size: 13.6px; }
@@ -624,11 +676,28 @@ def build(lang):
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Mukta:wght@400;500;600;700&display=swap">
 <style>{CSS}</style>
 <div class="doc" lang="{t['lang']}">
-  <header class="cover"><div class="brand">JEEVO</div><h1>{t['h1']}</h1><p>{t['sub']}</p></header>
-  <div class="intro">
-    <div><h2>{t['contents']}</h2><ol class="toc">{toc}</ol></div>
-    <div><h2>{t['how']}</h2><p>{chips(t['howtext'])}</p></div>
-  </div>{secs}
+  <section class="cover">
+    <div class="ctop">
+      <div class="logo">{LOGO}<div><div class="wm">JeevO</div><div class="tg">{t['tag']}</div></div></div>
+      <h1>{t['h1']}</h1>
+      <p class="sub">{t['sub']}</p>
+      <div class="ed">{t['edition']}</div>
+    </div>
+    <dl class="meta">
+      <div><dt>{t['dev']}</dt><dd>Kapil Jadhav</dd></div>
+      <div><dt>{t['forl']}</dt><dd class="fill">{FOR or '<span class="blank"></span><span class="hint">' + t['forhint'] + '</span>'}</dd></div>
+      <div><dt>{t['ver']}</dt><dd>{VERSION}</dd></div>
+      <div><dt>{t['date']}</dt><dd>{t['datev']}</dd></div>
+    </dl>
+  </section>
+  <section class="pg about">
+    <h2 class="ph">{t['about']}</h2>
+    {t['abouttext']}
+  </section>
+  <section class="pg intro">
+    <div><h2 class="ph">{t['contents']}</h2><ol class="toc">{toc}</ol></div>
+    <div class="howbox"><h3>{t['how']}</h3><p>{chips(t['howtext'])}</p></div>
+  </section>{secs}
   <footer>{t['foot']}</footer>
 </div>
 '''
