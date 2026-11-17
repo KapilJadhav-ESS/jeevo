@@ -3,14 +3,14 @@
 // The app never suggests diagnoses, medicines or doses – the doctor decides.
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Trash2, Copy, CheckCircle2, FlaskConical, Video, BedDouble, Save, Printer, History, FileSignature } from 'lucide-react'
+import { Send, Trash2, Copy, CheckCircle2, FlaskConical, Video, BedDouble, Save, Printer, History, FileSignature } from 'lucide-react'
 import { Page, Card, Button, Field, Input, Select, Textarea, Badge, Empty, Sheet, Tabs, useToast, useConfirm } from '../../components/ui'
 import { ClinicalAlerts, LabStatus, doctorName } from '../../components/common'
-import { PrescriptionView, LabReportView } from '../../components/Documents'
+import { PrescriptionView, LabReportView, ReferralView } from '../../components/Documents'
 import { VitalChips } from './Patients'
 import { useAuth } from '../../lib/auth'
 import { db, useData } from '../../lib/db'
-import { openConsultation, saveConsultation, finaliseConsultation, savePrescription, amendPrescription, orderTests, addAddendum, FREQUENCIES, TIMINGS, VITAL_FIELDS, VITAL_NORMAL, APPT_TYPES } from '../../lib/actions'
+import { openConsultation, saveConsultation, finaliseConsultation, savePrescription, amendPrescription, orderTests, addAddendum, createReferral, FREQUENCIES, TIMINGS, VITAL_FIELDS, VITAL_NORMAL, APPT_TYPES } from '../../lib/actions'
 import { ageSex, addDays, bmi, fmtDate, fmtDateTime, today, cls, fmtPhone } from '../../lib/utils'
 import { LANGS } from '../../i18n'
 
@@ -103,6 +103,7 @@ export default function Consult() {
   const [labSel, setLabSel] = useState([])
   const [labPri, setLabPri] = useState('routine')
   const [view, setView] = useState(null)
+  const [refer, setRefer] = useState(null)
   const [histTab, setHistTab] = useState('visits')
   const loaded = useRef(false)
   useEffect(() => {
@@ -159,7 +160,7 @@ export default function Consult() {
             <ClinicalAlerts p={p} className="mt-3" />
             {a.priority === 'emergency' && <div className="mt-3 rounded-xl bg-red-50 text-red-700 text-sm font-bold px-3 py-2">Emergency · {a.reason}</div>}
             {a.reason && a.priority !== 'emergency' && <div className="mt-3 text-sm"><span className="text-ink-500">Reason: </span><span translate="no">{a.reason}</span></div>}
-            <div className="flex gap-2 mt-3"><Button size="sm" variant="outline" onClick={() => nav(`/s/patients/${p.id}`)}>Full record</Button><Button size="sm" variant="outline" icon={BedDouble} onClick={() => nav(`/s/ipd/admit?patient=${p.id}&doctor=${a.doctorId}`)}>Admit</Button></div>
+            <div className="flex gap-2 mt-3"><Button size="sm" variant="outline" onClick={() => nav(`/s/patients/${p.id}`)}>Full record</Button><Button size="sm" variant="outline" icon={BedDouble} onClick={() => nav(`/s/ipd/admit?patient=${p.id}&doctor=${a.doctorId}`)}>Admit</Button>{mine && <Button size="sm" variant="outline" icon={Send} onClick={() => setRefer({ toDoctor: '', specialty: '', place: 'Nashik', reason: `Respected Sir/Madam,\nReferring this patient, a case of ${f?.diagnosis || '…'}.\n`, notes: '' })}>Refer</Button>}</div>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 font-bold mb-3"><History size={18} /> Previous records</div>
@@ -253,11 +254,32 @@ export default function Consult() {
         )}
       </div>
 
-      <Sheet open={!!view} onClose={() => setView(null)} title={view?.rx ? 'Prescription' : 'Lab report'} wide full>
+      <ReferSheet refer={refer} setRefer={setRefer} p={p} c={c} f={f} onDone={(r) => { toast('Referral letter created'); setView({ ref: r }) }} />
+      <Sheet open={!!view} onClose={() => setView(null)} title={view?.rx ? 'Prescription' : view?.ref ? 'Referral letter' : 'Lab report'} wide full>
         {view?.rx && <PrescriptionView rx={db.get('prescriptions', view.rx.id) || view.rx} />}
         {view?.lab && <LabReportView lo={view.lab} />}
+        {view?.ref && <ReferralView r={view.ref} />}
       </Sheet>
     </Page>
+  )
+}
+
+function ReferSheet({ refer, setRefer, p, c, f, onDone }) {
+  const toast = useToast()
+  if (!refer) return null
+  const set = (k) => (e) => setRefer({ ...refer, [k]: e.target.value })
+  return (
+    <Sheet open onClose={() => setRefer(null)} title="Referral letter" wide footer={<Button block size="lg" icon={Send} onClick={() => { try { const r = createReferral({ patientId: p.id, consultationId: c?.id, ...refer, vitals: f?.vitals }); setRefer(null); onDone(r) } catch (e) { toast(e.message, 'error') } }}>Create referral letter</Button>}>
+      <div className="grid sm:grid-cols-3 gap-x-3">
+        <Field label="To (doctor)"><Input value={refer.toDoctor} onChange={set('toDoctor')} placeholder="Dr. …" /></Field>
+        <Field label="Speciality"><Input value={refer.specialty} onChange={set('specialty')} placeholder="e.g. Cardiology" list="specialities" /></Field>
+        <Field label="Place / hospital"><Input value={refer.place} onChange={set('place')} /></Field>
+      </div>
+      <datalist id="specialities">{['Cardiology', 'Neurology', 'Nephrology', 'Urology', 'Orthopaedics', 'Oncology', 'Paediatrics', 'General Surgery', 'Gastroenterology'].map((x) => <option key={x} value={x} />)}</datalist>
+      <Field label="Reason for referral"><Textarea rows={5} value={refer.reason} onChange={set('reason')} /></Field>
+      <Field label="Notes (investigations, treatment given)"><Textarea rows={2} value={refer.notes} onChange={set('notes')} /></Field>
+      <p className="text-xs text-ink-500">Printed on your letterhead with today’s vitals. It is saved in the patient’s history.</p>
+    </Sheet>
   )
 }
 

@@ -116,7 +116,7 @@ export function checkIn(id, { collectFee, method } = {}) {
   let billId = a.billId
   if (!billId && a.fee > 0) {
     const doc = db.get('staff', a.doctorId)
-    const b = createBill({ patientId: a.patientId, apptId: a.id, doctorId: a.doctorId, items: [{ type: 'consultation', refId: a.id, desc: `${a.type === 'followup' ? 'Follow-up' : 'Consultation'} – ${doc.name}`, qty: 1, rate: a.fee, discount: 0, taxPct: 0 }] }, collectFee ? { amount: a.fee, method } : null, { internal: true })
+    const b = createBill({ patientId: a.patientId, apptId: a.id, doctorId: a.doctorId, items: [{ type: 'consultation', refId: a.id, desc: `${a.type === 'followup' ? 'Follow-up' : 'Consultation'} – ${doc.name}`, qty: 1, rate: a.fee, discount: 0, taxPct: 0 }], unit: 'hospital' }, collectFee ? { amount: a.fee, method } : null, { internal: true })
     billId = b.id
   }
   const out = db.update('appointments', id, { status: 'arrived', arrivedAt: new Date().toISOString(), billId })

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { BedDouble, Plus, ArrowRightLeft, FileText, LogOut, Wrench, Receipt, HeartPulse, ClipboardList, Pill } from 'lucide-react'
-import { Page, Card, Button, Field, Input, Select, Textarea, Sheet, Badge, Empty, Tabs, Kv, Grid, useToast, useConfirm } from '../../components/ui'
+import { ShieldCheck, BedDouble, Plus, ArrowRightLeft, FileText, LogOut, Wrench, Receipt, HeartPulse, ClipboardList, Pill } from 'lucide-react'
+import { Page, Card, Button, Field, Input, Select, Textarea, Sheet, Badge, Empty, Tabs, Kv, Grid, Table, useToast, useConfirm } from '../../components/ui'
 import { PatientLine, ClinicalAlerts, doctorName, userName } from '../../components/common'
 import { DischargeView } from '../../components/Documents'
 import PatientPicker from '../../components/PatientPicker'
@@ -9,7 +9,7 @@ import { VitalsForm, VitalChips } from './Patients'
 import { useAuth } from '../../lib/auth'
 import { db, useData } from '../../lib/db'
 import { can } from '../../lib/rbac'
-import { admitPatient, transferBed, setBedStatus, saveDischargeSummary, discharge, daysAdmitted, stayCharges, billStay, admissionBalance, addAdmissionNote, addNursingTask, BED_STATUS, PAY_METHODS } from '../../lib/actions'
+import { visibleBills, saveAdmissionInsurance, insurers, PREAUTH_STATUS, CLAIM_STATUS, admitPatient, transferBed, setBedStatus, saveDischargeSummary, discharge, daysAdmitted, stayCharges, billStay, admissionBalance, addAdmissionNote, addNursingTask, BED_STATUS, PAY_METHODS } from '../../lib/actions'
 import { fmtDate, fmtDateTime, inr, addDays, today, timeAgo, cls } from '../../lib/utils'
 
 const BED_TONE = { available: 'bg-accent-50 border-accent-200 text-accent-800', occupied: 'bg-brand-600 border-brand-600 text-white', reserved: 'bg-amber-50 border-amber-300 text-amber-800', maintenance: 'bg-ink-100 border-ink-200 text-ink-400' }
@@ -63,9 +63,10 @@ function Admit() {
   const docs = useData((d) => d.list('staff', (s) => s.role === 'doctor' && s.active))
   const beds = useData((d) => d.list('beds', (b) => ['available', 'reserved'].includes(b.status)))
   const wards = useData((d) => d.list('wards'))
-  const [f, setF] = useState({ patientId: sp.get('patient'), doctorId: sp.get('doctor') || '', bedId: sp.get('bed') || '', reason: '', diagnosis: '', expectedDischarge: addDays(today(), 3), emergency: false, deposit: '', method: 'cash' })
+  const [f, setF] = useState({ patientId: sp.get('patient'), doctorId: sp.get('doctor') || '', bedId: sp.get('bed') || '', reason: '', diagnosis: '', expectedDischarge: addDays(today(), 3), emergency: false, deposit: '', method: 'cash', insurer: '', policyNo: '' })
+  const pat = useData((d) => f.patientId && d.get('patients', f.patientId))
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
-  const go = () => { try { const a = admitPatient(f); toast(`Admitted · ${a.admNo}`); nav(`/s/ipd/${a.id}`, { replace: true }) } catch (e) { toast(e.message, 'error') } }
+  const go = () => { try { const a = admitPatient(f); if (f.insurer) saveAdmissionInsurance(a.id, { insurer: f.insurer, policyNo: f.policyNo, preauthStatus: 'requested', claimStatus: 'none' }); toast(`Admitted · ${a.admNo}`); nav(`/s/ipd/${a.id}`, { replace: true }) } catch (e) { toast(e.message, 'error') } }
   return (
     <Page title="Admit patient" back wide>
       <Card className="p-5 max-w-4xl">
@@ -79,6 +80,8 @@ function Admit() {
           <Field label="Admission type"><Select value={f.emergency ? 'e' : 'p'} onChange={(e) => setF({ ...f, emergency: e.target.value === 'e' })}><option value="p">Planned</option><option value="e">Emergency</option></Select></Field>
           <Field label="Advance deposit (₹)"><Input inputMode="numeric" value={f.deposit} onChange={(e) => setF({ ...f, deposit: e.target.value.replace(/\D/g, '') })} /></Field>
           <Field label="Deposit paid by"><Select value={f.method} onChange={set('method')}>{Object.entries(PAY_METHODS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select></Field>
+          <Field label="Cashless insurance / TPA (optional)"><Select value={f.insurer || pat?.insurance?.insurer || ''} onChange={set('insurer')}><option value="">No insurance / cash</option>{insurers().map((x) => <option key={x}>{x}</option>)}</Select></Field>
+          <Field label="Policy / card number"><Input value={f.policyNo || pat?.insurance?.policyNo || ''} onChange={set('policyNo')} /></Field>
         </Grid>
         <Button size="lg" onClick={go}>Admit patient</Button>
       </Card>
@@ -99,7 +102,7 @@ function Admission() {
   const vit = useData((d) => d.list('vitals', (v) => v.admissionId === id).sort((x, y) => y.at.localeCompare(x.at)))
   const tasks = useData((d) => d.list('nursingTasks', (t) => t.admissionId === id).sort((x, y) => x.due.localeCompare(y.due)))
   const meds = useData((d) => d.list('medAdmin', (m) => m.admissionId === id).sort((x, y) => y.at.localeCompare(x.at)))
-  const bills = useData((d) => d.list('bills', (b) => b.admissionId === id))
+  const bills = useData((d) => visibleBills(user, d.list('bills', (b) => b.admissionId === id)))
   const free = useData((d) => d.list('beds', (b) => b.status === 'available'))
   const nurses = useData((d) => d.list('staff', (s) => s.role === 'nurse' && s.active))
   const [tab, setTab] = useState('notes')
@@ -133,10 +136,11 @@ function Admission() {
             </div>
             {admitted && can(user, 'ipd.admit') && <Button size="sm" variant="ghost" icon={ArrowRightLeft} className="mt-2" onClick={() => setSheet('transfer')}>Transfer bed</Button>}
           </Card>
+          <InsuranceCard a={a} />
           <Card className="p-5">
             <div className="flex justify-between items-center mb-2"><h3 className="font-bold">Charges</h3><span className={cls('font-bold', admissionBalance(a.id) > 0 ? 'text-red-600' : 'text-accent-700')}>Balance {inr(admissionBalance(a.id))}</span></div>
             {bills.map((b) => <button key={b.id} onClick={() => nav(`/s/billing/${b.id}`)} className="w-full flex justify-between text-sm py-1.5 border-b border-ink-100"><span translate="no">{b.billNo}</span><span>{inr(b.total)}</span></button>)}
-            {admitted && can(user, 'billing.create') && stayCharges(a).length > 0 && <Button size="sm" variant="secondary" icon={Receipt} className="mt-3" onClick={() => run(() => billStay(a.id), 'Room charges billed')}>Bill room charges ({stayCharges(a)[0].qty} day(s))</Button>}
+            {admitted && can(user, 'billing.create') && stayCharges(a).length > 0 && <Button size="sm" variant="secondary" icon={Receipt} className="mt-3" onClick={() => run(() => billStay(a.id), 'Room charges billed')}>{`Bill room charges (${stayCharges(a)[0].qty} day(s))`}</Button>}
           </Card>
         </div>
         <div className="min-w-0">
@@ -181,6 +185,62 @@ function Admission() {
   )
 }
 
-export default function Ipd() {
+function InsuranceCard({ a }) {
+  const toast = useToast()
+  const { user } = useAuth()
+  const [f, setF] = useState(null)
+  const ins = a.insurance
+  const manage = can(user, 'insurance.manage') && a.status === 'admitted'
+  return (
+    <Card className="p-5">
+      <div className="flex justify-between items-center mb-2"><h3 className="font-bold flex items-center gap-2"><ShieldCheck size={18} className="text-accent-600" /> Insurance / cashless</h3>{manage && <Button size="sm" variant="ghost" onClick={() => setF({ insurer: '', policyNo: '', preauthStatus: 'requested', preauthAmount: '', preauthRef: '', claimStatus: 'none', claimAmount: '', ...(ins || {}) })}>{ins ? 'Update' : 'Add'}</Button>}</div>
+      {ins ? <div className="text-sm space-y-1">
+        <div className="font-semibold" translate="no">{ins.insurer}</div>
+        {ins.policyNo && <div className="text-ink-500" translate="no">Policy {ins.policyNo}</div>}
+        <div className="flex flex-wrap gap-1.5 mt-2"><Badge color={ins.preauthStatus === 'approved' ? 'green' : ins.preauthStatus === 'rejected' ? 'red' : 'amber'}>{PREAUTH_STATUS[ins.preauthStatus] || '—'}</Badge><Badge color={ins.claimStatus === 'settled' ? 'green' : ins.claimStatus === 'rejected' ? 'red' : 'gray'}>{CLAIM_STATUS[ins.claimStatus] || '—'}</Badge></div>
+        {ins.preauthAmount > 0 && <div className="text-ink-500">{`Approved / requested ${inr(ins.preauthAmount)}`}</div>}
+      </div> : <p className="text-sm text-ink-500">Cash patient – no insurance recorded.</p>}
+      <Sheet open={!!f} onClose={() => setF(null)} title="Insurance / cashless" footer={<Button block size="lg" onClick={() => { try { saveAdmissionInsurance(a.id, { ...f, preauthAmount: Number(f.preauthAmount) || 0, claimAmount: Number(f.claimAmount) || 0 }); toast('Saved'); setF(null) } catch (e) { toast(e.message, 'error') } }}>Save</Button>}>
+        {f && <>
+          <Field label="Insurance company / TPA"><Select value={f.insurer} onChange={(e) => setF({ ...f, insurer: e.target.value })}><option value="">Choose</option>{insurers().map((x) => <option key={x}>{x}</option>)}</Select></Field>
+          <Field label="Policy / card number"><Input value={f.policyNo} onChange={(e) => setF({ ...f, policyNo: e.target.value })} /></Field>
+          <Grid cols={2}>
+            <Field label="Pre-authorisation"><Select value={f.preauthStatus} onChange={(e) => setF({ ...f, preauthStatus: e.target.value })}>{Object.entries(PREAUTH_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select></Field>
+            <Field label="Pre-auth amount (₹)"><Input inputMode="numeric" value={f.preauthAmount} onChange={(e) => setF({ ...f, preauthAmount: e.target.value.replace(/\D/g, '') })} /></Field>
+            <Field label="Pre-auth reference"><Input value={f.preauthRef || ''} onChange={(e) => setF({ ...f, preauthRef: e.target.value })} /></Field>
+            <Field label="Claim status"><Select value={f.claimStatus} onChange={(e) => setF({ ...f, claimStatus: e.target.value })}>{Object.entries(CLAIM_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select></Field>
+            <Field label="Claim amount (₹)"><Input inputMode="numeric" value={f.claimAmount} onChange={(e) => setF({ ...f, claimAmount: e.target.value.replace(/\D/g, '') })} /></Field>
+          </Grid>
+          <p className="text-xs text-ink-500">When the insurer settles, record the amount in Billing with payment method “Insurance (cashless)”.</p>
+        </>}
+      </Sheet>
+    </Card>
+  )
+}
+
+// Insurance desk: all admitted patients with cashless insurance
+function InsuranceDesk() {
+  const nav = useNavigate()
+  const rows = useData((d) => d.list('admissions', (a) => a.insurance?.insurer).sort((a, b) => (a.status === 'admitted' ? -1 : 1) - (b.status === 'admitted' ? -1 : 1) || b.admittedAt.localeCompare(a.admittedAt)))
+  const list = useData(() => insurers())
+  return (
+    <Page title="Insurance & cashless" subtitle={`${list.length} empanelled insurers / TPAs`} wide>
+      <Table rows={rows} onRow={(a) => nav(`/s/ipd/${a.id}`)} empty="No insured admissions" columns={[
+        { label: 'Patient', render: (a) => <AdmPat a={a} /> },
+        { label: 'Insurer / TPA', render: (a) => <span className="text-sm" translate="no">{a.insurance.insurer}</span> },
+        { label: 'Pre-auth', render: (a) => <Badge color={a.insurance.preauthStatus === 'approved' ? 'green' : a.insurance.preauthStatus === 'rejected' ? 'red' : 'amber'}>{PREAUTH_STATUS[a.insurance.preauthStatus]}</Badge> },
+        { label: 'Claim', render: (a) => <Badge color={a.insurance.claimStatus === 'settled' ? 'green' : 'gray'}>{CLAIM_STATUS[a.insurance.claimStatus]}</Badge> },
+        { label: 'Amount', right: true, render: (a) => inr(a.insurance.preauthAmount || 0) }
+      ]} />
+      <h3 className="font-bold mt-6 mb-2">Empanelled for cashless</h3>
+      <Card className="p-4"><ol className="grid md:grid-cols-2 gap-x-6 gap-y-1 text-sm list-decimal list-inside" translate="no">{list.map((x) => <li key={x}>{x}</li>)}</ol>
+        <p className="text-sm text-ink-500 mt-3">Also: LIC and Star Health medical examination centre · help with the Chief Minister’s medical relief fund.</p></Card>
+    </Page>
+  )
+}
+const AdmPat = ({ a }) => { const p = useData((d) => d.get('patients', a.patientId)); return <div><div className="font-semibold">{p?.name}</div><div className="text-xs text-ink-500" translate="no">{a.admNo} · {a.status === 'admitted' ? 'Admitted' : 'Discharged'}</div></div> }
+
+export default function Ipd({ insurance }) {
+  if (insurance) return <InsuranceDesk />
   return <Routes><Route index element={<Board />} /><Route path="admit" element={<Admit />} /><Route path=":id" element={<Admission />} /></Routes>
 }

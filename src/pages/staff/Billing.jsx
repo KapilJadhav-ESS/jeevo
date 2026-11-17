@@ -8,20 +8,23 @@ import PatientPicker from '../../components/PatientPicker'
 import { useAuth } from '../../lib/auth'
 import { db, useData } from '../../lib/db'
 import { can } from '../../lib/rbac'
-import { createBill, recordPayment, refund, cancelBill, balanceOf, totals, sendMessage, PAY_METHODS, ITEM_TYPES } from '../../lib/actions'
+import { createBill, recordPayment, refund, cancelBill, balanceOf, totals, sendMessage, visibleBills, billUnit, PAY_METHODS, ITEM_TYPES } from '../../lib/actions'
+import { unitOf, seesUnitMoney, UNITS } from '../../lib/rbac'
 import { fmtDate, inr, today, round2, cls } from '../../lib/utils'
 
 function List() {
   const nav = useNavigate()
+  const { user } = useAuth()
+  const unit = unitOf(user) || 'hospital'
   const [sp, setSp] = useSearchParams()
   const tab = sp.get('tab') || 'today'
   const [q, setQ] = useState('')
-  const rows = useData((d) => d.list('bills', (b) => (tab === 'today' ? b.date === today() : tab === 'due' ? b.status !== 'cancelled' && balanceOf(b) > 0 : true)).sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
+  const rows = useData((d) => visibleBills(user, d.list('bills')).filter((b) => (tab === 'today' ? b.date === today() : tab === 'due' ? b.status !== 'cancelled' && balanceOf(b) > 0 : true)).sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
     .filter((b) => !q || b.billNo.toLowerCase().includes(q.toLowerCase()) || db.get('patients', b.patientId)?.name.toLowerCase().includes(q.toLowerCase()))
-  const pays = useData((d) => d.list('payments', (p) => p.at?.startsWith(today())))
+  const pays = useData((d) => d.list('payments', (p) => p.at?.startsWith(today()) && seesUnitMoney(user, p.unit || 'hospital')))
   const byMethod = Object.entries(pays.reduce((m, p) => ({ ...m, [p.method]: (m[p.method] || 0) + p.amount }), {}))
   return (
-    <Page title="Billing" wide actions={<Button icon={Plus} onClick={() => nav('new')}>New bill</Button>}>
+    <Page title="Billing" subtitle={user.role === 'super_admin' ? '' : UNITS[unit]} wide actions={<Button icon={Plus} onClick={() => nav('new')}>New bill</Button>}>
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
         <Stat icon={IndianRupee} tone="green" label="Collected today" value={inr(pays.reduce((s, p) => s + p.amount, 0))} />
         {byMethod.slice(0, 4).map(([m, v]) => <Stat key={m} label={PAY_METHODS[m] || m} value={inr(v)} />)}
@@ -51,31 +54,33 @@ function NewBill() {
   const [pid, setPid] = useState(sp.get('patient'))
   const [items, setItems] = useState([])
   const [pay, setPay] = useState({ method: 'cash', amount: '', ref: '' })
-  const services = useData((d) => d.list('services', (s) => s.active))
-  const docs = useData((d) => d.list('staff', (s) => s.role === 'doctor' && s.active && s.fee > 0))
-  const tests = useData((d) => d.list('labTests', (t) => t.active))
+  const unit = unitOf(user) || 'hospital'
+  const services = useData((d) => (unit === 'hospital' ? d.list('services', (s) => s.active) : []))
+  const docs = useData((d) => (unit === 'hospital' ? d.list('staff', (s) => s.role === 'doctor' && s.active && s.fee > 0) : []))
+  const tests = useData((d) => d.list('labTests', (t) => t.active && (t.unit || 'lab') === unit))
   const add = (it) => setItems([...items, { qty: 1, discount: 0, taxPct: 0, ...it }])
   const t = totals(items)
   const canDisc = can(user, 'billing.discount')
   const save = () => {
     try {
       const amt = pay.amount === '' ? t.total : Number(pay.amount)
-      const b = createBill({ patientId: pid, items }, pay.method !== 'none' && amt > 0 ? { amount: amt, method: pay.method, ref: pay.ref } : null)
+      const b = createBill({ patientId: pid, items, unit }, pay.method !== 'none' && amt > 0 ? { amount: amt, method: pay.method, ref: pay.ref } : null)
       toast(`Bill ${b.billNo} created`)
       nav(`/s/billing/${b.id}`, { replace: true })
     } catch (e) { toast(e.message, 'error') }
   }
   return (
-    <Page title="New bill" back wide>
+    <Page title="New bill" subtitle={UNITS[unit]} back wide>
       <div className="grid lg:grid-cols-[1fr_360px] gap-4">
         <div className="space-y-4">
           <Card className="p-5"><h3 className="font-bold mb-3">Patient</h3><PatientPicker value={pid} onChange={setPid} /></Card>
           <Card className="p-5">
             <h3 className="font-bold mb-3">Items</h3>
             <div className="grid sm:grid-cols-3 gap-2 mb-4">
-              <Select value="" onChange={(e) => { const d = docs.find((x) => x.id === e.target.value); if (d) add({ type: 'consultation', desc: `Consultation – ${d.name}`, rate: d.fee }) }}><option value="">+ Consultation…</option>{docs.map((d) => <option key={d.id} value={d.id}>{d.name} · ₹{d.fee}</option>)}</Select>
-              <Select value="" onChange={(e) => { const x = tests.find((y) => y.id === e.target.value); if (x) add({ type: ['X-Ray', 'Ultrasound', 'ECG'].includes(x.category) ? 'radiology' : 'lab', desc: x.name, rate: x.price }) }}><option value="">+ Lab / scan…</option>{tests.map((x) => <option key={x.id} value={x.id}>{x.name} · ₹{x.price}</option>)}</Select>
-              <Select value="" onChange={(e) => { const x = services.find((y) => y.id === e.target.value); if (x) add({ type: x.category === 'Room' ? 'room' : x.category === 'Consultation' ? 'consultation' : 'procedure', desc: x.name, rate: x.price, taxPct: x.gst || 0 }) }}><option value="">+ Procedure / service…</option>{services.map((x) => <option key={x.id} value={x.id}>{x.name} · ₹{x.price}</option>)}</Select>
+              {unit === 'pharmacy' && <p className="text-sm text-ink-500 sm:col-span-3">Medicines are billed from Pharmacy → Counter sale (stock is updated there). Use custom items here only for other charges.</p>}
+              {unit === 'hospital' && <Select value="" onChange={(e) => { const d = docs.find((x) => x.id === e.target.value); if (d) add({ type: 'consultation', desc: `Consultation – ${d.name}`, rate: d.fee }) }}><option value="">+ Consultation…</option>{docs.map((d) => <option key={d.id} value={d.id}>{d.name} · ₹{d.fee}</option>)}</Select>}
+              {tests.length > 0 && <Select value="" onChange={(e) => { const x = tests.find((y) => y.id === e.target.value); if (x) add({ type: unit === 'lab' ? 'lab' : 'radiology', desc: x.name, rate: x.price }) }}><option value="">{unit === 'lab' ? '+ Lab test…' : '+ ECG / echo / X-ray…'}</option>{tests.map((x) => <option key={x.id} value={x.id}>{x.name} · ₹{x.price}</option>)}</Select>}
+              {services.length > 0 && <Select value="" onChange={(e) => { const x = services.find((y) => y.id === e.target.value); if (x) add({ type: x.category === 'Room' ? 'room' : x.category === 'Consultation' ? 'consultation' : 'procedure', desc: x.name, rate: x.price, taxPct: x.gst || 0 }) }}><option value="">+ Procedure / service…</option>{services.map((x) => <option key={x.id} value={x.id}>{x.name} · ₹{x.price}</option>)}</Select>}
             </div>
             <div className="space-y-2">
               {items.map((it, i) => (
@@ -116,7 +121,7 @@ function Detail() {
   const b = useData((d) => d.get('bills', id))
   const [sheet, setSheet] = useState('')
   const [f, setF] = useState({ amount: '', method: 'cash', ref: '', reason: '' })
-  if (!b) return <Page title="Bill" back><Empty title="Not found" /></Page>
+  if (!b || !seesUnitMoney(user, billUnit(b))) return <Page title="Bill" back><Empty title="Not found" text="Bills of another unit are visible only to that unit." /></Page>
   const bal = balanceOf(b)
   const paid = round2(b.paid - (b.refunded || 0))
   return (

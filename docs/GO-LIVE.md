@@ -68,6 +68,30 @@ document bucket and the live-update feed. It is safe to run again after updates.
    reports* for your pathologist.
 5. **Pharmacy → Stock & expiry**: add medicines and opening stock batch-wise.
 
+### Separately owned medical store and laboratory
+
+If the medical store and the laboratory have their own owners (as at
+Radhakrishna Hospital), add each owner once from the platform login (see
+section 8). This is deliberately not something the hospital administrator can
+do, so that each owner alone controls their own staff and income:
+
+```sql
+-- run as the platform admin, or in the SQL editor
+select public.platform_add_unit_owner('radhakrishna', 'pharmacy', '{"name": "Avinash Aher", "phone": "9XXXXXXXXX"}');
+select public.platform_add_unit_owner('radhakrishna', 'lab',      '{"name": "Bapuji Dhomse", "phone": "9XXXXXXXXX"}');
+```
+
+Each owner then logs in with that mobile number and:
+- adds their own staff (pharmacists, or lab technicians with *Authorised to
+  verify lab reports* where appropriate);
+- fills in **Settings → My unit** (store: drug licence and GSTIN; lab: address,
+  signatories, footer);
+- the lab owner sets pathology **test prices**. The hospital administrator sets
+  ECG / echo / X-ray prices.
+
+To give the main doctor administrator rights, the hospital administrator opens
+*Staff & HR*, edits the doctor and ticks **Also administrator**.
+
 Patients registered at the reception are **linked automatically** the first time
 they log in to the patient app with the same mobile number. New patients can
 also self-register with the hospital code.

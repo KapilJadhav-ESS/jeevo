@@ -11,6 +11,7 @@ import t1 from './t1.txt?raw'
 import t2 from './t2.txt?raw'
 import t3 from './t3.txt?raw'
 import t4 from './t4.txt?raw'
+import t5 from './t5.txt?raw'
 import { PATTERNS as JP } from './patterns'
 
 export const LANGS = [
@@ -22,7 +23,7 @@ const KEY = 'jeevo-lang'
 const IDX = { mr: 1, hi: 2 }
 
 const DICT = new Map()
-for (const line of [t1, t2, t3, t4].join('\n').split('\n')) {
+for (const line of [t5, t1, t2, t3, t4].join('\n').split('\n')) {
   if (!line.trim() || line.startsWith('#')) continue
   const [en, hi, mr] = line.split('||').map((x) => x.trim())
   if (en && hi && mr && !DICT.has(en)) DICT.set(en, [en, mr, hi])

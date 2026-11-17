@@ -2,7 +2,7 @@
 // audit trail, numbering, in-app notifications and patient messaging
 // (WhatsApp / SMS) in the patient's own language, with consent checks.
 import { db } from '../db'
-import { can } from '../rbac'
+import { can, unitOf, rolesOf } from '../rbac'
 import { uid, phone10, fmtDate, hhmm, inr } from '../utils'
 import { CLOUD } from '../config'
 
@@ -19,15 +19,17 @@ export const req = (v, msg) => { if (v === undefined || v === null || String(v).
 /* ---------- Audit trail (who changed what, when) ---------- */
 export function audit(action, entity, entityId, summary = '') {
   const u = me()
-  db.insert('audit', { id: uid('au'), userId: u?.id, userName: u?.name, role: u?.role, action, entity, entityId, summary, at: new Date().toISOString() })
+  db.insert('audit', { id: uid('au'), userId: u?.id, userName: u?.name, role: u?.role, unit: unitOf(u) || 'hospital', action, entity, entityId, summary, at: new Date().toISOString() })
 }
 
 /* ---------- Numbering: PREFIX-YYMM-0001 per hospital ---------- */
-const NUMBERED = { AP: ['appointments', 'apptNo'], RX: ['prescriptions', 'rxNo'], LB: ['labOrders', 'orderNo'], BL: ['bills', 'billNo'], RC: ['payments', 'receiptNo'], IP: ['admissions', 'admNo'], PID: ['patients', 'pid'] }
+// Bills and receipts are numbered separately for each unit (hospital BL/RC, medical store PH/PR, laboratory LB-…/LR)
+const NUMBERED = { AP: ['appointments', 'apptNo'], RX: ['prescriptions', 'rxNo'], LB: ['labOrders', 'orderNo'], BL: ['bills', 'billNo'], PH: ['bills', 'billNo'], LBL: ['bills', 'billNo'], RC: ['payments', 'receiptNo'], PR: ['payments', 'receiptNo'], LR: ['payments', 'receiptNo'], IP: ['admissions', 'admNo'], RF: ['referrals', 'refNo'], PID: ['patients', 'pid'] }
 export function nextNo(prefix) {
   const counters = db.setting('counters', {})
   const [col, field] = NUMBERED[prefix] || []
-  const used = col ? Math.max(0, ...db.list(col).map((r) => Number(String(r[field] || '').match(/(\d+)(?:-R\d+)?$/)?.[1]) || 0)) : 0
+  const own = (r) => prefix === 'PID' || String(r[field] || '').startsWith(prefix + '-')
+  const used = col ? Math.max(0, ...db.list(col, own).map((r) => Number(String(r[field] || '').match(/(\d+)(?:-R\d+)?$/)?.[1]) || 0)) : 0
   const n = Math.max(counters[prefix] || 0, used, 1000) + 1
   if (!CLOUD) db.setSetting('counters', { ...counters, [prefix]: n }) // in the cloud the server keeps numbers unique
   if (prefix === 'PID') {

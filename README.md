@@ -22,18 +22,36 @@ Run it (`npm install && npm run dev`) or deploy to GitHub Pages (below). On the
 login screen pick a language, then tap a demo account – or log in with any demo
 mobile number (the OTP is shown on screen).
 
+The demo is set up for **Radhakrishna Hospital, Pimpalgaon (B), Nashik**. Its
+hospital, medical store and pathology laboratory are **separately owned**, so the
+app has three owners. Each owner sees only their own unit's staff, bills, income,
+reports and audit trail. Patients are shared, so one patient file covers all three.
+
 | Demo account | What to try |
 |---|---|
-| **Patient** – Ramesh Patil (family of 4) | Book for a family member, live token & waiting time, prescriptions with Hindi/Marathi instructions, lab reports, pay Sunita's pending bill (simulated UPI), rate the visit |
-| **Receptionist** – Kavita More | Quick registration with duplicate check, walk-in token, check-in + fee, queue board, **TV display**, emergency registration, billing |
-| **Doctor** – Dr. Anjali Deshmukh | My OPD → *Call next* → vitals, notes, e-prescription (allergy warning, repeat previous Rx), order tests, *Finish & sign* |
-| **Nurse** – Mary Fernandes | Ward patients, vitals, medication given, nursing notes, task list |
-| **Pharmacist** – Rahul Jain | Dispense prescriptions (FEFO batches), counter sale with barcode, low-stock & expiry alerts |
-| **Lab Technician** – Sachin Pawar | Sample ID, result entry with normal ranges, upload PDF/X-ray |
-| **Pathologist** – Dr. Pooja Agarwal | Verify reports (patients see results only after verification) |
-| **Hospital Admin** – Dr. Suresh Kale | Dashboards, reports & CSV exports, staff/HR (shifts, leave, attendance), pricing, settings, feedback, audit log |
-| **Other clinic** – Dr. Milind Jadhav | A second tenant – completely separate data |
+| **Patient** – Sunil Kadam (family of 4) | Book with Dr. Umesh or Dr. Kavita, live token, prescriptions in Marathi/Hindi, lab reports, referral letter, pay a pending bill (simulated UPI) |
+| **Hospital owner** – Sanjay Aher | Hospital dashboard and income (consultation, IPD, ECG/echo/X-ray), hospital staff and HR, beds, insurance and cashless desk, reports, settings |
+| **Main doctor + administrator** – Dr. Umesh Aher | My OPD → consult → e-prescription, order tests, **Refer**, plus the hospital administrator's overview |
+| **Medical store owner** – Avinash Aher | Medical store income and bills only, own 2 pharmacists, stock, store letterhead (DL / GSTIN) |
+| **Laboratory owner** – Bapuji Dhomse | Laboratory income and bills only, own 2 technicians, verify reports, test prices, lab letterhead |
+| **Doctor** – Dr. Kavita Aher (Gynaecology) | Own OPD and patients |
+| **Receptionist / Nurse** | Registration, walk-in tokens, queue, TV display, admissions with insurer, vitals, nursing notes |
+| **Pharmacist** / **Lab technician** (Yogita Dhomse) | Dispense prescriptions, counter sale / sample, results (a different authorised person verifies) |
+| **Other clinic** | A second tenant – completely separate data |
 | **Super Admin** | All hospitals, plans, usage, suspend a tenant |
+
+Beds: ICU 10 · General ward 2 rooms × 4 · Semi-special 10 rooms × 2 · Special 10
+single rooms (48 beds).
+
+**What is real and what is sample data.** The hospital's name, logo, address,
+phone numbers, registration and Rohini numbers, timings, facilities, the two
+doctors and the laboratory's details are from the hospital's own brochure,
+letterheads and sign boards. **All patients are fictional.** No real patient
+data is used, even where a real document was used as a format sample. Still
+placeholders, to be filled in before go-live: medical store drug licence and
+GSTIN, names and numbers of the reception, nursing, pharmacy and third lab
+staff, prices, and all demo login mobile numbers (`90000…`). The semi-special
+ward is assumed to be 10 rooms × 2 beds.
 
 *Profile → Reset demo data* starts fresh. The demo keeps "today" current: when
 you open it on another day, the sample appointments and admissions move forward.
@@ -103,8 +121,14 @@ you open it on another day, the sample appointments and admissions move forward.
 - **Role- and record-level rules** (`supabase/setup.sql`): e.g. patients only see
   their own family; receptionists and pharmacists cannot read clinical notes;
   only the treating doctor edits a consultation; unverified lab results are hidden
-  from patients; refunds need an admin; the audit log is append-only.
-  **77 automated security tests** (`npm run test:db`) run in CI before every deploy.
+  from patients; refunds need the unit's owner; the audit log is append-only.
+- **Separately owned units** (hospital, medical store, laboratory) are enforced in
+  the database too: an owner cannot read or refund another unit's bills, manage
+  its staff, change its letterhead or read its audit trail. The hospital
+  administrator cannot create medical store or lab staff, or give themself those
+  roles. Pathology reports are verified only by the lab (never by the person who
+  entered the results); ECG / echo / X-ray reports are verified by a hospital doctor.
+  **132 automated security tests** (`npm run test:db`) run in CI before every deploy.
 - Medical documents in a **private bucket**, opened via short-lived signed links.
 - Audit trail of changes to patients, prescriptions, clinical notes and billing.
 - Consent records, 30-minute idle logout for staff, data minimisation per role.

@@ -32,18 +32,48 @@ function Actions({ blob, name, shareText, paper = true }) {
   )
 }
 
-function Letterhead({ title, right }) {
+// Letterheads: each unit prints on its own letterhead
+//  hospital – logo, doctor's qualifications, Reg. No., Rohini code (as on the hospital pad)
+//  lab      – laboratory name and its signatories (as on the lab report)
+//  pharmacy – medical store name, drug licence, GSTIN
+export function Letterhead({ title, right, unit = 'hospital', doctor }) {
   const h = db.hospital() || {}
-  return (
-    <div className="flex items-start justify-between gap-4 border-b-2 pb-3 mb-3" style={{ borderColor: h.color || '#0E7C74' }}>
-      <div>
-        <div className="text-lg font-extrabold" style={{ color: h.color || '#0E7C74' }}>{h.name}</div>
-        <div className="text-[11px] text-ink-500">{h.address}, {h.city} {h.pin} · Ph {h.phone}</div>
-        {h.regNo && <div className="text-[11px] text-ink-500" translate="no">Reg: {h.regNo}</div>}
+  const lab = db.setting('unit.lab', {})
+  const ph = db.setting('unit.pharmacy', {})
+  const color = h.color || '#6E1824'
+  if (unit === 'lab') return (
+    <div className="border-b-2 pb-3 mb-3" style={{ borderColor: '#1F7A3A' }}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0"><div className="text-xl font-extrabold text-[#1B2A4A]" translate="no">{lab.name || 'Laboratory'}</div><div className="text-[11px] text-ink-500" translate="no">{lab.address}</div><div className="text-[11px] text-ink-500" translate="no">☎ {lab.phone} · {lab.email}</div></div>
+        <div className="text-right text-[11px] text-ink-700 shrink-0" translate="no">{(lab.signatories || []).map((x) => <div key={x.name} className="mb-1"><div className="font-bold text-[12px]">{x.name}</div><div>{x.qual}</div><div className="text-ink-500">{x.reg}</div></div>)}</div>
       </div>
+      <div className="flex justify-between items-end mt-1"><div className="text-xs font-bold tracking-wider text-ink-500 uppercase">{title}</div><div className="text-right">{right}</div></div>
+    </div>
+  )
+  if (unit === 'pharmacy') return (
+    <div className="flex items-start justify-between gap-4 border-b-2 pb-3 mb-3" style={{ borderColor: color }}>
+      <div className="min-w-0"><div className="text-lg font-extrabold" style={{ color }} translate="no">{ph.name || 'Medical Store'}</div><div className="text-[11px] text-ink-500">{h.address}, {h.city} {h.pin}</div><div className="text-[11px] text-ink-500" translate="no">{ph.drugLicence} · {ph.gstin} · Ph {ph.phone || h.phone}</div></div>
       <div className="text-right"><div className="text-xs font-bold tracking-wider text-ink-500 uppercase">{title}</div>{right}</div>
     </div>
   )
+  return (
+    <div className="border-b-2 pb-3 mb-3" style={{ borderColor: color }}>
+      <div className="flex items-start gap-3">
+        <img src={h.logo || 'logo.png'} alt="" className="h-14 w-14 shrink-0" />
+        <div className="flex-1 min-w-0">
+          {doctor ? <><div className="text-base font-extrabold" style={{ color }}>{doctor.name}</div><div className="text-[11px] text-ink-700">{doctor.qualification}</div>{doctor.qualificationNote && <div className="text-[10px] text-ink-500">{doctor.qualificationNote}</div>}<div className="text-[11px] text-ink-500" translate="no">Reg. No. {doctor.regNo}</div></>
+            : <><div className="text-lg font-extrabold" style={{ color }}>{h.name}</div><div className="text-[11px] text-ink-500">{h.address}, {h.city} {h.pin}</div></>}
+          <div className="text-[11px] font-bold" style={{ color }} translate="no">Hospital Regd. No.: {h.regNo}{h.rohiniCode ? ` · Rohini Code: ${h.rohiniCode}` : ''}</div>
+        </div>
+        <div className="text-right shrink-0"><div className="text-sm font-extrabold" style={{ color }}>{h.name}</div><div className="text-xs font-bold tracking-wider text-ink-500 uppercase">{title}</div>{right}</div>
+      </div>
+    </div>
+  )
+}
+function Footer({ unit = 'hospital' }) {
+  const h = db.hospital() || {}
+  const u = db.setting('unit.' + unit, {})
+  return <div className="mt-5 pt-2 border-t border-ink-200 text-[10px] text-ink-500 flex flex-wrap justify-between gap-2"><span>{u.footer || h.timings}</span><span translate="no">{unit === 'lab' ? `${u.phone} · ${u.email}` : unit === 'pharmacy' ? u.phone || h.phone : `${h.phone} · ${h.email}`}</span></div>
 }
 function PatientStrip({ p, extra }) {
   return (
@@ -63,8 +93,7 @@ export function PrescriptionView({ rx, actions = true }) {
   return (
     <>
       <Card className="p-4 lg:p-6 print-area">
-        <Letterhead title="Prescription" right={<><div className="text-sm font-semibold" translate="no">{rx.rxNo}</div><div className="text-xs text-ink-500">{fmtDate(rx.date + 'T00:00:00')}</div></>} />
-        <div className="mb-3"><div className="font-bold">{doc?.name}</div><div className="text-xs text-ink-500">{doc?.qualification} · {doc?.designation}</div><div className="text-xs text-ink-500" translate="no">Reg. No. {doc?.regNo}</div></div>
+        <Letterhead title="Prescription" doctor={doc} right={<><div className="text-sm font-semibold" translate="no">{rx.rxNo}</div><div className="text-xs text-ink-500">{fmtDate(rx.date + 'T00:00:00')}</div></>} />
         <PatientStrip p={p} extra={<span className={p?.allergies ? 'text-red-600 font-bold' : ''}>Allergies: {p?.allergies || 'None known'}</span>} />
         {(v.bpSys || v.pulse || v.temp || v.weight) && <div className="text-xs text-ink-500 mt-2">Vitals: {[v.bpSys && `BP ${v.bpSys}/${v.bpDia}`, v.pulse && `Pulse ${v.pulse}`, v.temp && `Temp ${v.temp}°F`, v.spo2 && `SpO₂ ${v.spo2}%`, v.weight && `Wt ${v.weight} kg`].filter(Boolean).join(' · ')}</div>}
         {rx.diagnosis && <div className="mt-3 text-sm"><span className="text-ink-500">Diagnosis: </span><span className="font-bold" translate="no">{rx.diagnosis}</span></div>}
@@ -90,6 +119,7 @@ export function PrescriptionView({ rx, actions = true }) {
           <div className="font-bold">{doc?.name}</div>
           <div className={cls('text-xs', rx.status === 'final' ? 'text-accent-700' : 'text-red-600')}>{rx.status === 'final' ? `Digitally signed · ${fmtDateTime(rx.signedAt || rx.createdAt)}` : rx.status === 'superseded' ? 'Replaced by a corrected prescription' : 'Draft – not valid until signed'}</div>
         </div>
+        <Footer />
       </Card>
       {actions && (
         <>
@@ -114,11 +144,13 @@ export function LabReportView({ lo, patientView }) {
   return (
     <>
       <Card className="p-4 lg:p-6 print-area">
-        <Letterhead title="Laboratory report" right={<><div className="text-sm font-semibold" translate="no">{lo.orderNo}</div><div className="text-xs text-ink-500">Sample <span translate="no">{lo.sampleId || '—'}</span></div></>} />
-        <PatientStrip p={p} extra={<span>Ref. by {doc?.name || 'Self'}</span>} />
-        <div className="text-xs text-ink-500 mt-2">Collected {fmtDateTime(lo.collectedAt)} · Reported {fmtDateTime(lo.verifiedAt || lo.enteredAt)}</div>
+        <Letterhead unit={lo.unit || 'lab'} title={lo.unit === 'hospital' ? 'Investigation report' : 'Laboratory report'} right={<><div className="text-sm font-semibold" translate="no">R/B No. {lo.orderNo}</div><div className="text-xs text-ink-500">Sample <span translate="no">{lo.sampleId || '—'}</span></div></>} />
+        <PatientStrip p={p} extra={<span>Ref. by <span translate="no">{doc?.name || lo.referredBy || 'Self'}</span></span>} />
+        {(lo.unit || 'lab') === 'lab' && <div className="text-center text-[11px] text-ink-500 mt-1">*** Identity given by patient ***</div>}
+        <div className="text-xs text-ink-500 mt-2">{`Collected ${fmtDateTime(lo.collectedAt)} · Reported ${fmtDateTime(lo.verifiedAt || lo.enteredAt)}`}</div>
         {tests.map((t) => (
           <div key={t.id} className="mt-4">
+            <div className="text-[11px] font-extrabold tracking-wider uppercase text-ink-500 underline">{t.category}</div>
             <div className="font-bold text-brand-700">{t.name}</div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm mt-1">
@@ -147,6 +179,7 @@ export function LabReportView({ lo, patientView }) {
           <span className="text-ink-500 max-w-[60%]">Values marked High/Low are outside the reference range. Please discuss the results with your doctor.</span>
           <span className="text-right"><span className="block font-bold text-sm">{ver?.name}</span><span className={lo.verifiedAt ? 'text-accent-700' : 'text-red-600'}>{lo.verifiedAt ? `Verified · ${fmtDateTime(lo.verifiedAt)}` : 'Not verified – provisional'}</span></span>
         </div>
+        <Footer unit={lo.unit || 'lab'} />
       </Card>
       {['verified', 'published'].includes(lo.status) && <Actions blob={() => labReportPdf(lo)} name={`Lab-report-${lo.orderNo}.pdf`} shareText="Lab report" />}
     </>
@@ -160,7 +193,7 @@ export function BillView({ b, actions = true }) {
   return (
     <>
       <Card className="p-4 lg:p-6 print-area">
-        <Letterhead title="Bill" right={<><div className="text-sm font-semibold" translate="no">{b.billNo}</div><div className="text-xs text-ink-500">{fmtDate(b.createdAt)}</div></>} />
+        <Letterhead unit={b.unit || 'hospital'} title="Bill" right={<><div className="text-sm font-semibold" translate="no">{b.billNo}</div><div className="text-xs text-ink-500">{fmtDate(b.createdAt)}</div></>} />
         <PatientStrip p={p} />
         <table className="w-full text-sm mt-3">
           <thead><tr className="text-left text-[11px] uppercase text-ink-500 border-b border-ink-200"><th className="py-1.5">Item</th><th className="text-right">Qty</th><th className="text-right">Rate</th><th className="text-right">Amount</th></tr></thead>
@@ -181,7 +214,7 @@ export function BillView({ b, actions = true }) {
           <div className={cls('flex justify-between font-bold', balanceOf(b) > 0 ? 'text-red-600' : 'text-accent-700')}><span>Balance</span><span>{inr(balanceOf(b), 2)}</span></div>
         </div>
         {pays.length > 0 && <div className="mt-4"><div className="text-xs font-bold text-ink-500 uppercase mb-1">Payments</div>{pays.map((x) => (
-          <div key={x.id} className="flex justify-between text-sm py-1 border-b border-ink-100 last:border-0"><span>{fmtDateTime(x.at)} · {PAY_METHODS[x.method]} · <span translate="no">{x.receiptNo}</span>{x.kind === 'refund' && <span className="text-red-600"> · Refund: {x.reason}</span>}</span><span className={x.amount < 0 ? 'text-red-600 font-semibold' : 'font-semibold'}>{inr(x.amount, 2)}</span></div>
+          <div key={x.id} className="flex justify-between gap-2 text-sm py-1 border-b border-ink-100 last:border-0"><span>{fmtDateTime(x.at)} · {PAY_METHODS[x.method]} · <span translate="no">{x.receiptNo}</span>{x.kind === 'refund' && <span className="text-red-600"> · Refund: {x.reason}</span>}</span><span className={x.amount < 0 ? 'text-red-600 font-semibold' : 'font-semibold'}>{inr(x.amount, 2)}</span></div>
         ))}</div>}
       </Card>
       {actions && <Actions blob={() => billPdf(b)} name={`Bill-${b.billNo}.pdf`} shareText="Hospital bill" paper={false} />}
@@ -198,7 +231,7 @@ export function DischargeView({ a }) {
   return (
     <>
       <Card className="p-4 lg:p-6 print-area">
-        <Letterhead title="Discharge summary" right={<div className="text-sm font-semibold" translate="no">{a.admNo}</div>} />
+        <Letterhead title="Discharge summary" doctor={doc} right={<div className="text-sm font-semibold" translate="no">{a.admNo}</div>} />
         <PatientStrip p={p} extra={<span>Consultant: {doc?.name}</span>} />
         <div className="text-xs text-ink-500 mt-2">Admitted {fmtDateTime(a.admittedAt)} · Discharged {a.dischargedAt ? fmtDateTime(a.dischargedAt) : '—'}</div>
         <Sec t="Reason for admission" v={a.reason} />
@@ -211,6 +244,28 @@ export function DischargeView({ a }) {
         {s.followUp && <div className="mt-3 font-bold text-brand-700">Follow-up on {fmtDate(s.followUp + 'T00:00:00')}</div>}
       </Card>
       {s.final && <Actions blob={() => dischargePdf(a)} name={`Discharge-${a.admNo}.pdf`} shareText="Discharge summary" paper={false} />}
+    </>
+  )
+}
+
+/* ---------- Referral letter (on the doctor's letterhead) ---------- */
+export function ReferralView({ r }) {
+  const p = useData((d) => d.get('patients', r.patientId))
+  const doc = useData((d) => d.get('staff', r.doctorId))
+  const v = r.vitals || {}
+  return (
+    <>
+      <Card className="p-4 lg:p-6 print-area">
+        <Letterhead title="Referral letter" doctor={doc} right={<><div className="text-sm font-semibold" translate="no">{r.refNo}</div><div className="text-xs text-ink-500">{fmtDate(r.date + 'T00:00:00')}</div></>} />
+        <PatientStrip p={p} />
+        <div className="flex flex-wrap gap-x-5 text-sm mt-2" translate="no">{v.pulse && <span>Pulse {v.pulse}/min</span>}{v.bpSys && <span>BP {v.bpSys}/{v.bpDia}</span>}{v.spo2 && <span>SpO₂ {v.spo2}%</span>}{v.weight && <span>Weight {v.weight} kg</span>}</div>
+        <div className="mt-5 text-sm"><div>To,</div><div className="font-bold" translate="no">{r.toDoctor}</div>{r.specialty && <div translate="no">{r.specialty}</div>}{r.place && <div translate="no">{r.place}</div>}</div>
+        <p className="mt-5 text-[15px] leading-relaxed whitespace-pre-line" translate="no">{r.reason}</p>
+        {r.notes && <p className="mt-3 text-sm text-ink-700 whitespace-pre-line" translate="no">{r.notes}</p>}
+        <div className="mt-8 text-right text-sm"><div className="font-bold">{doc?.name}</div><div className="text-xs text-ink-500">{doc?.qualification}</div></div>
+        <Footer />
+      </Card>
+      <div className="no-print mt-4"><Button variant="secondary" icon={Printer} onClick={() => printPage('A4')}>Print</Button></div>
     </>
   )
 }

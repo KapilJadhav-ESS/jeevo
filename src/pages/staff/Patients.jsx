@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { UserPlus, CalendarPlus, Receipt, HeartPulse, Pencil, QrCode, Printer, MessageCircle, Syringe, Users, ScanLine, Zap, AlertTriangle } from 'lucide-react'
+import { Send, ShieldCheck, UserPlus, CalendarPlus, Receipt, HeartPulse, Pencil, QrCode, Printer, MessageCircle, Syringe, Users, ScanLine, Zap, AlertTriangle } from 'lucide-react'
 import { Page, Card, Button, Table, SearchBox, Field, Input, Select, Textarea, Toggle, Tabs, Sheet, Kv, Badge, Empty, Grid, useToast } from '../../components/ui'
 import { PatientLine, ClinicalAlerts, QR, ApptStatus, LabStatus, BillStatus, doctorName } from '../../components/common'
 import { useAuth } from '../../lib/auth'
 import { db, useData } from '../../lib/db'
 import { can } from '../../lib/rbac'
-import { searchPatients, registerPatient, updatePatient, setConsent, addVaccination, familyOf, patientTimeline, recordVitals, balanceOf, VITAL_FIELDS, latestVitals, sendMessage, patientBalance } from '../../lib/actions'
+import { searchPatients, registerPatient, updatePatient, setConsent, addVaccination, familyOf, patientTimeline, recordVitals, balanceOf, VITAL_FIELDS, latestVitals, sendMessage, visibleBills, insurers } from '../../lib/actions'
 import { ageSex, fmtDate, fmtDateTime, fmtPhone, inr, dobFromAge, ageOf, today, hhmm, waLink, cls } from '../../lib/utils'
 import { LANGS } from '../../i18n'
 import { printPage } from '../../components/Documents'
@@ -28,7 +28,7 @@ function List() {
         { label: 'Mobile', render: (p) => <span translate="no">{fmtPhone(p.phone)}</span>, nowrap: true },
         { label: 'City', key: 'city', hideMobile: true },
         { label: 'Registered', render: (p) => fmtDate(p.createdAt), nowrap: true },
-        { label: 'Balance', right: true, render: (p) => { const b = patientBalance(p.id); return b > 0 ? <span className="text-red-600 font-semibold">{inr(b)}</span> : '—' } }
+        { label: 'Balance', right: true, render: (p) => { const b = visibleBills(user, db.list('bills', (x) => x.patientId === p.id && x.status !== 'cancelled')).reduce((s, x) => s + balanceOf(x), 0); return b > 0 ? <span className="text-red-600 font-semibold">{inr(b)}</span> : '—' } }
       ]} />
       {rows.length > 100 && <p className="text-xs text-ink-500 mt-2">Showing first 100 – refine your search.</p>}
     </Page>
@@ -78,6 +78,8 @@ export function PatientForm({ initial, onSaved, onCancel, compact }) {
           <Field label="Blood group"><Select value={f.bloodGroup} onChange={set('bloodGroup')}><option value="">Not known</option>{['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((b) => <option key={b}>{b}</option>)}</Select></Field>
           <Field label="Allergies"><Input value={f.allergies} onChange={set('allergies')} placeholder="e.g. Penicillin, sulfa" /></Field>
           <Field label="Existing medical conditions" className="sm:col-span-2"><Input value={f.conditions} onChange={set('conditions')} placeholder="e.g. Diabetes, BP, asthma" /></Field>
+          <Field label="Health insurance / TPA (cashless)"><Select value={f.insurance?.insurer || ''} onChange={(e) => setF({ ...f, insurance: e.target.value ? { ...(f.insurance || {}), insurer: e.target.value } : null })}><option value="">None</option>{insurers().map((x) => <option key={x}>{x}</option>)}</Select></Field>
+          {f.insurance?.insurer && <><Field label="Policy / card number"><Input value={f.insurance.policyNo || ''} onChange={(e) => setF({ ...f, insurance: { ...f.insurance, policyNo: e.target.value } })} /></Field><Field label="Valid till"><Input type="date" value={f.insurance.validTill || ''} onChange={(e) => setF({ ...f, insurance: { ...f.insurance, validTill: e.target.value } })} /></Field></>}
         </>}
       </Grid>
       {!initial && (
@@ -138,7 +140,7 @@ function Profile() {
   const p = useData((d) => d.get('patients', id))
   const fam = useData(() => familyOf(p))
   const tl = useData(() => (p ? patientTimeline(p.id) : []))
-  const bills = useData((d) => d.list('bills', (b) => b.patientId === id).sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
+  const bills = useData((d) => visibleBills(user, d.list('bills', (b) => b.patientId === id)).sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
   const vit = useData((d) => d.list('vitals', (v) => v.patientId === id).sort((a, b) => b.at.localeCompare(a.at)))
   const [tab, setTab] = useState('history')
   const [sheet, setSheet] = useState('')
@@ -169,6 +171,7 @@ function Profile() {
               {p.altPhone && <Kv k="Alternate" v={<span translate="no">{fmtPhone(p.altPhone)}</span>} />}
               <Kv k="Address" v={[p.address, p.city, p.pin].filter(Boolean).join(', ') || '—'} />
               <Kv k="Emergency contact" v={p.emergencyName ? `${p.emergencyName} ${fmtPhone(p.emergencyPhone)}` : '—'} />
+              {p.insurance?.insurer && <Kv k="Insurance" v={<span className="inline-flex items-center gap-1"><ShieldCheck size={14} className="text-accent-600" /><span translate="no">{p.insurance.insurer}{p.insurance.policyNo ? ` · ${p.insurance.policyNo}` : ''}</span></span>} />}
               <Kv k="Language" v={<span translate="no">{LANGS.find((l) => l.code === p.lang)?.label}</span>} />
               <Kv k="Registered" v={fmtDate(p.createdAt)} />
             </div>
@@ -236,7 +239,8 @@ function Timeline({ items, clinical }) {
         if (kind === 'appointment') return <div key={rec.id} className="px-4 py-3 flex items-center gap-3 text-sm"><CalendarPlus size={18} className="text-sky-600" /><div className="flex-1 min-w-0"><b>{doctorName(rec.doctorId)}</b> <span className="text-ink-500">· {fmtDate(rec.date + 'T00:00:00')} {hhmm(rec.time)} · Token {rec.token}</span></div><ApptStatus s={rec.status} /></div>
         if (kind === 'consultation') return clinical ? <div key={rec.id} className="px-4 py-3 text-sm"><div className="flex items-center gap-2"><Zap size={18} className="text-violet-600" /><b className="flex-1">Consultation · {doctorName(rec.doctorId)}</b><span className="text-ink-500">{fmtDate(at)}</span></div><div className="mt-1 ml-7"><span translate="no">{rec.complaints}</span>{rec.diagnosis && <> → <b translate="no">{rec.diagnosis}</b></>}</div>{rec.plan && <div className="ml-7 text-ink-500" translate="no">{rec.plan}</div>}</div> : null
         if (kind === 'prescription') return <button key={rec.id} onClick={() => nav(`/s/rx/${rec.id}`)} className="w-full text-left px-4 py-3 text-sm flex items-center gap-3"><span className="text-lg font-extrabold text-brand-600">℞</span><span className="flex-1 min-w-0 truncate" translate="no">{rec.items.map((i) => i.name).join(', ')}</span><span className="text-ink-500">{fmtDate(at)}</span></button>
-        if (kind === 'lab') return <button key={rec.id} onClick={() => nav(`/s/lab/${rec.id}`)} className="w-full text-left px-4 py-3 text-sm flex items-center gap-3"><ScanLine size={18} className="text-amber-600" /><span className="flex-1 min-w-0 truncate">{rec.tests.map((t) => db.get('labTests', t)?.code).join(', ')}</span><LabStatus s={rec.status} /></button>
+        if (kind === 'lab') return <button key={rec.id} onClick={() => nav(`/s/report/${rec.id}`)} className="w-full text-left px-4 py-3 text-sm flex items-center gap-3"><ScanLine size={18} className="text-amber-600" /><span className="flex-1 min-w-0 truncate">{rec.tests.map((t) => db.get('labTests', t)?.code).join(', ')}</span><LabStatus s={rec.status} /></button>
+        if (kind === 'referral') return <button key={rec.id} onClick={() => nav(`/s/referral/${rec.id}`)} className="w-full text-left px-4 py-3 text-sm flex items-center gap-3"><Send size={18} className="text-sky-600" /><span className="flex-1 min-w-0 truncate">Referral · <span translate="no">{rec.toDoctor || rec.specialty}{rec.place ? `, ${rec.place}` : ''}</span></span><span className="text-ink-500">{fmtDate(at)}</span></button>
         if (kind === 'admission') return <button key={rec.id} onClick={() => nav(`/s/ipd/${rec.id}`)} className="w-full text-left px-4 py-3 text-sm flex items-center gap-3"><HeartPulse size={18} className="text-red-500" /><span className="flex-1 min-w-0"><b translate="no">{rec.admNo}</b> · <span translate="no">{rec.diagnosis}</span></span><Badge color={rec.status === 'admitted' ? 'amber' : 'green'}>{rec.status === 'admitted' ? 'Admitted' : 'Discharged'}</Badge></button>
         return null
       })}

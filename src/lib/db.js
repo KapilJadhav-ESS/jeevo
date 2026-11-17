@@ -15,13 +15,13 @@ import { buildSeed } from './seed'
 import { CLOUD } from './config'
 import { api, subscribeChanges } from './cloud'
 
-const KEY = 'jeevo-db-v1'
+const KEY = 'jeevo-db-v2-radhakrishna'
 export const COLLECTIONS = [
   'hospitals', 'departments', 'users', 'staff', 'patients', 'appointments', 'consultations',
   'prescriptions', 'medicines', 'labTests', 'labOrders', 'services', 'bills', 'payments',
   'wards', 'beds', 'admissions', 'vitals', 'nursingTasks', 'medAdmin', 'announcements',
   'healthTips', 'notifications', 'messages', 'feedback', 'leaves', 'attendance', 'shifts',
-  'audit', 'settings'
+  'audit', 'settings', 'referrals'
 ]
 const empty = () => Object.fromEntries(COLLECTIONS.map((c) => [c, []]))
 

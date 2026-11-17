@@ -171,3 +171,14 @@ export function addAdmissionNote(admissionId, kind, text) {
   db.update('admissions', admissionId, { notes: [...(a.notes || []), { at: new Date().toISOString(), by: u.id, kind, text }] })
   audit('note', 'admissions', admissionId, `${kind.replace('_', ' ')} note added`)
 }
+
+/* ---------- Referral letters ---------- */
+export function createReferral({ patientId, consultationId, toDoctor, specialty, place, reason, vitals, notes }) {
+  const u = need('refer')
+  req(toDoctor || specialty, 'Enter the doctor or speciality you are referring to')
+  req(reason, 'Enter the reason for referral')
+  const r = db.insert('referrals', { id: uid('rf'), refNo: nextNo('RF'), patientId, consultationId, doctorId: u.staffId, toDoctor, specialty, place, reason, notes: notes || '', vitals: vitals || {}, date: today() })
+  audit('create', 'referrals', r.id, `Referral to ${toDoctor || specialty}`)
+  notifyPatient(patientId, 'Referral letter', `To ${toDoctor || specialty}${place ? ', ' + place : ''}`, '/p/records/history', 'referral')
+  return r
+}

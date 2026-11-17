@@ -2,16 +2,16 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { NavLink, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import {
   LayoutDashboard, Users, CalendarDays, ListOrdered, Siren, Stethoscope, FlaskConical, Pill, Receipt, BedDouble, HeartPulse, UserCog,
-  Megaphone, BookHeart, MessageSquareHeart, MessageCircle, BarChart3, Settings, ScrollText, Building2, Bell, Menu, X, LogOut, Search, Monitor, UserRound
+  Megaphone, BookHeart, MessageSquareHeart, MessageCircle, BarChart3, Settings, ScrollText, Building2, Bell, Menu, X, LogOut, Search, Monitor, UserRound, ShieldCheck
 } from 'lucide-react'
 import { Avatar, IconButton, Page, Empty } from '../../components/ui'
-import { PrescriptionView } from '../../components/Documents'
+import { PrescriptionView, LabReportView, ReferralView } from '../../components/Documents'
 import { PatientLine } from '../../components/common'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { useAuth } from '../../lib/auth'
 import { db, useData } from '../../lib/db'
-import { can, roleLabel } from '../../lib/rbac'
-import { searchPatients, canVerify } from '../../lib/actions'
+import { can, roleLabel, userRoleLabel, unitOf, UNITS } from '../../lib/rbac'
+import { searchPatients } from '../../lib/actions'
 import { cls } from '../../lib/utils'
 import { CLOUD } from '../../lib/config'
 import Dashboard from './Dashboard'
@@ -41,18 +41,20 @@ export const NAV = [
   { to: '/s/patients', label: 'Patients', icon: Users, perm: 'patients.view' },
   { to: '/s/appointments', label: 'Appointments', icon: CalendarDays, perm: 'appointments.view' },
   { to: '/s/emergency', label: 'Emergency', icon: Siren, perm: 'emergency.view' },
-  { to: '/s/lab', label: 'Laboratory', icon: FlaskConical, show: (u) => can(u, 'lab.work') || canVerify(u) },
+  { to: '/s/lab', label: 'Laboratory', icon: FlaskConical, perm: 'lab.work' },
+  { to: '/s/investigations', label: 'ECG / Echo / X-ray', icon: HeartPulse, perm: 'investigations' },
   { to: '/s/pharmacy', label: 'Pharmacy', icon: Pill, perm: 'pharmacy.dispense' },
   { to: '/s/billing', label: 'Billing', icon: Receipt, perm: 'billing.create' },
   { to: '/s/ipd', label: 'Beds & admissions', icon: BedDouble, perm: 'ipd.view' },
   { to: '/s/nursing', label: 'Nursing', icon: HeartPulse, perm: 'nursing' },
   { to: '/s/staff', label: 'Staff & HR', icon: UserCog, perm: 'staff.manage' },
   { to: '/s/announcements', label: 'Announcements', icon: Megaphone, show: (u) => u.role !== 'super_admin' },
+  { to: '/s/insurance', label: 'Insurance & cashless', icon: ShieldCheck, perm: 'insurance.manage' },
   { to: '/s/content', label: 'Health content', icon: BookHeart, perm: 'healthtips.publish' },
   { to: '/s/messages', label: 'WhatsApp & SMS', icon: MessageCircle, perm: 'appointments.manage' },
   { to: '/s/feedback', label: 'Feedback', icon: MessageSquareHeart, perm: 'feedback.manage' },
   { to: '/s/reports', label: 'Reports', icon: BarChart3, perm: 'reports.view' },
-  { to: '/s/settings', label: 'Settings', icon: Settings, perm: 'config.manage' },
+  { to: '/s/settings', label: 'Settings', icon: Settings, perm: 'config.unit' },
   { to: '/s/audit', label: 'Audit log', icon: ScrollText, perm: 'audit.view' }
 ]
 const visible = (u) => NAV.filter((n) => (!n.perm || can(u, n.perm)) && (!n.show || n.show(u)))
@@ -64,8 +66,8 @@ function SideNav({ onNavigate }) {
   return (
     <div className="flex flex-col h-full">
       <div className="px-5 pt-5 pb-4 flex items-center gap-3">
-        <div className="h-10 w-10 rounded-xl bg-brand-600 grid place-items-center shrink-0"><svg viewBox="0 0 64 64" className="h-6 w-6"><path d="M27 12h10v15h15v10H37v15H27V37H12V27h15z" fill="#fff" /></svg></div>
-        <div className="min-w-0"><div className="font-extrabold leading-tight truncate">{h.shortName || h.name || 'JeevO'}</div><div className="text-[11px] text-ink-500 truncate"><span translate="no">JeevO</span> · {roleLabel(user.role)}</div></div>
+        <div className="h-11 w-11 rounded-xl bg-white border border-ink-200 grid place-items-center shrink-0"><img src={h.logo || 'logo.png'} alt="" className="h-9 w-9" /></div>
+        <div className="min-w-0"><div className="font-extrabold leading-tight truncate">{h.name || 'JeevO'}</div><div className="text-[11px] text-ink-500 truncate">{user.role === 'super_admin' ? 'Platform' : UNITS[unitOf(user)]}</div></div>
       </div>
       <nav className="flex-1 overflow-y-auto px-3 pb-4 space-y-0.5">
         {visible(user).map((n) => (
@@ -136,7 +138,7 @@ export default function StaffApp() {
             <IconButton icon={Bell} label="Notifications" badge={unread} onClick={() => nav('/s/notifications')} className="shadow-none bg-ink-100" />
             <button onClick={() => nav('/s/me')} className="flex items-center gap-2 rounded-full hover:bg-ink-100 pl-1 pr-3 h-11" aria-label="My account">
               <Avatar user={user} size={36} />
-              <span className="hidden md:block text-left leading-tight"><span className="block text-sm font-semibold max-w-[160px] truncate">{user.name}</span><span className="block text-[11px] text-ink-500">{roleLabel(user.role)}</span></span>
+              <span className="hidden md:block text-left leading-tight"><span className="block text-sm font-semibold max-w-[160px] truncate">{user.name}</span><span className="block text-[11px] text-ink-500 max-w-[180px] truncate">{userRoleLabel(user)}</span></span>
             </button>
             <button aria-label="Log out" title="Log out" onClick={logout} className="hidden md:grid h-10 w-10 place-items-center rounded-xl hover:bg-ink-100 text-ink-500"><LogOut size={18} /></button>
           </div>
@@ -151,7 +153,8 @@ export default function StaffApp() {
               <Route path="emergency" element={<Gate perm="emergency.view"><Emergency /></Gate>} />
               <Route path="opd" element={<Gate perm="consult"><Queue doctorView /></Gate>} />
               <Route path="consult/:apptId" element={<Gate perm="consult"><Consult /></Gate>} />
-              <Route path="lab/*" element={<Gate ok={can(user, 'lab.work') || canVerify(user)}><Lab /></Gate>} />
+              <Route path="lab/*" element={<Gate perm="lab.work"><Lab unit="lab" /></Gate>} />
+              <Route path="investigations/*" element={<Gate perm="investigations"><Lab unit="hospital" /></Gate>} />
               <Route path="pharmacy/*" element={<Gate perm="pharmacy.dispense"><Pharmacy /></Gate>} />
               <Route path="billing/*" element={<Gate perm="billing.create"><Billing /></Gate>} />
               <Route path="ipd/*" element={<Gate perm="ipd.view"><Ipd /></Gate>} />
@@ -162,9 +165,12 @@ export default function StaffApp() {
               <Route path="messages" element={<Gate perm="appointments.manage"><Comms tab="messages" /></Gate>} />
               <Route path="feedback" element={<Gate perm="feedback.manage"><Comms tab="feedback" /></Gate>} />
               <Route path="reports/*" element={<Gate perm="reports.view"><Reports /></Gate>} />
-              <Route path="settings/*" element={<Gate perm="config.manage"><SettingsPage /></Gate>} />
+              <Route path="settings/*" element={<Gate perm="config.unit"><SettingsPage /></Gate>} />
+              <Route path="insurance" element={<Gate perm="insurance.manage"><Ipd insurance /></Gate>} />
               <Route path="audit" element={<Gate perm="audit.view"><Reports audit /></Gate>} />
               <Route path="platform" element={<Gate perm="platform.manage"><Platform /></Gate>} />
+              <Route path="report/:id" element={<Gate perm="patients.view"><ReportPage /></Gate>} />
+              <Route path="referral/:id" element={<Gate perm="patients.view"><RefPage /></Gate>} />
               <Route path="rx/:id" element={<Gate perm="patients.view"><RxPage /></Gate>} />
               <Route path="notifications" element={<Me tab="notifications" />} />
               <Route path="me" element={<Me />} />
@@ -182,6 +188,17 @@ function RxPage() {
   const { id } = useParams()
   const rx = useData((d) => d.get('prescriptions', id))
   return <Page title="Prescription" back wide><div className="max-w-3xl">{rx ? <PrescriptionView rx={rx} /> : <Empty title="Not found" />}</div></Page>
+}
+
+function ReportPage() {
+  const { id } = useParams()
+  const lo = useData((d) => d.get('labOrders', id))
+  return <Page title="Report" back wide><div className="max-w-3xl">{lo ? <LabReportView lo={lo} /> : <Empty title="Not found" />}</div></Page>
+}
+function RefPage() {
+  const { id } = useParams()
+  const r = useData((d) => d.get('referrals', id))
+  return <Page title="Referral letter" back wide><div className="max-w-3xl">{r ? <ReferralView r={r} /> : <Empty title="Not found" />}</div></Page>
 }
 
 function Gate({ perm, ok, children }) {

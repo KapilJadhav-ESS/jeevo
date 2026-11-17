@@ -4,7 +4,7 @@ import { Button, Field, Input, Select, Card, Tabs, Avatar, useToast } from '../c
 import { useAuth, findUserByPhone, demoSignup } from '../lib/auth'
 import { db } from '../lib/db'
 import { registerPatient } from '../lib/actions'
-import { roleLabel } from '../lib/rbac'
+import { userRoleLabel } from '../lib/rbac'
 import { otp6, validPhone, dobFromAge } from '../lib/utils'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import { CLOUD, BRAND_NAME } from '../lib/config'
@@ -40,10 +40,11 @@ function LanguageFirst({ onDone }) {
   )
 }
 
+// Hospital logo (Radhakrishna Hospital) on a white tile
 export function Logo({ className = '', big }) {
   return (
-    <div className={`${big ? 'h-20 w-20 rounded-3xl' : 'h-12 w-12 rounded-2xl'} bg-white/15 backdrop-blur grid place-items-center ${className}`}>
-      <svg viewBox="0 0 64 64" className={big ? 'h-12 w-12' : 'h-8 w-8'} aria-hidden="true"><path d="M27 12h10v15h15v10H37v15H27V37H12V27h15z" fill="#fff" /></svg>
+    <div className={`${big ? 'h-20 w-20 rounded-3xl' : 'h-12 w-12 rounded-2xl'} bg-white grid place-items-center shadow-sm ${className}`}>
+      <img src="logo.png" alt="" className={big ? 'h-16 w-16' : 'h-10 w-10'} />
     </div>
   )
 }
@@ -56,7 +57,7 @@ export function Hero({ title, sub }) {
       <div className="relative flex justify-end -mt-6 mb-6"><LanguageSwitcher dark /></div>
       <div className="relative">
         <Logo className="mb-5" />
-        <p className="text-brand-100 text-sm font-semibold tracking-wide" translate="no">JeevO</p>
+        <p className="text-brand-100 text-sm font-semibold tracking-wide">Radhakrishna Hospital</p>
         <h1 className="text-[27px] font-extrabold leading-tight mt-1">{title}</h1>
         {sub && <p className="text-brand-100 text-sm mt-1">{sub}</p>}
       </div>
@@ -66,16 +67,20 @@ export function Hero({ title, sub }) {
 
 const DEMO = {
   patient: [['u-patient', 'Book appointments, see token status, prescriptions, reports and bills for the whole family']],
+  owners: [
+    ['u-sanjay', 'Hospital owner – OPD, beds, hospital billing & income, hospital staff, settings'],
+    ['u-umesh', 'Main doctor and administrator – today’s OPD, prescriptions, ECG / 2D echo, plus admin'],
+    ['u-avinash', 'Medical store owner – stock, sales and income of the medical store only'],
+    ['u-bapuji', 'Laboratory owner – verifies reports, lab prices, lab income and staff only']
+  ],
   staff: [
-    ['u-kavita', 'Register patients, book appointments, manage the queue, collect payments'],
-    ['u-anjali', 'Today’s OPD, consultation notes, digital prescriptions, lab orders'],
-    ['u-mary', 'Ward patients, vitals, nursing tasks, medication records'],
-    ['u-rahul', 'Dispense prescriptions, stock, expiry alerts, pharmacy bills'],
-    ['u-sachin', 'Sample collection, result entry, report upload'],
-    ['u-pooja', 'Pathologist – verifies lab reports before they reach patients'],
-    ['u-suresh', 'Dashboards, staff, pricing, reports, feedback, settings'],
-    ['u-a-milind', 'A different clinic (Satara) – its data is completely separate'],
-    ['u-super', 'All hospitals & clinics on the platform, plans, usage']
+    ['u-kavita', 'Gynaecologist – maternity OPD, prescriptions, deliveries'],
+    ['u-recep1', 'Reception – register patients, tokens, queue, hospital billing'],
+    ['u-nurse1', 'Nurse – ward & ICU patients, vitals, tasks, medicines given'],
+    ['u-pharm1', 'Pharmacist – dispense prescriptions, counter sales'],
+    ['u-yogita', 'Lab technologist – samples, result entry'],
+    ['u-a-doc', 'A different (sample) clinic – its data is completely separate'],
+    ['u-super', 'Platform – all hospitals & clinics, plans, usage']
   ]
 }
 
@@ -116,10 +121,11 @@ function DemoLogin() {
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[1fr_560px] bg-canvas">
       <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900 text-white p-12">
-        <div className="flex items-center gap-3"><Logo /><span className="text-xl font-extrabold" translate="no">JeevO</span></div>
+        <div className="flex items-center gap-3"><Logo /><span><span className="block text-xl font-extrabold">Radhakrishna Hospital</span><span className="block text-sm text-brand-100">Pimpalgaon Baswant · Reg. No. 348</span></span></div>
         <div>
-          <h1 className="text-4xl font-extrabold leading-tight max-w-lg">Simple hospital & clinic management for Bharat.</h1>
-          <p className="text-brand-100 mt-3 max-w-md">Appointments, tokens, prescriptions, lab, pharmacy, billing and beds — in English, हिंदी and मराठी.</p>
+          <h1 className="text-4xl font-extrabold leading-tight max-w-lg">Your health, simplified.</h1>
+          <p className="text-brand-100 mt-3 max-w-md">Appointments, tokens, prescriptions, lab reports, medical store and bills — in English, हिंदी and मराठी.</p>
+          <p className="text-brand-100/80 text-sm mt-2 max-w-md">Dr. Umesh Aher · Dr. Kavita Umesh Aher</p>
           <div className="mt-8 grid grid-cols-3 gap-3 max-w-lg">
             {[['📱', 'Patient app'], ['💬', 'WhatsApp & SMS'], ['🏥', 'Hospital web app']].map(([e, t]) => <div key={t} className="rounded-2xl bg-white/10 p-4"><div className="text-2xl">{e}</div><div className="text-sm font-semibold mt-2">{t}</div></div>)}
           </div>
@@ -127,7 +133,7 @@ function DemoLogin() {
         <LanguageSwitcher dark className="self-start" />
       </div>
       <div className="max-w-[560px] w-full mx-auto">
-        <div className="lg:hidden"><Hero title={BRAND_NAME || 'Your health, simplified.'} sub="Appointments · Reports · Bills" /></div>
+        <div className="lg:hidden"><Hero title={BRAND_NAME || 'Your health, simplified.'} sub="Pimpalgaon Baswant · Appointments · Reports · Bills" /></div>
         <div className="-mt-14 lg:mt-0 px-4 lg:px-10 pb-10 lg:py-16 relative">
           <Card className="p-5 lg:p-7">
             {step === 'pick' && (
@@ -144,7 +150,7 @@ function DemoLogin() {
                 <p className="text-xs text-ink-500 mt-3 text-center">New patient? Enter your mobile number – you can register in one minute.</p>
 
                 <div className="flex items-center gap-3 my-6"><span className="flex-1 h-px bg-ink-200" /><span className="text-xs font-semibold text-ink-400 uppercase tracking-wide">or try a demo account</span><span className="flex-1 h-px bg-ink-200" /></div>
-                <Tabs className="mb-3" value={tab} onChange={setTab} tabs={[{ value: 'patient', label: 'Patient app' }, { value: 'staff', label: 'Hospital staff' }]} />
+                <Tabs className="mb-3" value={tab} onChange={setTab} tabs={[{ value: 'patient', label: 'Patient app' }, { value: 'owners', label: 'Owners' }, { value: 'staff', label: 'Staff' }]} />
                 <div className="space-y-2">
                   {DEMO[tab].map(([id, desc]) => {
                     const u = db.getAny('users', id)
@@ -155,7 +161,7 @@ function DemoLogin() {
                         <Avatar user={u} size={42} />
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-[15px] truncate">{u.name}</div>
-                          <div className="text-xs font-semibold text-brand-700">{id === 'u-pooja' ? 'Doctor · Pathologist' : roleLabel(u.role)}{h && id === 'u-a-milind' ? ` · ${h.name}` : ''}</div>
+                          <div className="text-xs font-semibold text-brand-700">{userRoleLabel(u)}{h && id === 'u-a-doc' ? ` · ${h.name}` : ''}</div>
                           <div className="text-xs text-ink-500 line-clamp-2">{desc}</div>
                         </div>
                         <ArrowRight size={18} className="text-ink-400 shrink-0" />

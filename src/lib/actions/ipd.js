@@ -15,7 +15,7 @@ export function admitPatient({ patientId, doctorId, deptId, bedId, reason, diagn
   if (!['available', 'reserved'].includes(bed.status)) fail('This bed is not available')
   const a = db.insert('admissions', { id: uid('ad'), admNo: nextNo('IP'), patientId, doctorId, deptId: deptId || db.get('staff', doctorId)?.deptId, bedId, reason, diagnosis, expectedDischarge, emergency: !!emergency, status: 'admitted', admittedAt: new Date().toISOString(), notes: [], admittedBy: me().id })
   db.update('beds', bedId, { status: 'occupied', admissionId: a.id, reservedFor: '' })
-  if (Number(deposit) > 0) createBill({ patientId, admissionId: a.id, items: [{ type: 'room', refId: a.id, desc: 'Advance deposit – ' + a.admNo, qty: 1, rate: Number(deposit), discount: 0, taxPct: 0 }] }, { amount: Number(deposit), method: method || 'cash' }, { internal: true })
+  if (Number(deposit) > 0) createBill({ patientId, admissionId: a.id, items: [{ type: 'room', refId: a.id, desc: 'Advance deposit – ' + a.admNo, qty: 1, rate: Number(deposit), discount: 0, taxPct: 0 }], unit: 'hospital' }, { amount: Number(deposit), method: method || 'cash' }, { internal: true })
   audit('admit', 'admissions', a.id, `Admitted to ${bed.label}`)
   notifyPatient(patientId, 'Admission', `Admitted – bed ${bed.label}`, '/p/history', 'admission')
   return a
@@ -62,7 +62,7 @@ export function billStay(admissionId) {
   const a = db.get('admissions', admissionId)
   const items = stayCharges(a)
   if (!items.length) fail('Room charges are already billed up to today')
-  const b = createBill({ patientId: a.patientId, admissionId, items })
+  const b = createBill({ patientId: a.patientId, admissionId, items, unit: 'hospital' })
   db.update('admissions', admissionId, { billedDays: daysAdmitted(a) })
   return b
 }

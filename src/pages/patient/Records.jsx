@@ -2,7 +2,7 @@ import { Route, Routes, useNavigate, useParams, NavLink } from 'react-router-dom
 import { Pill, FlaskConical, ClipboardList, Syringe, BedDouble, ChevronRight } from 'lucide-react'
 import { Page, Card, Empty, Badge } from '../../components/ui'
 import { LabStatus, doctorName } from '../../components/common'
-import { PrescriptionView, LabReportView, DischargeView } from '../../components/Documents'
+import { PrescriptionView, LabReportView, DischargeView, ReferralView } from '../../components/Documents'
 import { useData } from '../../lib/db'
 import { fmtDate, cls } from '../../lib/utils'
 import { FamilySwitch, useFamily } from './PatientApp'
@@ -68,6 +68,7 @@ function History() {
   const { current } = useFamily()
   const cons = useData((d) => d.list('consultations', (c) => c.patientId === current?.id && c.status === 'final').sort((a, b) => b.date.localeCompare(a.date)))
   const adms = useData((d) => d.list('admissions', (a) => a.patientId === current?.id).sort((a, b) => b.admittedAt.localeCompare(a.admittedAt)))
+  const refs = useData((d) => d.list('referrals', (r) => r.patientId === current?.id).sort((a, b) => b.date.localeCompare(a.date)))
   return (
     <Shell>
       {current && (current.conditions || current.allergies) && (
@@ -84,6 +85,10 @@ function History() {
             <div className="text-xs text-ink-500 mt-1">{fmtDate(a.admittedAt)} – {a.dischargedAt ? fmtDate(a.dischargedAt) : 'now'} · {doctorName(a.doctorId)}</div>
           </Card>))}
         </div>
+      </>}
+      {refs.length > 0 && <>
+        <h3 className="font-bold mb-2">Referral letters</h3>
+        <div className="space-y-3 mb-5">{refs.map((r) => <Card key={r.id} className="p-4" onClick={() => nav(`/p/records/referral/${r.id}`)}><div className="font-bold" translate="no">{r.toDoctor || r.specialty}{r.place ? `, ${r.place}` : ''}</div><div className="text-xs text-ink-500">{fmtDate(r.date + 'T00:00:00')} · {doctorName(r.doctorId)}</div></Card>)}</div>
       </>}
       <h3 className="font-bold mb-2">Previous consultations</h3>
       <div className="space-y-3">
@@ -117,6 +122,8 @@ const RxDetail = () => { const { id } = useParams(); const rx = useData((d) => d
 const LabDetail = () => { const { id } = useParams(); const lo = useData((d) => d.get('labOrders', id)); return <Page title="Lab report" back>{lo ? <LabReportView lo={lo} patientView /> : <Empty title="Not found" />}</Page> }
 const AdmDetail = () => { const { id } = useParams(); const a = useData((d) => d.get('admissions', id)); return <Page title="Hospital stay" back>{a?.dischargeSummary?.final ? <DischargeView a={a} /> : <Card className="p-5 text-sm text-ink-500 text-center">The discharge summary will be available here after discharge.</Card>}</Page> }
 
+const RefDetail = () => { const { id } = useParams(); const r = useData((d) => d.get('referrals', id)); return <Page title="Referral letter" back>{r ? <ReferralView r={r} /> : <Empty title="Not found" />}</Page> }
+
 export default function Records() {
   return (
     <Routes>
@@ -127,6 +134,7 @@ export default function Records() {
       <Route path="reports/:id" element={<LabDetail />} />
       <Route path="history" element={<History />} />
       <Route path="admission/:id" element={<AdmDetail />} />
+      <Route path="referral/:id" element={<RefDetail />} />
       <Route path="vaccinations" element={<Vaccinations />} />
     </Routes>
   )

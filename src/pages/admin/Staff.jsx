@@ -3,7 +3,12 @@ import { NavLink, Route, Routes } from 'react-router-dom'
 import { Plus, UserCheck, UserX, CalendarClock, Check, X } from 'lucide-react'
 import { Page, Card, Button, Table, Field, Input, Select, Toggle, Sheet, Badge, Grid, SearchBox, Avatar, useToast, useConfirm } from '../../components/ui'
 import { useData, db } from '../../lib/db'
-import { ROLES, STAFF_ROLES, roleLabel } from '../../lib/rbac'
+import { ROLES, UNIT_ROLES, UNITS, roleLabel, unitOf } from '../../lib/rbac'
+import { useAuth } from '../../lib/auth'
+import { staffUnit } from '../../lib/actions'
+// Owners see and manage only their own unit's staff
+const useMyUnit = () => { const { user } = useAuth(); return user.role === 'super_admin' ? null : unitOf(user) }
+const inMyUnit = (unit) => (st) => !unit || staffUnit(st) === unit
 import { saveStaff, setStaffActive, decideLeave, setShift, markAttendance } from '../../lib/actions'
 import { AvailabilityEditor } from '../staff/Me'
 import { addDays, today, fmtDate, fmtWeekday, fmtPhone, cls, downloadCSV } from '../../lib/utils'
@@ -14,6 +19,8 @@ function Tabs() {
 }
 
 function Directory() {
+  const unit = useMyUnit()
+  const roles = UNIT_ROLES[unit || 'hospital']
   const toast = useToast()
   const ask = useConfirm()
   const [q, setQ] = useState('')
@@ -21,13 +28,13 @@ function Directory() {
   const [edit, setEdit] = useState(null)
   const [avail, setAvail] = useState(null)
   const depts = useData((d) => d.list('departments'))
-  const rows = useData((d) => d.list('staff', (s) => (role === 'all' || s.role === role) && (!q || (s.name + s.designation + s.phone).toLowerCase().includes(q.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name)))
+  const rows = useData((d) => d.list('staff', (s) => inMyUnit(unit)(s) && (role === 'all' || s.role === role) && (!q || (s.name + s.designation + s.phone).toLowerCase().includes(q.toLowerCase()))).sort((a, b) => a.name.localeCompare(b.name)))
   const set = (k) => (e) => setEdit({ ...edit, [k]: e.target.value })
   return (
-    <Page title="Staff & HR" wide actions={<Button icon={Plus} onClick={() => setEdit({ name: '', role: 'receptionist', designation: '', deptId: '', phone: '', email: '', qualification: '', regNo: '', fee: 0, followUpFee: 0, shift: 'morning', canVerifyLab: false })}>Add staff</Button>}>
+    <Page title="Staff & HR" subtitle={unit ? UNITS[unit] : ''} wide actions={<Button icon={Plus} onClick={() => setEdit({ name: '', role: roles[roles.length - 1], designation: '', deptId: '', phone: '', email: '', qualification: '', regNo: '', fee: 0, followUpFee: 0, shift: 'morning', canVerifyLab: false })}>Add staff</Button>}>
       <Tabs />
-      <div className="flex flex-col md:flex-row gap-3 mb-3"><SearchBox value={q} onChange={setQ} placeholder="Search staff" className="flex-1" /><Select className="md:w-60" value={role} onChange={(e) => setRole(e.target.value)}><option value="all">All roles</option>{STAFF_ROLES.map((r) => <option key={r} value={r}>{roleLabel(r)}</option>)}</Select></div>
-      <Table rows={rows} onRow={setEdit} columns={[
+      <div className="flex flex-col md:flex-row gap-3 mb-3"><SearchBox value={q} onChange={setQ} placeholder="Search staff" className="flex-1" /><Select className="md:w-60" value={role} onChange={(e) => setRole(e.target.value)}><option value="all">All roles</option>{roles.map((r) => <option key={r} value={r}>{roleLabel(r)}</option>)}</Select></div>
+      <Table rows={rows} onRow={(st) => setEdit({ ...st, alsoAdmin: (db.get('users', st.userId)?.extraRoles || []).includes('admin') })} columns={[
         { label: 'Name', render: (s) => <div className="flex items-center gap-3"><Avatar user={s} size={36} /><div><div className="font-semibold">{s.name}</div><div className="text-xs text-ink-500">{s.designation}</div></div></div> },
         { label: 'Role', render: (s) => <Badge color={s.role === 'doctor' ? 'purple' : s.role === 'admin' ? 'blue' : 'gray'}>{roleLabel(s.role)}</Badge> },
         { label: 'Department', render: (s) => db.get('departments', s.deptId)?.name || '—', hideMobile: true },
@@ -42,7 +49,7 @@ function Directory() {
       <Sheet open={!!edit} onClose={() => setEdit(null)} title={edit?.id ? 'Edit staff' : 'Add staff member'} wide footer={<Button block size="lg" onClick={() => { try { saveStaff(edit); toast(edit.id ? 'Saved' : 'Staff added – they can log in with their mobile number'); setEdit(null) } catch (e) { toast(e.message, 'error') } }}>Save</Button>}>
         {edit && <Grid cols={2}>
           <Field label="Full name"><Input value={edit.name} onChange={set('name')} /></Field>
-          <Field label="Role (app access)"><Select value={edit.role} onChange={set('role')}>{STAFF_ROLES.map((r) => <option key={r} value={r}>{ROLES[r]}</option>)}</Select></Field>
+          <Field label="Role (app access)"><Select value={edit.role} onChange={set('role')}>{roles.map((r) => <option key={r} value={r}>{ROLES[r]}</option>)}</Select></Field>
           <Field label="Designation"><Input value={edit.designation} onChange={set('designation')} /></Field>
           <Field label="Department"><Select value={edit.deptId || ''} onChange={set('deptId')}><option value="">—</option>{depts.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</Select></Field>
           <Field label="Mobile number (used to log in)"><Input inputMode="numeric" maxLength={10} value={edit.phone} onChange={(e) => setEdit({ ...edit, phone: e.target.value.replace(/\D/g, '') })} /></Field>
@@ -51,7 +58,8 @@ function Directory() {
           <Field label="Professional registration no." hint="MMC / MNC / pharmacy council"><Input value={edit.regNo || ''} onChange={set('regNo')} /></Field>
           {edit.role === 'doctor' && <><Field label="Consultation fee (₹)"><Input inputMode="numeric" value={edit.fee} onChange={(e) => setEdit({ ...edit, fee: Number(e.target.value.replace(/\D/g, '')) || 0 })} /></Field><Field label="Follow-up fee (₹)"><Input inputMode="numeric" value={edit.followUpFee} onChange={(e) => setEdit({ ...edit, followUpFee: Number(e.target.value.replace(/\D/g, '')) || 0 })} /></Field></>}
           <Field label="Working hours / shift"><Select value={edit.shift || 'morning'} onChange={set('shift')}><option value="morning">Morning (8 am – 2 pm)</option><option value="evening">Evening (2 pm – 8 pm)</option><option value="night">Night (8 pm – 8 am)</option><option value="general">General (9 am – 6 pm)</option></Select></Field>
-          {['doctor', 'lab_tech'].includes(edit.role) && <div className="sm:col-span-2"><Toggle label="Authorised to verify lab reports" checked={!!edit.canVerifyLab} onChange={(v) => setEdit({ ...edit, canVerifyLab: v })} /></div>}
+          {edit.role === 'doctor' && (!unit || unit === 'hospital') && <div className="sm:col-span-2"><Toggle label="Also administrator (hospital)" checked={!!edit.alsoAdmin} onChange={(v) => setEdit({ ...edit, alsoAdmin: v })} /></div>}
+          {['lab_admin', 'lab_tech'].includes(edit.role) && <div className="sm:col-span-2"><Toggle label="Authorised to verify lab reports" checked={!!edit.canVerifyLab} onChange={(v) => setEdit({ ...edit, canVerifyLab: v })} /></div>}
         </Grid>}
       </Sheet>
       <Sheet open={!!avail} onClose={() => setAvail(null)} title={`Availability – ${avail?.name}`}>{avail && <AvailabilityEditor staff={avail} onSaved={() => setAvail(null)} />}</Sheet>
@@ -61,7 +69,8 @@ function Directory() {
 
 function Shifts() {
   const days = Array.from({ length: 7 }, (_, i) => addDays(today(), i))
-  const staff = useData((d) => d.list('staff', (s) => s.active && s.role !== 'admin').sort((a, b) => a.role.localeCompare(b.role)))
+  const unit = useMyUnit()
+  const staff = useData((d) => d.list('staff', (s) => inMyUnit(unit)(s) && s.active && !['admin', 'pharmacy_admin', 'lab_admin'].includes(s.role)).sort((a, b) => a.role.localeCompare(b.role)))
   const shifts = useData((d) => d.list('shifts'))
   const tone = { morning: 'bg-amber-50 text-amber-800', evening: 'bg-sky-50 text-sky-800', night: 'bg-violet-100 text-violet-800', off: 'bg-ink-100 text-ink-400', general: 'bg-accent-50 text-accent-700' }
   return (
@@ -82,7 +91,8 @@ function Shifts() {
 
 function Leave() {
   const toast = useToast()
-  const rows = useData((d) => d.list('leaves').sort((a, b) => (a.status === 'pending' ? -1 : 1) - (b.status === 'pending' ? -1 : 1) || b.from.localeCompare(a.from)))
+  const unit = useMyUnit()
+  const rows = useData((d) => d.list('leaves', (l) => inMyUnit(unit)(d.get('staff', l.staffId))).sort((a, b) => (a.status === 'pending' ? -1 : 1) - (b.status === 'pending' ? -1 : 1) || b.from.localeCompare(a.from)))
   return (
     <Page title="Staff & HR" wide><Tabs />
       <Table rows={rows} columns={[
@@ -98,7 +108,8 @@ function Leave() {
 
 function Attendance() {
   const [day, setDay] = useState(today())
-  const staff = useData((d) => d.list('staff', (s) => s.active))
+  const unit = useMyUnit()
+  const staff = useData((d) => d.list('staff', (s) => s.active && inMyUnit(unit)(s)))
   const att = useData((d) => d.list('attendance', (a) => a.date === day))
   return (
     <Page title="Staff & HR" wide><Tabs />

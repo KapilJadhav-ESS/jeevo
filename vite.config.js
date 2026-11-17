@@ -10,12 +10,12 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.png', 'apple-touch-icon.png', 'logo.png', 'logo-white.png'],
       manifest: {
-        name: 'JeevO – Hospital & Clinic',
-        short_name: 'JeevO',
+        name: 'Radhakrishna Hospital – JeevO',
+        short_name: 'Radhakrishna',
         description: 'Appointments, tokens, prescriptions, lab reports and bills for your hospital or clinic.',
-        theme_color: '#0E7C74',
+        theme_color: '#1B1E4A',
         background_color: '#F6F9F9',
         display: 'standalone',
         start_url: './',

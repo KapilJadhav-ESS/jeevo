@@ -7,7 +7,7 @@ import { useAuth } from '../../lib/auth'
 import { useData } from '../../lib/db'
 import { waitInfo, APPT_TYPES } from '../../lib/actions'
 import { fmtDate, hhmm, greeting, today, timeAgo, cls, telLink } from '../../lib/utils'
-import { pick } from '../../i18n'
+import { pick, getLang } from '../../i18n'
 import { useFamily } from './PatientApp'
 
 export const ACTIONS = [
@@ -80,7 +80,7 @@ export default function Home() {
     <div className="pb-28">
       <header className="bg-gradient-to-b from-brand-700 to-brand-600 text-white px-4 pt-4 pb-16 safe-top rounded-b-[28px]">
         <div className="flex items-center gap-3">
-          <div className="h-11 w-11 rounded-2xl bg-white grid place-items-center text-brand-700 font-extrabold text-lg shrink-0" aria-hidden="true">{(h.shortName || h.name || 'J')[0]}</div>
+          <div className="h-12 w-12 rounded-2xl bg-white grid place-items-center shrink-0" aria-hidden="true"><img src={h.logo || 'logo.png'} alt="" className="h-10 w-10" /></div>
           <div className="flex-1 min-w-0">
             <div className="font-bold leading-tight truncate">{h.name}</div>
             <div className="text-[12px] text-brand-100 truncate">{h.city}</div>
@@ -167,7 +167,7 @@ export default function Home() {
 
         <SectionTitle>Visit us</SectionTitle>
         <Card className="p-4">
-          <div className="flex gap-3"><MapPin className="text-brand-600 shrink-0" size={20} /><div className="text-sm"><div className="font-semibold">{h.address}, {h.city} {h.pin}</div><div className="text-ink-500 mt-1">{h.timings}</div></div></div>
+          <div className="flex gap-3"><MapPin className="text-brand-600 shrink-0" size={20} /><div className="text-sm"><div className="font-semibold">{getLang() === 'mr' && h.addressMr ? <span translate="no">{h.addressMr}</span> : `${h.address}, ${h.city} ${h.pin}`}</div><div className="text-ink-500 mt-1">{h.timings}</div></div></div>
           <div className="grid grid-cols-2 gap-2 mt-3">
             <a href={h.mapUrl} target="_blank" rel="noreferrer" className="h-11 rounded-xl bg-brand-50 text-brand-800 font-semibold text-sm grid place-items-center">Directions</a>
             <a href={telLink(h.phone)} className="h-11 rounded-xl bg-brand-50 text-brand-800 font-semibold text-sm grid place-items-center">Call reception</a>

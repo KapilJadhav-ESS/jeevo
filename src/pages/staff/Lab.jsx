@@ -8,51 +8,54 @@ import PatientPicker from '../../components/PatientPicker'
 import { useAuth } from '../../lib/auth'
 import { db, useData } from '../../lib/db'
 import { can } from '../../lib/rbac'
-import { collectSample, setProcessing, enterResults, verifyReport, publishReport, reopenReport, cancelLabOrder, orderTests, flagOf, canVerify, LAB_STATUS, billLabOrder } from '../../lib/actions'
+import { collectSample, setProcessing, enterResults, verifyReport, publishReport, reopenReport, cancelLabOrder, orderTests, flagOf, canVerify, canWorkOn, orderUnit, LAB_STATUS, billLabOrder } from '../../lib/actions'
 import { fmtDateTime, timeAgo, cls, today } from '../../lib/utils'
 
 const TABS = { pending: ['ordered', 'sample_collected', 'processing'], verify: ['result_entered'], done: ['verified'], published: ['published'] }
 
-function Worklist() {
+function Worklist({ unit }) {
   const nav = useNavigate()
   const [sp, setSp] = useSearchParams()
   const { user } = useAuth()
-  const tab = sp.get('tab') || (can(user, 'lab.work') ? 'pending' : 'verify')
+  const tab = sp.get('tab') || 'pending'
+  const isLab = unit === 'lab'
   const [newOrder, setNewOrder] = useState(false)
-  const rows = useData((d) => d.list('labOrders', (l) => TABS[tab].includes(l.status) && (tab !== 'published' || l.publishedAt?.slice(0, 10) >= today().slice(0, 8) + '01')).sort((a, b) => (b.priority === 'urgent') - (a.priority === 'urgent') || a.createdAt.localeCompare(b.createdAt)))
-  const counts = useData((d) => Object.fromEntries(Object.entries(TABS).map(([k, st]) => [k, d.list('labOrders', (l) => st.includes(l.status)).length])))
+  const rows = useData((d) => d.list('labOrders', (l) => orderUnit(l) === unit && TABS[tab].includes(l.status) && (tab !== 'published' || l.publishedAt?.slice(0, 10) >= today().slice(0, 8) + '01')).sort((a, b) => (b.priority === 'urgent') - (a.priority === 'urgent') || a.createdAt.localeCompare(b.createdAt)))
+  const counts = useData((d) => Object.fromEntries(Object.entries(TABS).map(([k, st]) => [k, d.list('labOrders', (l) => orderUnit(l) === unit && st.includes(l.status)).length])))
   return (
-    <Page title="Laboratory" wide actions={can(user, 'lab.work') && <Button icon={Plus} onClick={() => setNewOrder(true)}>Walk-in test</Button>}>
+    <Page title={isLab ? 'Laboratory' : 'ECG / Echo / X-ray'} subtitle={isLab ? (db.setting('unit.lab', {}).name || '') : 'Investigations done in the hospital'} wide actions={<Button icon={Plus} onClick={() => setNewOrder(true)}>{isLab ? 'Walk-in test' : 'New investigation'}</Button>}>
       <Chips className="mb-4" value={tab} onChange={(v) => setSp({ tab: v })} options={[{ value: 'pending', label: 'To do', count: counts.pending }, { value: 'verify', label: 'Awaiting verification', count: counts.verify }, { value: 'done', label: 'Verified – to publish', count: counts.done }, { value: 'published', label: 'Published' }]} />
       <Table rows={rows} onRow={(l) => nav(l.id)} empty="Nothing here" columns={[
         { label: 'Patient', render: (l) => <Pat id={l.patientId} /> },
         { label: 'Tests', render: (l) => <TestNames ids={l.tests} /> },
-        { label: 'Ordered', render: (l) => <span className="text-xs">{timeAgo(l.createdAt)} · {doctorName(l.doctorId)}</span>, hideMobile: true },
+        { label: 'Ordered', render: (l) => <span className="text-xs">{timeAgo(l.createdAt)} · <span translate="no">{l.doctorId ? doctorName(l.doctorId) : l.referredBy || '—'}</span></span>, hideMobile: true },
         { label: 'Sample', render: (l) => <span translate="no" className="font-mono text-xs">{l.sampleId || '—'}</span> },
         { label: 'Status', render: (l) => <div className="flex gap-1 items-center">{l.priority === 'urgent' && <Badge color="red">Urgent</Badge>}<LabStatus s={l.status} /></div> }
       ]} />
-      <Sheet open={newOrder} onClose={() => setNewOrder(false)} title="Walk-in test order"><WalkIn onDone={(id) => { setNewOrder(false); nav(id) }} /></Sheet>
+      <Sheet open={newOrder} onClose={() => setNewOrder(false)} title={isLab ? 'Walk-in test order' : 'New investigation'}><WalkIn unit={unit} onDone={(id) => { setNewOrder(false); nav(id) }} /></Sheet>
     </Page>
   )
 }
 const Pat = ({ id }) => { const p = useData((d) => d.get('patients', id)); return <PatientLine p={p} showPhone={false} /> }
 const TestNames = ({ ids }) => { const t = useData((d) => ids.map((x) => d.get('labTests', x)?.name)); return <span className="text-sm">{t.join(', ')}</span> }
 
-function WalkIn({ onDone }) {
+function WalkIn({ unit, onDone }) {
   const toast = useToast()
   const [pid, setPid] = useState(null)
   const [sel, setSel] = useState([])
-  const tests = useData((d) => d.list('labTests', (t) => t.active))
+  const [ref, setRef] = useState('')
+  const tests = useData((d) => d.list('labTests', (t) => t.active && (t.unit || 'lab') === unit))
   return (
     <>
       <PatientPicker value={pid} onChange={setPid} />
       <div className="flex flex-wrap gap-1.5 mt-4">{tests.map((t) => <button key={t.id} onClick={() => setSel(sel.includes(t.id) ? sel.filter((x) => x !== t.id) : [...sel, t.id])} className={cls('h-9 px-3 rounded-full text-xs font-semibold border', sel.includes(t.id) ? 'bg-brand-600 text-white border-brand-600' : 'bg-white border-ink-200')}>{t.name} · ₹{t.price}</button>)}</div>
-      <Button block size="lg" className="mt-4" disabled={!pid || !sel.length} onClick={() => { try { const lo = orderTests({ patientId: pid, tests: sel, bill: true }); toast('Order created and billed'); onDone(lo.id) } catch (e) { toast(e.message, 'error') } }}>Create order</Button>
+      {unit === 'lab' && <Field label="Referred by Dr." className="mt-4"><Input value={ref} onChange={(e) => setRef(e.target.value)} placeholder="e.g. Dr. Umesh Aher / outside doctor / self" /></Field>}
+      <Button block size="lg" className="mt-4" disabled={!pid || !sel.length} onClick={() => { try { const lo = orderTests({ patientId: pid, tests: sel, bill: true, referredBy: ref }); toast('Order created and billed'); onDone(lo.id) } catch (e) { toast(e.message, 'error') } }}>Create order</Button>
     </>
   )
 }
 
-function Order() {
+function Order({ unit }) {
   const { id } = useParams()
   const toast = useToast()
   const ask = useConfirm()
@@ -66,17 +69,18 @@ function Order() {
   const [files, setFiles] = useState(lo?.files || [])
   if (!lo) return <Page title="Lab order" back><Empty title="Not found" /></Page>
   const run = (fn, msg) => { try { const r = fn(); toast(typeof msg === 'function' ? msg(r) : msg) } catch (e) { toast(e.message, 'error') } }
-  const editable = ['sample_collected', 'processing', 'result_entered'].includes(lo.status) && can(user, 'lab.work')
+  const work = canWorkOn(user, lo)
+  const editable = ['sample_collected', 'processing', 'result_entered'].includes(lo.status) && work
   const setVal = (t, prm, v) => setRes({ ...res, [t]: { ...(res[t] || {}), [prm]: v } })
   return (
-    <Page title={`Lab order ${lo.orderNo}`} back="/s/lab" wide>
+    <Page title={`${orderUnit(lo) === 'lab' ? 'Lab order' : 'Investigation'} ${lo.orderNo}`} back={unit === 'lab' ? '/s/lab' : '/s/investigations'} wide>
       <div className="grid lg:grid-cols-[340px_1fr] gap-4">
         <div className="space-y-4">
           <Card className="p-5">
             <PatientLine p={p} />
             <div className="mt-3 text-sm space-y-1">
               <div className="flex justify-between"><span className="text-ink-500">Status</span><LabStatus s={lo.status} /></div>
-              <div className="flex justify-between"><span className="text-ink-500">Doctor</span><span>{doctorName(lo.doctorId)}</span></div>
+              <div className="flex justify-between"><span className="text-ink-500">Referred by</span><span translate="no">{lo.doctorId ? doctorName(lo.doctorId) : lo.referredBy || '—'}</span></div>
               <div className="flex justify-between"><span className="text-ink-500">Ordered</span><span>{fmtDateTime(lo.createdAt)}</span></div>
               <div className="flex justify-between"><span className="text-ink-500">Sample ID</span><span className="font-mono" translate="no">{lo.sampleId || '—'}</span></div>
               {lo.collectedAt && <div className="flex justify-between"><span className="text-ink-500">Collected</span><span>{fmtDateTime(lo.collectedAt)} · {userName(lo.collectedBy)}</span></div>}
@@ -88,13 +92,13 @@ function Order() {
           </Card>
           <Card className="p-5 space-y-2">
             <h3 className="font-bold mb-1">Workflow</h3>
-            {lo.status === 'ordered' && can(user, 'lab.work') && <Button block icon={TestTube} onClick={() => run(() => collectSample(lo.id), (sid) => `Sample ${sid} registered`)}>Register sample & generate ID</Button>}
-            {lo.status === 'sample_collected' && can(user, 'lab.work') && <Button block variant="secondary" icon={Play} onClick={() => run(() => setProcessing(lo.id), 'Marked as processing')}>Mark processing</Button>}
-            {lo.status === 'result_entered' && canVerify(user) && <Button block icon={ShieldCheck} onClick={async () => { if (await ask({ title: 'Verify this report?', text: 'You confirm the results were checked by you.', ok: 'Verify' })) run(() => verifyReport(lo.id), 'Report verified') }}>Verify report</Button>}
-            {lo.status === 'result_entered' && !canVerify(user) && <p className="text-sm text-amber-700 bg-amber-50 rounded-xl px-3 py-2">Waiting for an authorised person (pathologist) to verify.</p>}
-            {lo.status === 'verified' && can(user, 'lab.work') && <Button block variant="success" icon={Send} onClick={() => run(() => publishReport(lo.id), 'Published – patient notified')}>Publish to patient</Button>}
-            {['verified', 'published'].includes(lo.status) && canVerify(user) && <Button block variant="ghost" icon={RotateCcw} onClick={async () => { const r = await ask({ title: 'Reopen this report for correction?', input: 'Reason', ok: 'Reopen' }); if (r) run(() => reopenReport(lo.id, r), 'Report reopened') }}>Reopen for correction</Button>}
-            {['ordered', 'sample_collected'].includes(lo.status) && can(user, 'lab.work') && <Button block variant="ghost" onClick={async () => { const r = await ask({ title: 'Cancel this order?', input: 'Reason', danger: true, ok: 'Cancel order' }); if (r) run(() => cancelLabOrder(lo.id, r), 'Order cancelled') }}>Cancel order</Button>}
+            {lo.status === 'ordered' && work && <Button block icon={TestTube} onClick={() => run(() => collectSample(lo.id), (sid) => `Sample ${sid} registered`)}>Register sample & generate ID</Button>}
+            {lo.status === 'sample_collected' && work && <Button block variant="secondary" icon={Play} onClick={() => run(() => setProcessing(lo.id), 'Marked as processing')}>Mark processing</Button>}
+            {lo.status === 'result_entered' && canVerify(user, lo) && <Button block icon={ShieldCheck} onClick={async () => { if (await ask({ title: 'Verify this report?', text: 'You confirm the results were checked by you.', ok: 'Verify' })) run(() => verifyReport(lo.id), 'Report verified') }}>Verify report</Button>}
+            {lo.status === 'result_entered' && !canVerify(user, lo) && <p className="text-sm text-amber-700 bg-amber-50 rounded-xl px-3 py-2">Waiting for an authorised person (pathologist) to verify.</p>}
+            {lo.status === 'verified' && work && <Button block variant="success" icon={Send} onClick={() => run(() => publishReport(lo.id), 'Published – patient notified')}>Publish to patient</Button>}
+            {['verified', 'published'].includes(lo.status) && canVerify(user, lo) && <Button block variant="ghost" icon={RotateCcw} onClick={async () => { const r = await ask({ title: 'Reopen this report for correction?', input: 'Reason', ok: 'Reopen' }); if (r) run(() => reopenReport(lo.id, r), 'Report reopened') }}>Reopen for correction</Button>}
+            {['ordered', 'sample_collected'].includes(lo.status) && work && <Button block variant="ghost" onClick={async () => { const r = await ask({ title: 'Cancel this order?', input: 'Reason', danger: true, ok: 'Cancel order' }); if (r) run(() => cancelLabOrder(lo.id, r), 'Order cancelled') }}>Cancel order</Button>}
             {lo.sampleId && <Button block variant="outline" icon={Printer} onClick={() => { const w = window.open('', '_blank', 'width=320,height=200'); w.document.write(`<body style="font-family:sans-serif;text-align:center"><div style="font-size:22px;font-weight:bold">${lo.sampleId}</div><div>${p.name}</div><div>${p.pid}</div><div>${tests.map((t) => t.code).join(', ')}</div><script>print()</script></body>`) }}>Print sample label</Button>}
           </Card>
         </div>
@@ -132,6 +136,6 @@ function Order() {
   )
 }
 
-export default function Lab() {
-  return <Routes><Route index element={<Worklist />} /><Route path=":id" element={<Order />} /></Routes>
+export default function Lab({ unit = 'lab' }) {
+  return <Routes><Route index element={<Worklist unit={unit} />} /><Route path=":id" element={<Order unit={unit} />} /></Routes>
 }

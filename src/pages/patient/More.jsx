@@ -10,18 +10,20 @@ import { registerPatient, updatePatient, setConsent, submitFeedback } from '../.
 import { CLOUD } from '../../lib/config'
 import { canInstall, promptInstall, isStandalone } from '../../lib/install'
 import { ageSex, fmtDate, timeAgo, telLink, waLink, dobFromAge, cls } from '../../lib/utils'
-import { pick, LANGS } from '../../i18n'
+import { pick, LANGS, getLang } from '../../i18n'
 import { DoctorList } from './Book'
 import { useFamily } from './PatientApp'
 
 function Contact() {
   const { hospital: h } = useAuth()
   const depts = useData((d) => d.list('departments', (x) => x.active))
+  const ins = useData((d) => d.setting('insurers', []))
   return (
     <Page title="Contact hospital" back>
       <Card className="p-4">
         <div className="font-bold text-lg">{h.name}</div>
-        <div className="text-sm text-ink-500 flex gap-2 mt-1"><MapPin size={16} className="shrink-0 mt-0.5" />{h.address}, {h.city} {h.pin}</div>
+        <div className="text-sm text-ink-500 flex gap-2 mt-1"><MapPin size={16} className="shrink-0 mt-0.5" />{getLang() === 'mr' && h.addressMr ? <span translate="no">{h.addressMr}</span> : `${h.address}, ${h.city} ${h.pin}`}</div>
+        {h.regNo && <div className="text-xs text-ink-500 mt-1" translate="no">Reg. No. {h.regNo}{h.rohiniCode ? ` · Rohini ${h.rohiniCode}` : ''}</div>}
         <div className="text-sm text-ink-500 flex gap-2 mt-1"><Clock size={16} className="shrink-0 mt-0.5" />{h.timings}</div>
         <div className="grid grid-cols-2 gap-2 mt-4">
           <a href={telLink(h.phone)} className="h-12 rounded-xl bg-brand-600 text-white font-semibold grid place-items-center"><span className="flex items-center gap-2"><Phone size={18} /> Call</span></a>
@@ -33,6 +35,8 @@ function Contact() {
       <Emergency inline />
       <h3 className="font-bold mt-5 mb-2">Departments</h3>
       <div className="grid grid-cols-2 gap-2">{depts.map((d) => <Card key={d.id} className="p-3 text-sm font-semibold">{d.icon} {d.name}</Card>)}</div>
+      {h.facilities?.length > 0 && <><h3 className="font-bold mt-5 mb-2">Facilities</h3><Card className="p-4"><ul className="grid grid-cols-1 gap-1.5 text-sm">{h.facilities.map((x) => <li key={x} className="flex gap-2"><span className="text-brand-600">✓</span><span>{x}</span></li>)}</ul></Card></>}
+      {ins.length > 0 && <><h3 className="font-bold mt-5 mb-2">Cashless mediclaim available</h3><Card className="p-4"><ol className="text-sm list-decimal list-inside space-y-0.5" translate="no">{ins.map((x) => <li key={x}>{x}</li>)}</ol><p className="text-xs text-ink-500 mt-3">LIC & Star Health medical examination centre. Help is available for the Chief Minister’s medical relief fund.</p></Card></>}
     </Page>
   )
 }

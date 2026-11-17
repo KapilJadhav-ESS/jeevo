@@ -214,7 +214,7 @@ function Stock() {
 function Sales() {
   const nav = useNavigate()
   const [day, setDay] = useState(today())
-  const rows = useData((d) => d.list('bills', (b) => b.date === day && b.items.some((i) => i.type === 'pharmacy')).sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
+  const rows = useData((d) => d.list('bills', (b) => b.date === day && b.unit === 'pharmacy').sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
   return (
     <Page title="Pharmacy" wide><Tabs />
       <div className="flex items-center gap-3 mb-3"><Input type="date" className="w-48" value={day} onChange={(e) => setDay(e.target.value)} /><span className="font-bold">{inr(rows.reduce((s, b) => s + b.total, 0), 2)}</span><span className="text-sm text-ink-500">{rows.length} bill(s)</span></div>

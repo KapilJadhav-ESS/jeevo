@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Route, Routes } from 'react-router-dom'
+import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import { Plus, Trash2 } from 'lucide-react'
 import { Page, Card, Button, Field, Input, Select, Textarea, Toggle, Table, Sheet, Grid, Badge, useToast } from '../../components/ui'
 import { useAuth } from '../../lib/auth'
@@ -7,9 +7,17 @@ import { db, useData } from '../../lib/db'
 import { saveHospital, saveSettings, saveDepartment, saveService, saveLabTest } from '../../lib/actions'
 import { inr, cls } from '../../lib/utils'
 import { CLOUD } from '../../lib/config'
+import { can, rolesOf, unitOf, UNITS } from '../../lib/rbac'
 
 function Tabs() {
-  const t = [['/s/settings', 'Hospital', true], ['/s/settings/departments', 'Departments'], ['/s/settings/pricing', 'Services & pricing'], ['/s/settings/lab', 'Lab tests'], ['/s/settings/wards', 'Wards'], ['/s/settings/messaging', 'WhatsApp & SMS'], ['/s/settings/privacy', 'Privacy & data']]
+  const { user } = useAuth()
+  const hosp = can(user, 'config.manage')
+  const t = [
+    ...(hosp ? [['/s/settings', 'Hospital', true], ['/s/settings/departments', 'Departments'], ['/s/settings/pricing', 'Services & pricing']] : []),
+    ['/s/settings/unit', hosp ? 'Letterhead' : `${UNITS[unitOf(user)]} profile`],
+    ...(can(user, 'config.labtests') ? [['/s/settings/lab', hosp ? 'ECG / echo / X-ray prices' : 'Lab tests & prices']] : []),
+    ...(hosp ? [['/s/settings/wards', 'Wards'], ['/s/settings/messaging', 'WhatsApp & SMS'], ['/s/settings/privacy', 'Privacy & data']] : [])
+  ]
   return <div className="flex gap-1 p-1 bg-ink-100 rounded-xl mb-4 overflow-x-auto no-scrollbar">{t.map(([to, l, end]) => <NavLink key={to} to={to} end={end} className={({ isActive }) => cls('h-9 px-4 rounded-lg text-[13px] font-semibold grid place-items-center whitespace-nowrap', isActive ? 'bg-white shadow-sm' : 'text-ink-500')}>{l}</NavLink>)}</div>
 }
 
@@ -101,16 +109,18 @@ function Pricing() {
 
 function LabTests() {
   const toast = useToast()
+  const { user } = useAuth()
+  const unit = rolesOf(user).includes('lab_admin') ? 'lab' : 'hospital'
   const [f, setF] = useState(null)
-  const rows = useData((d) => d.list('labTests').sort((a, b) => a.category.localeCompare(b.category)))
+  const rows = useData((d) => d.list('labTests', (t) => user.role === 'super_admin' || (t.unit || 'lab') === unit).sort((a, b) => a.category.localeCompare(b.category)))
   const setP = (i, k, v) => setF({ ...f, params: f.params.map((p, j) => (j === i ? { ...p, [k]: v } : p)) })
   return (
-    <Page title="Settings" wide actions={<Button icon={Plus} onClick={() => setF({ code: '', name: '', category: 'Blood', sample: 'Serum', price: '', tat: 6, params: [{ name: '', unit: '', low: '', high: '', normal: '' }] })}>Add test</Button>}><Tabs />
+    <Page title="Settings" wide actions={<Button icon={Plus} onClick={() => setF({ code: '', name: '', category: unit === 'lab' ? 'Biochemistry' : 'Cardiac', sample: unit === 'lab' ? 'Serum' : 'Patient', price: '', tat: 6, params: [{ name: '', unit: '', low: '', high: '', normal: '' }] })}>Add test</Button>}><Tabs />
       <Table rows={rows} onRow={(t) => setF(JSON.parse(JSON.stringify(t)))} columns={[{ label: 'Code', render: (t) => <span className="font-mono text-xs" translate="no">{t.code}</span> }, { label: 'Test', render: (t) => <b>{t.name}</b> }, { label: 'Category', key: 'category' }, { label: 'Result fields', render: (t) => t.params.length, hideMobile: true }, { label: 'Price', right: true, render: (t) => inr(t.price) }]} />
       <Sheet open={!!f} onClose={() => setF(null)} title="Lab test" wide footer={<Button block size="lg" onClick={() => { try { saveLabTest(f); toast('Saved'); setF(null) } catch (e) { toast(e.message, 'error') } }}>Save</Button>}>
         {f && <>
           <Grid cols={3}><Field label="Code"><Input value={f.code} onChange={(e) => setF({ ...f, code: e.target.value.toUpperCase() })} /></Field><Field label="Name" className="sm:col-span-2"><Input value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} /></Field>
-            <Field label="Category"><Select value={f.category} onChange={(e) => setF({ ...f, category: e.target.value })}>{['Blood', 'Urine', 'X-Ray', 'ECG', 'Ultrasound', 'Other'].map((x) => <option key={x}>{x}</option>)}</Select></Field><Field label="Price (₹)"><Input inputMode="numeric" value={f.price} onChange={(e) => setF({ ...f, price: e.target.value })} /></Field><Field label="Report time (hours)"><Input inputMode="numeric" value={f.tat} onChange={(e) => setF({ ...f, tat: Number(e.target.value) || 0 })} /></Field></Grid>
+            <Field label="Category"><Select value={f.category} onChange={(e) => setF({ ...f, category: e.target.value })}>{(unit === 'lab' ? ['Biochemistry', 'Haematology', 'Serology', 'Hormones', 'Clinical pathology', 'Other'] : ['Cardiac', 'X-ray', 'Other']).map((x) => <option key={x}>{x}</option>)}</Select></Field><Field label="Price (₹)"><Input inputMode="numeric" value={f.price} onChange={(e) => setF({ ...f, price: e.target.value })} /></Field><Field label="Report time (hours)"><Input inputMode="numeric" value={f.tat} onChange={(e) => setF({ ...f, tat: Number(e.target.value) || 0 })} /></Field></Grid>
           <div className="font-semibold text-sm mb-2">Result fields & normal ranges</div>
           {f.params.map((p, i) => <div key={i} className="grid grid-cols-[1fr_90px_80px_80px_1fr_36px] gap-2 mb-2"><Input className="!h-10" placeholder="Parameter" value={p.name} onChange={(e) => setP(i, 'name', e.target.value)} /><Input className="!h-10" placeholder="Unit" value={p.unit} onChange={(e) => setP(i, 'unit', e.target.value)} /><Input className="!h-10" placeholder="Low" value={p.low ?? ''} onChange={(e) => setP(i, 'low', e.target.value)} /><Input className="!h-10" placeholder="High" value={p.high ?? ''} onChange={(e) => setP(i, 'high', e.target.value)} /><Input className="!h-10" placeholder="Normal text (e.g. Negative)" value={p.normal || ''} onChange={(e) => setP(i, 'normal', e.target.value)} /><button aria-label="Remove field" onClick={() => setF({ ...f, params: f.params.filter((_, j) => j !== i) })} className="grid place-items-center rounded-lg hover:bg-ink-100"><Trash2 size={16} /></button></div>)}
           <Button size="sm" variant="ghost" icon={Plus} onClick={() => setF({ ...f, params: [...f.params, { name: '', unit: '', low: '', high: '', normal: '' }] })}>Add field</Button>
@@ -200,6 +210,39 @@ function Privacy() {
   )
 }
 
+// Each owner's own unit profile: shown on that unit's bills, receipts and reports
+function UnitProfile() {
+  const toast = useToast()
+  const { user } = useAuth()
+  const unit = user.role === 'super_admin' ? 'hospital' : unitOf(user)
+  const key = 'unit.' + unit
+  const [v, setV] = useState(() => db.setting(key, {}))
+  const set = (k) => (e) => setV({ ...v, [k]: e.target.value })
+  return (
+    <Page title="Settings" subtitle={UNITS[unit]} wide><Tabs />
+      <Card className="p-5 max-w-3xl">
+        <h3 className="font-bold mb-3">{unit === 'lab' ? 'Laboratory letterhead' : unit === 'pharmacy' ? 'Medical store details' : 'Hospital letterhead'}</h3>
+        <Grid cols={2}>
+          <Field label="Name"><Input value={v.name || ''} onChange={set('name')} /></Field>
+          <Field label="Owner"><Input value={v.owner || ''} onChange={set('owner')} /></Field>
+          {unit === 'pharmacy' && <><Field label="Drug licence number"><Input value={v.drugLicence || ''} onChange={set('drugLicence')} /></Field><Field label="GSTIN"><Input value={v.gstin || ''} onChange={set('gstin')} /></Field><Field label="Phone"><Input value={v.phone || ''} onChange={set('phone')} /></Field></>}
+          {unit === 'lab' && <><Field label="Address" className="sm:col-span-2"><Input value={v.address || ''} onChange={set('address')} /></Field><Field label="Phone"><Input value={v.phone || ''} onChange={set('phone')} /></Field><Field label="Email"><Input value={v.email || ''} onChange={set('email')} /></Field></>}
+          <Field label="Footer (printed on bills / reports)" className="sm:col-span-2"><Input value={v.footer || ''} onChange={set('footer')} /></Field>
+        </Grid>
+        {unit === 'lab' && <>
+          <div className="font-semibold text-sm mb-2">Signatories (top right of the report)</div>
+          {(v.signatories || []).map((x, i) => <div key={i} className="grid sm:grid-cols-3 gap-2 mb-2">{['name', 'qual', 'reg'].map((k) => <Input key={k} className="!h-10" value={x[k] || ''} placeholder={{ name: 'Name', qual: 'Qualification', reg: 'Reg. No.' }[k]} onChange={(e) => setV({ ...v, signatories: v.signatories.map((y, j) => (j === i ? { ...y, [k]: e.target.value } : y)) })} />)}</div>)}
+          <Button size="sm" variant="ghost" icon={Plus} onClick={() => setV({ ...v, signatories: [...(v.signatories || []), { name: '', qual: '', reg: '' }] })}>Add signatory</Button>
+        </>}
+        <div className="mt-4"><Button onClick={() => { try { saveSettings(key, v); toast('Saved') } catch (e) { toast(e.message, 'error') } }}>Save</Button></div>
+        <p className="text-xs text-ink-500 mt-3">Only the owner of this unit can change this. Income and bills of your unit are visible only to you and your staff.</p>
+      </Card>
+    </Page>
+  )
+}
+
 export default function Settings() {
-  return <Routes><Route index element={<Hospital />} /><Route path="departments" element={<Departments />} /><Route path="pricing" element={<Pricing />} /><Route path="lab" element={<LabTests />} /><Route path="wards" element={<Wards />} /><Route path="messaging" element={<Messaging />} /><Route path="privacy" element={<Privacy />} /></Routes>
+  const { user } = useAuth()
+  if (!can(user, 'config.manage')) return <Routes><Route path="unit" element={<UnitProfile />} /><Route path="lab" element={<LabTests />} /><Route path="*" element={<Navigate to="/s/settings/unit" replace />} /></Routes>
+  return <Routes><Route index element={<Hospital />} /><Route path="unit" element={<UnitProfile />} /><Route path="departments" element={<Departments />} /><Route path="pricing" element={<Pricing />} /><Route path="lab" element={<LabTests />} /><Route path="wards" element={<Wards />} /><Route path="messaging" element={<Messaging />} /><Route path="privacy" element={<Privacy />} /></Routes>
 }

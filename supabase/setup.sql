@@ -48,6 +48,10 @@ create table if not exists public.members (
   created_at  timestamptz not null default now(),
   primary key (auth_id, hospital_id)
 );
+-- a member may hold extra roles (e.g. a doctor who is also the administrator) and
+-- belongs to one business unit: hospital, pharmacy (medical store) or lab
+alter table public.members add column if not exists extra_roles text[] not null default '{}';
+alter table public.members add column if not exists unit text;
 
 -- Platform owners (Super Admin): see usage across tenants, manage plans.
 create table if not exists public.platform_admins (
@@ -98,22 +102,59 @@ $$;
 create or replace function public.role_in(p_role text, p_group text) returns boolean
 language sql immutable as $$
   select coalesce(p_role = any (case p_group
-    when 'admin'        then array['super_admin','admin']
-    when 'staff'        then array['super_admin','admin','doctor','receptionist','nurse','pharmacist','lab_tech']
-    when 'register'     then array['super_admin','admin','receptionist','doctor','nurse']
-    when 'clinical'     then array['super_admin','admin','doctor','nurse']
-    when 'appointments' then array['super_admin','admin','receptionist']
-    when 'queue'        then array['super_admin','admin','receptionist','doctor']
-    when 'emergency'    then array['super_admin','admin','receptionist','doctor','nurse']
-    when 'lab'          then array['super_admin','admin','lab_tech']
-    when 'pharmacy'     then array['super_admin','admin','pharmacist']
-    when 'billing'      then array['super_admin','admin','receptionist','pharmacist']
-    when 'ipd_view'     then array['super_admin','admin','doctor','nurse','receptionist']
-    when 'ipd_admit'    then array['super_admin','admin','doctor','receptionist']
-    when 'nursing'      then array['super_admin','admin','doctor','nurse']
-    when 'vitals'       then array['super_admin','admin','doctor','nurse','receptionist']
-    when 'tips'         then array['super_admin','admin','doctor']
+    when 'admin'          then array['super_admin','admin']
+    when 'owner'          then array['super_admin','admin','pharmacy_admin','lab_admin']
+    when 'staff'          then array['super_admin','admin','doctor','receptionist','nurse','pharmacy_admin','pharmacist','lab_admin','lab_tech']
+    when 'register'       then array['super_admin','admin','receptionist','doctor','nurse','pharmacy_admin','pharmacist','lab_admin','lab_tech']
+    when 'clinical'       then array['super_admin','admin','doctor','nurse']
+    when 'appointments'   then array['super_admin','admin','receptionist']
+    when 'queue'          then array['super_admin','admin','receptionist','doctor']
+    when 'emergency'      then array['super_admin','admin','receptionist','doctor','nurse']
+    when 'lab'            then array['super_admin','lab_admin','lab_tech']
+    when 'investigations' then array['super_admin','admin','doctor','nurse']
+    when 'labtests'       then array['super_admin','admin','lab_admin']
+    when 'pharmacy'       then array['super_admin','pharmacy_admin','pharmacist']
+    when 'billing'        then array['super_admin','admin','receptionist','pharmacy_admin','pharmacist','lab_admin','lab_tech']
+    when 'discount'       then array['super_admin','admin','pharmacy_admin','lab_admin','receptionist']
+    when 'ipd_view'       then array['super_admin','admin','doctor','nurse','receptionist']
+    when 'ipd_admit'      then array['super_admin','admin','doctor','receptionist']
+    when 'nursing'        then array['super_admin','admin','doctor','nurse']
+    when 'vitals'         then array['super_admin','admin','doctor','nurse','receptionist']
+    when 'tips'           then array['super_admin','admin','doctor']
+    when 'doctor'         then array['doctor']
     else array[]::text[] end), false)
+$$;
+
+-- unit a role belongs to
+create or replace function public.role_unit(p_role text) returns text
+language sql immutable as $$
+  select case when p_role in ('pharmacy_admin', 'pharmacist') then 'pharmacy'
+              when p_role in ('lab_admin', 'lab_tech') then 'lab'
+              when p_role in ('patient', 'super_admin') or p_role is null then null
+              else 'hospital' end
+$$;
+
+-- does the member (main role or any extra role) belong to a role group?
+create or replace function public.has(m public.members, p_group text) returns boolean
+language sql immutable as $$
+  select role_in(m.role, p_group) or exists (select 1 from unnest(coalesce(m.extra_roles, '{}')) x where role_in(x, p_group))
+$$;
+create or replace function public.munit(m public.members) returns text
+language sql immutable as $$ select coalesce(m.unit, role_unit(m.role)) $$;
+-- unit of a bill / payment / lab order / audit entry (records without one belong to the hospital)
+create or replace function public.rec_unit(d jsonb, p_default text default 'hospital') returns text
+language sql immutable as $$ select coalesce(nullif(d ->> 'unit', ''), p_default) $$;
+-- the owner (administrator) of a unit, or the platform super admin
+create or replace function public.owns_unit(m public.members, p_unit text) returns boolean
+language sql immutable as $$ select m.role = 'super_admin' or (has(m, 'owner') and munit(m) = p_unit) $$;
+-- a unit's money is visible only to that unit's billing staff and owner
+create or replace function public.sees_money(m public.members, p_unit text) returns boolean
+language sql immutable as $$ select m.role = 'super_admin' or (has(m, 'billing') and munit(m) = p_unit) $$;
+-- every role on a user / staff record must belong to the editor's own unit
+create or replace function public.roles_in_unit(d jsonb, p_unit text) returns boolean
+language sql immutable as $$
+  select role_unit(d ->> 'role') is not distinct from p_unit and coalesce(nullif(d ->> 'unit', ''), p_unit) = p_unit
+     and not exists (select 1 from jsonb_array_elements_text(coalesce(d -> 'extraRoles', '[]')) x where role_unit(x) is distinct from p_unit)
 $$;
 
 drop policy if exists changes_read on public.changes;
@@ -144,11 +185,23 @@ language sql stable security definer set search_path = public as $$
   select m.family_id is not null and public.family_of(m.hospital_id, p_patient) = m.family_id
 $$;
 
--- may this member verify lab reports? (admin, or staff marked canVerifyLab)
-create or replace function public.can_verify(m public.members) returns boolean
+-- staff record's unit
+create or replace function public.staff_unit(p_h text, p_staff text) returns text
 language sql stable security definer set search_path = public as $$
-  select role_in(m.role, 'admin') or coalesce((select (data ->> 'canVerifyLab')::boolean from records
-    where hospital_id = m.hospital_id and collection = 'staff' and id = m.staff_id), false)
+  select coalesce(nullif(data ->> 'unit', ''), role_unit(data ->> 'role'), 'hospital') from records
+  where hospital_id = p_h and collection = 'staff' and id = p_staff
+$$;
+
+-- may this member verify reports of a unit?  Pathology lab: the lab owner or lab staff
+-- marked canVerifyLab.  Hospital investigations (ECG, echo, X-ray): a doctor.
+drop function if exists public.can_verify(public.members);
+create or replace function public.can_verify(m public.members, p_unit text) returns boolean
+language sql stable security definer set search_path = public as $$
+  select case when m.role = 'super_admin' then true
+    when p_unit = 'lab' then munit(m) = 'lab' and (m.role = 'lab_admin' or 'lab_admin' = any (coalesce(m.extra_roles, '{}'))
+      or coalesce((select (data ->> 'canVerifyLab')::boolean from records
+        where hospital_id = m.hospital_id and collection = 'staff' and id = m.staff_id), false))
+    else has(m, 'doctor') end
 $$;
 
 -- ---------------------------------------------------------------------
@@ -164,29 +217,41 @@ declare
 begin
   -- nothing clinical or financial is ever deleted; only a few admin lists
   if n is null then
-    return (p_col in ('announcements', 'departments', 'services', 'shifts', 'healthTips') and role_in(r, 'admin'))
+    return (p_col in ('announcements', 'departments', 'services', 'healthTips') and has(m, 'admin'))
+        or (p_col = 'shifts' and (case when o ->> 'staffId' is not null then owns_unit(m, staff_unit(m.hospital_id, o ->> 'staffId')) else has(m, 'owner') end))
         or (p_col = 'notifications' and o ->> 'userId' = me);
   end if;
 
   case p_col
   when 'hospitals' then
     -- admins edit their profile; plan/status/code are platform-only
-    return not is_new and role_in(r, 'admin') and p_id = m.hospital_id
+    return not is_new and has(m, 'admin') and p_id = m.hospital_id
        and (o -> 'plan') is not distinct from (n -> 'plan') and (o -> 'status') is not distinct from (n -> 'status')
        and (o -> 'code') is not distinct from (n -> 'code');
-  when 'settings', 'departments', 'services', 'labTests', 'wards' then
-    return role_in(r, 'admin');
+  when 'settings' then
+    -- each unit's profile (letterhead, licences) belongs to that unit's owner
+    if p_id like 'unit.%' then return owns_unit(m, substr(p_id, 6)); end if;
+    return has(m, 'admin');
+  when 'departments', 'services', 'wards' then
+    return has(m, 'admin');
+  when 'labTests' then
+    -- pathology tests by the lab owner; ECG / echo / X-ray by the hospital administrator
+    return has(m, 'labtests') and owns_unit(m, rec_unit(n, 'lab')) and (is_new or owns_unit(m, rec_unit(o, 'lab')));
   when 'beds' then
-    return role_in(r, 'admin') or (not is_new and role_in(r, 'ipd_admit') and only_changed(o, n, array['status', 'admissionId', 'reservedFor']));
+    return has(m, 'admin') or (not is_new and has(m, 'ipd_admit') and only_changed(o, n, array['status', 'admissionId', 'reservedFor']));
   when 'users' then
-    -- staff accounts are managed by admins; nobody can raise their own role
-    if role_in(r, 'admin') then return n ->> 'role' <> 'super_admin' or r = 'super_admin'; end if;
-    return false;
+    -- staff accounts are managed by the owner of their unit; nobody can raise their own role
+    if r = 'super_admin' then return true; end if;
+    if not has(m, 'owner') then return false; end if;
+    if n ->> 'role' = 'patient' and (is_new or o ->> 'role' = 'patient') then return has(m, 'admin'); end if;
+    return roles_in_unit(n, munit(m)) and (is_new or roles_in_unit(o, munit(m)))
+       and (is_new or p_id <> me or ((o -> 'role') is not distinct from (n -> 'role') and (o -> 'extraRoles') is not distinct from (n -> 'extraRoles')));
   when 'staff' then
-    if role_in(r, 'admin') then return true; end if;
+    if r = 'super_admin' then return true; end if;
+    if has(m, 'owner') and roles_in_unit(n, munit(m)) and (is_new or roles_in_unit(o, munit(m))) then return true; end if;
     return not is_new and p_id = m.staff_id and only_changed(o, n, array['availability']);
   when 'patients' then
-    if role_in(r, 'register') then return true; end if;
+    if has(m, 'register') then return true; end if;
     if r = 'patient' then
       if is_new then return coalesce(n ->> 'familyId', '') = m.family_id; end if;
       return in_my_family(m, p_id) and coalesce(n ->> 'familyId', p_id) = coalesce(o ->> 'familyId', p_id)
@@ -194,8 +259,8 @@ begin
     end if;
     return false;
   when 'appointments' then
-    if role_in(r, 'appointments') then return true; end if;
-    if r = 'doctor' then return (n ->> 'doctorId') = m.staff_id or (role_in(r, 'emergency') and n ->> 'priority' = 'emergency'); end if;
+    if has(m, 'appointments') then return true; end if;
+    if r = 'doctor' then return (n ->> 'doctorId') = m.staff_id or (has(m, 'emergency') and n ->> 'priority' = 'emergency'); end if;
     if r = 'nurse' then return is_new and n ->> 'priority' = 'emergency'; end if;
     if r = 'patient' then
       if not in_my_family(m, pat) then return false; end if;
@@ -217,29 +282,39 @@ begin
       -- a signed prescription is never edited: it may only be superseded
       return o ->> 'status' = 'final' and n ->> 'status' = 'superseded' and only_changed(o, n, array['status', 'supersededReason']);
     end if;
-    if role_in(r, 'pharmacy') and not is_new then
+    if has(m, 'pharmacy') and not is_new then
       return only_changed(o, n, array['dispensed', 'dispenseStatus', 'dispensedAt', 'dispensedBy', 'billIds']);
     end if;
     return false;
   when 'labOrders' then
-    if is_new then return (r = 'doctor' and n ->> 'doctorId' = m.staff_id) or role_in(r, 'lab'); end if;
-    if r = 'doctor' and only_changed(o, n, array['billId']) then return true; end if;
-    -- verification fields can only be set by an authorised verifier, never by the person who entered results
-    if (o ->> 'verifiedBy') is distinct from (n ->> 'verifiedBy') and n ->> 'verifiedBy' is not null then
-      return can_verify(m) and n ->> 'verifiedBy' = me and (o ->> 'enteredBy' <> me or r <> 'lab_tech') and n ->> 'status' = 'verified';
+    -- pathology orders are worked by the lab; ECG / echo / X-ray by the hospital
+    if is_new then
+      return (has(m, 'doctor') and n ->> 'doctorId' = m.staff_id)
+          or (case when rec_unit(n, 'lab') = 'lab' then has(m, 'lab') and munit(m) = 'lab' else has(m, 'investigations') end);
     end if;
-    if n ->> 'status' = 'result_entered' and o ->> 'status' in ('verified', 'published') then return can_verify(m); end if;
-    if n ->> 'status' = 'published' and o ->> 'status' <> 'published' then return role_in(r, 'lab') and o ->> 'status' = 'verified'; end if;
-    if o ->> 'status' in ('verified', 'published') and not only_changed(o, n, array['billId']) then return false; end if;
-    return role_in(r, 'lab') or (role_in(r, 'billing') and only_changed(o, n, array['billId']));
+    if (o -> 'unit') is distinct from (n -> 'unit') then return false; end if;
+    if has(m, 'doctor') and only_changed(o, n, array['billId']) then return true; end if;
+    -- verification fields can only be set by an authorised verifier, never by the lab person who entered results
+    if (o ->> 'verifiedBy') is distinct from (n ->> 'verifiedBy') and n ->> 'verifiedBy' is not null then
+      return can_verify(m, rec_unit(o, 'lab')) and n ->> 'verifiedBy' = me and n ->> 'status' = 'verified'
+         and (rec_unit(o, 'lab') <> 'lab' or o ->> 'enteredBy' is distinct from me);
+    end if;
+    if n ->> 'status' = 'result_entered' and o ->> 'status' in ('verified', 'published') then return can_verify(m, rec_unit(o, 'lab')); end if;
+    if (case when rec_unit(o, 'lab') = 'lab' then has(m, 'lab') and munit(m) = 'lab' else has(m, 'investigations') end) then
+      if n ->> 'status' = 'published' and o ->> 'status' <> 'published' then return o ->> 'status' = 'verified'; end if;
+      if o ->> 'status' in ('verified', 'published') then return only_changed(o, n, array['billId']); end if;
+      return true;
+    end if;
+    return has(m, 'billing') and sees_money(m, rec_unit(o, 'lab')) and only_changed(o, n, array['billId']);
   when 'medicines' then
-    return role_in(r, 'pharmacy');
+    return has(m, 'pharmacy');
   when 'bills' then
     -- bills raised automatically by other workflows (tests, check-in fee, deposit)
-    if is_new and role_in(r, 'staff') then return true; end if;
-    if role_in(r, 'billing') then
-      -- refunds and cancellations need an administrator
-      if not is_new and ((o -> 'refunded') is distinct from (n -> 'refunded') or n ->> 'status' = 'cancelled') then return role_in(r, 'admin'); end if;
+    if is_new and has(m, 'staff') then return true; end if;
+    if not is_new and (o -> 'unit') is distinct from (n -> 'unit') then return false; end if;
+    if has(m, 'billing') and sees_money(m, rec_unit(n)) then
+      -- refunds and cancellations need the owner of that unit
+      if not is_new and ((o -> 'refunded') is distinct from (n -> 'refunded') or n ->> 'status' = 'cancelled') then return owns_unit(m, rec_unit(n)); end if;
       return true;
     end if;
     -- patient online payment (demo gateway) may only mark payment progress
@@ -247,45 +322,54 @@ begin
        and (n ->> 'paid')::numeric > (o ->> 'paid')::numeric and (n ->> 'paid')::numeric <= (o ->> 'total')::numeric;
   when 'payments' then
     if not is_new then return false; end if;
-    if n ->> 'kind' = 'refund' then return role_in(r, 'admin') and (n ->> 'authorizedBy') = me; end if;
-    if role_in(r, 'billing') or (role_in(r, 'queue') or role_in(r, 'ipd_admit')) then return (n ->> 'amount')::numeric > 0; end if;
+    -- a payment belongs to the same unit as its bill
+    if n ->> 'billId' is not null and rec_unit(n) is distinct from (select rec_unit(data) from records
+        where hospital_id = m.hospital_id and collection = 'bills' and id = n ->> 'billId') then return false; end if;
+    if n ->> 'kind' = 'refund' then return owns_unit(m, rec_unit(n)) and (n ->> 'authorizedBy') = me; end if;
+    if sees_money(m, rec_unit(n)) or ((has(m, 'queue') or has(m, 'ipd_admit')) and rec_unit(n) = 'hospital' and munit(m) = 'hospital') then
+      return (n ->> 'amount')::numeric > 0;
+    end if;
     return r = 'patient' and in_my_family(m, pat) and n ->> 'method' in ('upi', 'card', 'netbanking') and (n ->> 'amount')::numeric > 0;
   when 'admissions' then
-    if is_new then return role_in(r, 'ipd_admit'); end if;
+    if is_new then return has(m, 'ipd_admit'); end if;
     if o ->> 'status' = 'discharged' then return false; end if;
-    if n ->> 'status' = 'discharged' or (o -> 'dischargeSummary') is distinct from (n -> 'dischargeSummary') then return r = 'doctor' or role_in(r, 'admin'); end if;
+    if n ->> 'status' = 'discharged' or (o -> 'dischargeSummary') is distinct from (n -> 'dischargeSummary') then return has(m, 'doctor') or has(m, 'admin'); end if;
     if (o -> 'notes') is distinct from (n -> 'notes') then
-      return role_in(r, 'nursing') and jsonb_array_length(coalesce(n -> 'notes', '[]')) >= jsonb_array_length(coalesce(o -> 'notes', '[]'));
+      return has(m, 'nursing') and jsonb_array_length(coalesce(n -> 'notes', '[]')) >= jsonb_array_length(coalesce(o -> 'notes', '[]'));
     end if;
-    return role_in(r, 'ipd_admit') or role_in(r, 'billing');
+    return has(m, 'ipd_admit') or (has(m, 'billing') and munit(m) = 'hospital');
+  when 'referrals' then
+    -- referral letters are written (and never edited) by the referring doctor
+    return is_new and has(m, 'doctor') and n ->> 'doctorId' = m.staff_id;
   when 'vitals' then
-    return is_new and role_in(r, 'vitals') and n ->> 'by' = me;
+    return is_new and has(m, 'vitals') and n ->> 'by' = me;
   when 'medAdmin' then
-    return is_new and role_in(r, 'nursing') and n ->> 'by' = me;
+    return is_new and has(m, 'nursing') and n ->> 'by' = me;
   when 'nursingTasks' then
-    return role_in(r, 'nursing');
+    return has(m, 'nursing');
   when 'announcements' then
-    return role_in(r, 'admin');
+    return has(m, 'admin');
   when 'healthTips' then
     -- only a doctor may publish (review) patient education content
-    if n ->> 'status' = 'published' and (is_new or o ->> 'status' <> 'published') then return r = 'doctor' and n ->> 'reviewedBy' = m.staff_id; end if;
-    return role_in(r, 'tips');
+    if n ->> 'status' = 'published' and (is_new or o ->> 'status' <> 'published') then return has(m, 'doctor') and n ->> 'reviewedBy' = m.staff_id; end if;
+    return has(m, 'tips');
   when 'notifications' then
     if is_new then return true; end if;   -- system messages created by any member of this hospital
     return o ->> 'userId' = me and only_changed(o, n, array['read']);
   when 'messages' then
-    if is_new then return role_in(r, 'staff') or (r = 'patient' and in_my_family(m, pat)); end if;
-    return role_in(r, 'staff') and only_changed(o, n, array['status', 'sentAt']);
+    if is_new then return has(m, 'staff') or (r = 'patient' and in_my_family(m, pat)); end if;
+    return has(m, 'staff') and only_changed(o, n, array['status', 'sentAt']);
   when 'feedback' then
     if is_new then return r = 'patient' and in_my_family(m, pat); end if;
-    return role_in(r, 'admin') and only_changed(o, n, array['response', 'status', 'respondedBy', 'respondedAt']);
+    return has(m, 'admin') and only_changed(o, n, array['response', 'status', 'respondedBy', 'respondedAt']);
   when 'leaves' then
-    if is_new then return n ->> 'staffId' = m.staff_id or role_in(r, 'admin'); end if;
-    return role_in(r, 'admin');
+    if is_new and n ->> 'staffId' = m.staff_id then return true; end if;
+    return owns_unit(m, staff_unit(m.hospital_id, n ->> 'staffId'));
   when 'attendance' then
-    return role_in(r, 'admin') or (n ->> 'staffId' = m.staff_id and (is_new or o ->> 'date' = n ->> 'date'));
+    return owns_unit(m, staff_unit(m.hospital_id, n ->> 'staffId')) or (n ->> 'staffId' = m.staff_id and (is_new or o ->> 'date' = n ->> 'date'));
   when 'shifts' then
-    return role_in(r, 'admin');
+    if n ->> 'staffId' is not null then return owns_unit(m, staff_unit(m.hospital_id, n ->> 'staffId')); end if;
+    return has(m, 'owner');
   when 'audit' then
     return is_new and n ->> 'userId' = me;   -- append-only trail
   else
@@ -310,7 +394,7 @@ begin
         'languages', d -> 'languages', 'experience', d -> 'experience', 'color', d -> 'color', 'active', d -> 'active', 'noOpd', d -> 'noOpd', 'room', d -> 'room', 'hospitalId', d -> 'hospitalId');
     when 'users' then return case when p_id = m.user_id then d else null end;
     when 'patients' then return case when coalesce(d ->> 'familyId', p_id) = m.family_id then d else null end;
-    when 'appointments', 'bills', 'payments', 'feedback', 'messages' then return case when in_my_family(m, pat) then d else null end;
+    when 'appointments', 'bills', 'payments', 'feedback', 'messages', 'referrals' then return case when in_my_family(m, pat) then d else null end;
     when 'consultations' then return case when in_my_family(m, pat) and d ->> 'status' = 'final' then d - 'addenda' else null end;
     when 'prescriptions' then return case when in_my_family(m, pat) and d ->> 'status' = 'final' then d else null end;
     when 'labOrders' then
@@ -323,7 +407,7 @@ begin
     when 'announcements' then return case when d ->> 'audience' <> 'staff' then d else null end;
     when 'healthTips' then return case when d ->> 'status' = 'published' then d else null end;
     when 'notifications' then return case when d ->> 'userId' = m.user_id then d else null end;
-    when 'settings' then return case when p_id in ('opd', 'counters') then d else null end;
+    when 'settings' then return case when p_id in ('opd', 'counters', 'insurers') or p_id like 'unit.%' then d else null end;
     else return null;
     end case;
   end if;
@@ -331,22 +415,28 @@ begin
   -- hospital staff
   case p_col
   when 'notifications' then return case when d ->> 'userId' = m.user_id then d else null end;
-  when 'audit' then return case when role_in(r, 'admin') then d else null end;
-  when 'feedback' then return case when role_in(r, 'admin') or d ->> 'doctorId' = m.staff_id then d else null end;
-  when 'leaves', 'attendance' then return case when role_in(r, 'admin') or d ->> 'staffId' = m.staff_id then d else null end;
-  when 'users' then return case when role_in(r, 'admin') or p_id = m.user_id then d else null end;
+  -- each owner sees only the audit trail, staff, leave and attendance of their own unit
+  when 'audit' then return case when owns_unit(m, rec_unit(d)) then d else null end;
+  when 'feedback' then return case when has(m, 'admin') or d ->> 'doctorId' = m.staff_id then d else null end;
+  when 'leaves', 'attendance' then return case when d ->> 'staffId' = m.staff_id or owns_unit(m, staff_unit(m.hospital_id, d ->> 'staffId')) then d else null end;
+  when 'users' then return case when p_id = m.user_id or r = 'super_admin'
+                                     or (has(m, 'owner') and d ->> 'role' <> 'patient' and roles_in_unit(d, munit(m))) then d
+                                when has(m, 'admin') and d ->> 'role' = 'patient' then d else null end;
+  -- money: each unit's bills and payments are seen only by that unit's staff
+  when 'bills', 'payments' then return case when r = 'super_admin' or munit(m) = rec_unit(d) then d else null end;
+  when 'referrals' then return case when has(m, 'clinical') or has(m, 'appointments') then d else null end;
   -- clinical notes: doctors, nurses and admins only
-  when 'consultations' then return case when role_in(r, 'clinical') then d else null end;
-  when 'vitals', 'medAdmin', 'nursingTasks' then return case when role_in(r, 'clinical') or r = 'receptionist' and p_col = 'vitals' then d else null end;
-  when 'prescriptions' then return case when role_in(r, 'clinical') or role_in(r, 'pharmacy') then d else null end;
-  when 'labOrders' then return case when role_in(r, 'clinical') or role_in(r, 'lab') or can_verify(m) then d
-                                    when role_in(r, 'billing') then d - 'results' - 'remarks' - 'files' else null end;
-  when 'admissions' then return case when role_in(r, 'ipd_view') then d
-                                     when role_in(r, 'billing') then d - 'notes' - 'dischargeSummary' else null end;
-  when 'messages' then return case when role_in(r, 'appointments') then d else null end;
+  when 'consultations' then return case when has(m, 'clinical') then d else null end;
+  when 'vitals', 'medAdmin', 'nursingTasks' then return case when has(m, 'clinical') or r = 'receptionist' and p_col = 'vitals' then d else null end;
+  when 'prescriptions' then return case when has(m, 'clinical') or has(m, 'pharmacy') then d else null end;
+  when 'labOrders' then return case when has(m, 'clinical') or (has(m, 'lab') and munit(m) = 'lab' and rec_unit(d, 'lab') = 'lab') then d
+                                    when (has(m, 'billing') and munit(m) = rec_unit(d, 'lab')) or has(m, 'appointments') then d - 'results' - 'remarks' - 'files' else null end;
+  when 'admissions' then return case when has(m, 'ipd_view') then d
+                                     when has(m, 'billing') then d - 'notes' - 'dischargeSummary' else null end;
+  when 'messages' then return case when has(m, 'appointments') then d else null end;
   when 'patients' then
     -- pharmacists and lab staff need allergies but not the full address book
-    return case when role_in(r, 'register') or r = 'receptionist' then d else d - 'address' - 'altPhone' - 'emergencyName' - 'emergencyPhone' end;
+    return case when has(m, 'clinical') or has(m, 'appointments') then d else d - 'address' - 'altPhone' - 'emergencyName' - 'emergencyPhone' end;
   else return d;
   end case;
 end $$;
@@ -399,6 +489,8 @@ begin
 
   if p_col = 'users' then   -- keep login memberships in step with the user record
     update members set role = coalesce(newd ->> 'role', 'patient'), staff_id = newd ->> 'staffId',
+                       extra_roles = coalesce(array(select jsonb_array_elements_text(coalesce(newd -> 'extraRoles', '[]'))), '{}'),
+                       unit = nullif(newd ->> 'unit', ''),
                        status = coalesce(newd ->> 'status', 'active')
     where hospital_id = p_h and user_id = p_id;
   end if;
@@ -406,6 +498,7 @@ end $$;
 revoke all on function public._write(public.members, text, text, text, jsonb, boolean) from public, anon, authenticated;
 revoke all on function public.can_write(public.members, text, text, jsonb, jsonb) from public, anon, authenticated;
 revoke all on function public.visible_record(public.members, text, text, jsonb) from public, anon, authenticated;
+revoke all on function public.can_verify(public.members, text), public.staff_unit(text, text) from public, anon, authenticated;
 
 create or replace function public._require_member(p_h text) returns public.members
 language plpgsql stable security definer set search_path = public as $$
@@ -492,8 +585,9 @@ begin
   into ph, em from auth.users where id = auth.uid();
 
   -- 1) existing app users (staff or patients)
-  insert into members (auth_id, hospital_id, user_id, role, staff_id, patient_id, family_id, status)
-  select distinct on (r.hospital_id) auth.uid(), r.hospital_id, r.id, coalesce(r.data ->> 'role', 'patient'), r.data ->> 'staffId',
+  insert into members (auth_id, hospital_id, user_id, role, extra_roles, unit, staff_id, patient_id, family_id, status)
+  select distinct on (r.hospital_id) auth.uid(), r.hospital_id, r.id, coalesce(r.data ->> 'role', 'patient'),
+         coalesce(array(select jsonb_array_elements_text(coalesce(r.data -> 'extraRoles', '[]'))), '{}'), nullif(r.data ->> 'unit', ''), r.data ->> 'staffId',
          r.data ->> 'patientId', public.family_of(r.hospital_id, r.data ->> 'patientId'), coalesce(r.data ->> 'status', 'active')
   from records r
   where r.collection = 'users'
@@ -501,7 +595,7 @@ begin
       or (em is not null and lower(r.data ->> 'email') = em))
   order by r.hospital_id, (r.data ->> 'status' = 'active') desc, (r.data ->> 'role' <> 'patient') desc, r.created_at
   on conflict (auth_id, hospital_id) do update
-    set user_id = excluded.user_id, role = excluded.role, staff_id = excluded.staff_id, patient_id = excluded.patient_id,
+    set user_id = excluded.user_id, role = excluded.role, extra_roles = excluded.extra_roles, unit = excluded.unit, staff_id = excluded.staff_id, patient_id = excluded.patient_id,
         family_id = excluded.family_id, status = excluded.status;
 
   -- 2) patients registered at a hospital's reception, who now log in for the first time
@@ -603,6 +697,31 @@ begin
   insert into changes (hospital_id, collection, id, op) values (p_hospital, 'hospitals', p_hospital, 'upsert');
 end $$;
 
+-- The medical store and the laboratory are separately owned.  Their owners are
+-- added by the platform (not by the hospital administrator), so that each owner
+-- alone controls their unit's staff and income.  They log in with this mobile number.
+create or replace function public.platform_add_unit_owner(p_hospital text, p_unit text, p_owner jsonb)
+returns text language plpgsql security definer set search_path = public as $$
+declare role text := case p_unit when 'pharmacy' then 'pharmacy_admin' when 'lab' then 'lab_admin' when 'hospital' then 'admin' end;
+  uid text := 'u_' || substr(md5(random()::text || clock_timestamp()::text), 1, 10);
+  sid text := 'st_' || substr(md5(random()::text || clock_timestamp()::text), 1, 10);
+  ph text := right(regexp_replace(coalesce(p_owner ->> 'phone', ''), '\D', '', 'g'), 10);
+begin
+  if not is_platform_admin() then raise exception 'permission_denied:platform' using errcode = '42501'; end if;
+  if role is null then raise exception 'invalid_unit' using errcode = '22023'; end if;
+  if length(ph) <> 10 then raise exception 'invalid_phone' using errcode = '22023'; end if;
+  if not exists (select 1 from records where hospital_id = p_hospital and collection = 'hospitals' and id = p_hospital) then
+    raise exception 'no_such_hospital' using errcode = '22023';
+  end if;
+  insert into records (hospital_id, collection, id, data, updated_by) values
+    (p_hospital, 'staff', sid, jsonb_build_object('id', sid, 'hospitalId', p_hospital, 'name', coalesce(p_owner ->> 'name', 'Owner'), 'role', role,
+       'unit', p_unit, 'phone', ph, 'userId', uid, 'active', true, 'createdAt', now()), auth.uid()),
+    (p_hospital, 'users', uid, jsonb_build_object('id', uid, 'hospitalId', p_hospital, 'name', coalesce(p_owner ->> 'name', 'Owner'), 'role', role,
+       'unit', p_unit, 'phone', ph, 'staffId', sid, 'status', 'active', 'createdAt', now()), auth.uid());
+  insert into changes (hospital_id, collection, id, op) values (p_hospital, 'staff', sid, 'upsert'), (p_hospital, 'users', uid, 'upsert');
+  return uid;
+end $$;
+
 -- Keep the change-log small (it only needs to cover devices that were offline briefly).
 create or replace function public.prune_changes() returns void
 language sql security definer set search_path = public as $$
@@ -613,11 +732,11 @@ $$;
 revoke execute on function public.save_record(text, text, text, jsonb, boolean), public.save_records(text, jsonb),
   public.delete_record(text, text, text), public.fetch_hospital(text), public.fetch_changes(text, bigint),
   public.link_member(), public.create_hospital(text, jsonb, jsonb), public.hospital_public(text),
-  public.register_patient(text, jsonb), public.platform_overview(), public.platform_set_hospital(text, jsonb), public.prune_changes() from public, anon;
+  public.register_patient(text, jsonb), public.platform_overview(), public.platform_set_hospital(text, jsonb), public.platform_add_unit_owner(text, text, jsonb), public.prune_changes() from public, anon;
 grant execute on function public.save_record(text, text, text, jsonb, boolean), public.save_records(text, jsonb),
   public.delete_record(text, text, text), public.fetch_hospital(text), public.fetch_changes(text, bigint),
   public.link_member(), public.create_hospital(text, jsonb, jsonb), public.hospital_public(text),
-  public.register_patient(text, jsonb), public.platform_overview(), public.platform_set_hospital(text, jsonb) to authenticated;
+  public.register_patient(text, jsonb), public.platform_overview(), public.platform_set_hospital(text, jsonb), public.platform_add_unit_owner(text, text, jsonb) to authenticated;
 
 -- ---------------------------------------------------------------------
 --  Realtime: devices listen to the change-log for their hospital

@@ -5,22 +5,28 @@ import { ColumnChart, BarList, Ring } from '../../components/Charts'
 import { db, useData } from '../../lib/db'
 import { balanceOf, stockOf, ITEM_TYPES, PAY_METHODS, APPT_STATUS, LAB_STATUS } from '../../lib/actions'
 import { addDays, today, inr, downloadCSV, fmtShort, fmtDateTime, ageSex } from '../../lib/utils'
+import { useAuth } from '../../lib/auth'
+import { unitOf, UNITS } from '../../lib/rbac'
+
+const unitIs = (unit) => (r) => !unit || (r.unit || 'hospital') === unit
+// null = platform admin (all units); otherwise the owner's own unit only
+const useUnit = () => { const { user } = useAuth(); return user.role === 'super_admin' ? null : unitOf(user) }
 
 const inRange = (iso, from, to) => iso && iso.slice(0, 10) >= from && iso.slice(0, 10) <= to
 const pname = (id) => db.get('patients', id)?.name || ''
 const dname = (id) => db.get('staff', id)?.name || ''
 
-function useReport(from, to) {
+function useReport(from, to, unit) {
   return useData((d) => {
-    const pays = d.list('payments', (p) => inRange(p.at, from, to))
-    const bills = d.list('bills', (b) => b.status !== 'cancelled' && inRange(b.createdAt, from, to))
+    const pays = d.list('payments', (p) => inRange(p.at, from, to) && unitIs(unit)(p))
+    const bills = d.list('bills', (b) => b.status !== 'cancelled' && inRange(b.createdAt, from, to) && unitIs(unit)(b))
     const appts = d.list('appointments', (a) => a.date >= from && a.date <= to)
     const days = []
     for (let x = from; x <= to && days.length < 62; x = addDays(x, 1)) days.push(x)
     const byCat = {}, byDept = {}, byDoc = {}, byMethod = {}
     bills.forEach((b) => b.items.forEach((i) => { const v = i.qty * i.rate - (i.discount || 0); byCat[i.type] = (byCat[i.type] || 0) + v }))
     bills.filter((b) => b.doctorId || b.apptId).forEach((b) => { const doc = b.doctorId || d.get('appointments', b.apptId)?.doctorId; const dep = d.get('staff', doc)?.deptId; byDoc[doc] = (byDoc[doc] || 0) + b.total; byDept[dep] = (byDept[dep] || 0) + b.total })
-    bills.filter((b) => b.labOrderId).forEach((b) => { byDept['dep-path'] = (byDept['dep-path'] || 0) + b.total })
+    bills.filter((b) => b.labOrderId).forEach((b) => { const k = (b.unit || 'hospital') === 'lab' ? 'dep-lab' : 'dep-cardio'; byDept[k] = (byDept[k] || 0) + b.total })
     pays.forEach((p) => { byMethod[p.method] = (byMethod[p.method] || 0) + p.amount })
     const done = appts.filter((a) => a.status === 'completed')
     const waits = done.filter((a) => a.arrivedAt && a.startedAt).map((a) => (new Date(a.startedAt) - new Date(a.arrivedAt)) / 60000).filter((x) => x >= 0 && x < 600)
@@ -30,7 +36,7 @@ function useReport(from, to) {
       pays, bills, appts,
       series: days.map((x) => ({ label: fmtShort(x + 'T00:00:00').split(' ')[0], value: pays.filter((p) => p.at.startsWith(x)).reduce((s, p) => s + p.amount, 0) })),
       collected: pays.reduce((s, p) => s + p.amount, 0), billed: bills.reduce((s, b) => s + b.total, 0),
-      outstanding: d.list('bills', (b) => b.status !== 'cancelled').reduce((s, b) => s + Math.max(0, balanceOf(b)), 0),
+      outstanding: d.list('bills', (b) => b.status !== 'cancelled' && unitIs(unit)(b)).reduce((s, b) => s + Math.max(0, balanceOf(b)), 0),
       byCat: Object.entries(byCat).map(([k, v]) => ({ label: ITEM_TYPES[k] || k, value: v })).sort((a, b) => b.value - a.value),
       byDept: Object.entries(byDept).map(([k, v]) => ({ label: d.get('departments', k)?.name || 'Other', value: v })).sort((a, b) => b.value - a.value),
       byDoc: Object.entries(byDoc).map(([k, v]) => ({ label: dname(k) || 'Other', value: v })).sort((a, b) => b.value - a.value),
@@ -45,21 +51,22 @@ function useReport(from, to) {
   })
 }
 
-const EXPORTS = [
-  ['Patient registrations', (from, to) => [['Patient ID', 'Name', 'Age/Sex', 'Mobile', 'City', 'Registered'], ...db.list('patients', (p) => inRange(p.createdAt, from, to)).map((p) => [p.pid, p.name, ageSex(p), p.phone, p.city, p.createdAt.slice(0, 10)])]],
-  ['Appointments', (from, to) => [['Appt ID', 'Date', 'Time', 'Token', 'Patient', 'Doctor', 'Type', 'Status', 'Fee', 'Source'], ...db.list('appointments', (a) => a.date >= from && a.date <= to).map((a) => [a.apptNo, a.date, a.time, a.token, pname(a.patientId), dname(a.doctorId), a.type, APPT_STATUS[a.status], a.fee, a.source])]],
-  ['Revenue (payments)', (from, to) => [['Receipt', 'Date', 'Bill', 'Patient', 'Method', 'Reference', 'Amount', 'Type'], ...db.list('payments', (p) => inRange(p.at, from, to)).map((p) => [p.receiptNo, p.at.slice(0, 16).replace('T', ' '), db.get('bills', p.billId)?.billNo, pname(p.patientId), PAY_METHODS[p.method], p.ref, p.amount, p.kind])]],
-  ['Bills & outstanding', (from, to) => [['Bill', 'Date', 'Patient', 'Total', 'Paid', 'Refunded', 'Balance', 'Status'], ...db.list('bills', (b) => inRange(b.createdAt, from, to)).map((b) => [b.billNo, b.date, pname(b.patientId), b.total, b.paid, b.refunded || 0, balanceOf(b), b.status])]],
-  ['Doctor performance', (from, to) => [['Doctor', 'Appointments', 'Seen', 'No-show', 'Avg rating'], ...db.list('staff', (s) => s.role === 'doctor').map((s) => { const m = db.list('appointments', (a) => a.doctorId === s.id && a.date >= from && a.date <= to); const fb = db.list('feedback', (f) => f.doctorId === s.id); return [s.name, m.length, m.filter((a) => a.status === 'completed').length, m.filter((a) => a.status === 'no_show').length, fb.length ? (fb.reduce((x, f) => x + f.ratings.doctor, 0) / fb.length).toFixed(1) : ''] })]],
-  ['Laboratory', (from, to) => [['Order', 'Date', 'Patient', 'Doctor', 'Tests', 'Status', 'Verified by'], ...db.list('labOrders', (l) => inRange(l.createdAt, from, to)).map((l) => [l.orderNo, l.createdAt.slice(0, 10), pname(l.patientId), dname(l.doctorId), l.tests.map((t) => db.get('labTests', t)?.code).join(' '), LAB_STATUS[l.status], db.getAny('users', l.verifiedBy)?.name || ''])]],
-  ['Pharmacy inventory', () => [['Medicine', 'Generic', 'Strength', 'Stock', 'Min', 'MRP', 'Nearest expiry'], ...db.list('medicines').map((m) => [m.name, m.generic, m.strength, stockOf(m), m.minStock, m.mrp, [...m.batches].filter((b) => b.qty).sort((a, b) => a.expiry.localeCompare(b.expiry))[0]?.expiry || ''])]],
-  ['Admissions & discharges', (from, to) => [['IP No.', 'Patient', 'Doctor', 'Bed', 'Admitted', 'Discharged', 'Diagnosis', 'Status'], ...db.list('admissions', (a) => inRange(a.admittedAt, from, to) || inRange(a.dischargedAt, from, to)).map((a) => [a.admNo, pname(a.patientId), dname(a.doctorId), db.get('beds', a.bedId)?.label, a.admittedAt.slice(0, 10), a.dischargedAt?.slice(0, 10) || '', a.diagnosis, a.status])]]
+const EXPORTS = [ // [name, builder, units that may export it]
+  ['Patient registrations', ['hospital'], (from, to) => [['Patient ID', 'Name', 'Age/Sex', 'Mobile', 'City', 'Registered'], ...db.list('patients', (p) => inRange(p.createdAt, from, to)).map((p) => [p.pid, p.name, ageSex(p), p.phone, p.city, p.createdAt.slice(0, 10)])]],
+  ['Appointments', ['hospital'], (from, to) => [['Appt ID', 'Date', 'Time', 'Token', 'Patient', 'Doctor', 'Type', 'Status', 'Fee', 'Source'], ...db.list('appointments', (a) => a.date >= from && a.date <= to).map((a) => [a.apptNo, a.date, a.time, a.token, pname(a.patientId), dname(a.doctorId), a.type, APPT_STATUS[a.status], a.fee, a.source])]],
+  ['Revenue (payments)', ['hospital', 'pharmacy', 'lab'], (from, to, unit) => [['Receipt', 'Date', 'Bill', 'Patient', 'Method', 'Reference', 'Amount', 'Type'], ...db.list('payments', (p) => inRange(p.at, from, to) && unitIs(unit)(p)).map((p) => [p.receiptNo, p.at.slice(0, 16).replace('T', ' '), db.get('bills', p.billId)?.billNo, pname(p.patientId), PAY_METHODS[p.method], p.ref, p.amount, p.kind])]],
+  ['Bills & outstanding', ['hospital', 'pharmacy', 'lab'], (from, to, unit) => [['Bill', 'Date', 'Patient', 'Total', 'Paid', 'Refunded', 'Balance', 'Status'], ...db.list('bills', (b) => inRange(b.createdAt, from, to) && unitIs(unit)(b)).map((b) => [b.billNo, b.date, pname(b.patientId), b.total, b.paid, b.refunded || 0, balanceOf(b), b.status])]],
+  ['Doctor performance', ['hospital'], (from, to) => [['Doctor', 'Appointments', 'Seen', 'No-show', 'Avg rating'], ...db.list('staff', (s) => s.role === 'doctor').map((s) => { const m = db.list('appointments', (a) => a.doctorId === s.id && a.date >= from && a.date <= to); const fb = db.list('feedback', (f) => f.doctorId === s.id); return [s.name, m.length, m.filter((a) => a.status === 'completed').length, m.filter((a) => a.status === 'no_show').length, fb.length ? (fb.reduce((x, f) => x + f.ratings.doctor, 0) / fb.length).toFixed(1) : ''] })]],
+  ['Laboratory', ['lab', 'hospital'], (from, to, unit) => [['Order', 'Date', 'Patient', 'Referred by', 'Tests', 'Status', 'Verified by'], ...db.list('labOrders', (l) => inRange(l.createdAt, from, to) && (!unit || (l.unit || 'lab') === unit)).map((l) => [l.orderNo, l.createdAt.slice(0, 10), pname(l.patientId), dname(l.doctorId) || l.referredBy || '', l.tests.map((t) => db.get('labTests', t)?.code).join(' '), LAB_STATUS[l.status], db.getAny('users', l.verifiedBy)?.name || ''])]],
+  ['Pharmacy inventory', ['pharmacy'], () => [['Medicine', 'Generic', 'Strength', 'Stock', 'Min', 'MRP', 'Nearest expiry'], ...db.list('medicines').map((m) => [m.name, m.generic, m.strength, stockOf(m), m.minStock, m.mrp, [...m.batches].filter((b) => b.qty).sort((a, b) => a.expiry.localeCompare(b.expiry))[0]?.expiry || ''])]],
+  ['Admissions & discharges', ['hospital'], (from, to) => [['IP No.', 'Patient', 'Doctor', 'Bed', 'Admitted', 'Discharged', 'Diagnosis', 'Status'], ...db.list('admissions', (a) => inRange(a.admittedAt, from, to) || inRange(a.dischargedAt, from, to)).map((a) => [a.admNo, pname(a.patientId), dname(a.doctorId), db.get('beds', a.bedId)?.label, a.admittedAt.slice(0, 10), a.dischargedAt?.slice(0, 10) || '', a.diagnosis, a.status])]]
 ]
 
 function Audit() {
+  const unit = useUnit()
   const [q, setQ] = useState('')
   const [ent, setEnt] = useState('all')
-  const rows = useData((d) => d.list('audit', (a) => (ent === 'all' || a.entity === ent) && (!q || (a.userName + a.summary + a.action).toLowerCase().includes(q.toLowerCase()))).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 300))
+  const rows = useData((d) => d.list('audit', (a) => unitIs(unit)(a) && (ent === 'all' || a.entity === ent) && (!q || (a.userName + a.summary + a.action).toLowerCase().includes(q.toLowerCase()))).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 300))
   const ents = useData((d) => [...new Set(d.list('audit').map((a) => a.entity))])
   return (
     <Page title="Audit log" subtitle="Every change to patient records, prescriptions, clinical notes and billing" wide actions={<Button variant="outline" icon={Download} onClick={() => downloadCSV(`audit-${today()}.csv`, [['When', 'User', 'Role', 'Action', 'Record', 'ID', 'Details'], ...rows.map((a) => [a.at, a.userName, a.role, a.action, a.entity, a.entityId, a.summary])])}>Export</Button>}>
@@ -73,14 +80,15 @@ export default function Reports({ audit }) {
   const [from, setFrom] = useState(addDays(today(), -29))
   const [to, setTo] = useState(today())
   const [tab, setTab] = useState('finance')
-  const r = useReport(from, to)
+  const unit = useUnit()
+  const r = useReport(from, to, unit)
   if (audit) return <Audit />
   return (
-    <Page title="Reports" wide>
+    <Page title="Reports" subtitle={unit ? `${UNITS[unit]} – only this unit’s income` : 'All units'} wide>
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <Input type="date" className="w-44" value={from} max={to} onChange={(e) => setFrom(e.target.value)} /><span>–</span><Input type="date" className="w-44" value={to} max={today()} onChange={(e) => setTo(e.target.value)} />
         {[[0, 'Today'], [6, '7 days'], [29, '30 days']].map(([n, l]) => <Button key={l} size="sm" variant="ghost" onClick={() => { setFrom(addDays(today(), -n)); setTo(today()) }}>{l}</Button>)}
-        <Tabs className="ml-auto w-full md:w-80" value={tab} onChange={setTab} tabs={[{ value: 'finance', label: 'Financial' }, { value: 'ops', label: 'Operational' }, { value: 'export', label: 'Export' }]} />
+        <Tabs className="ml-auto w-full md:w-80" value={tab} onChange={setTab} tabs={[{ value: 'finance', label: 'Financial' }, ...(unit === 'hospital' || !unit ? [{ value: 'ops', label: 'Operational' }] : []), { value: 'export', label: 'Export' }]} />
       </div>
       {tab === 'finance' && <>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -90,8 +98,8 @@ export default function Reports({ audit }) {
         <div className="grid lg:grid-cols-2 gap-4 mt-4">
           <Card className="p-5"><h3 className="font-bold mb-4">Revenue by service</h3><BarList data={r.byCat} format={(v) => inr(v)} /></Card>
           <Card className="p-5"><h3 className="font-bold mb-4">Payment methods</h3><BarList data={r.byMethod} format={(v) => inr(v)} color="#16968B" /></Card>
-          <Card className="p-5"><h3 className="font-bold mb-4">Department-wise revenue</h3><BarList data={r.byDept} format={(v) => inr(v)} /></Card>
-          <Card className="p-5"><h3 className="font-bold mb-4">Doctor-wise revenue (OPD)</h3><BarList data={r.byDoc} format={(v) => inr(v)} /></Card>
+          {(!unit || unit === 'hospital') && <Card className="p-5"><h3 className="font-bold mb-4">Department-wise revenue</h3><BarList data={r.byDept} format={(v) => inr(v)} /></Card>}
+          {(!unit || unit === 'hospital') && <Card className="p-5"><h3 className="font-bold mb-4">Doctor-wise revenue (OPD)</h3><BarList data={r.byDoc} format={(v) => inr(v)} /></Card>}
         </div>
       </>}
       {tab === 'ops' && <>
@@ -105,7 +113,7 @@ export default function Reports({ audit }) {
         </Card>
       </>}
       {tab === 'export' && <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
-        {EXPORTS.map(([name, fn]) => <Card key={name} className="p-4 flex items-center gap-3"><FileSpreadsheet className="text-brand-600" /><span className="flex-1 font-semibold">{name}</span><Button size="sm" variant="secondary" icon={Download} onClick={() => downloadCSV(`${name.toLowerCase().replace(/\W+/g, '-')}-${from}-to-${to}.csv`, fn(from, to))}>CSV</Button></Card>)}
+        {EXPORTS.filter(([, units]) => !unit || units.includes(unit)).map(([name, , fn]) => <Card key={name} className="p-4 flex items-center gap-3"><FileSpreadsheet className="text-brand-600" /><span className="flex-1 font-semibold">{name}</span><Button size="sm" variant="secondary" icon={Download} onClick={() => downloadCSV(`${name.toLowerCase().replace(/\W+/g, '-')}-${from}-to-${to}.csv`, fn(from, to, unit))}>CSV</Button></Card>)}
         <p className="text-xs text-ink-500 md:col-span-2 xl:col-span-4">CSV files open in Excel / Google Sheets. Exports contain patient data – share them only with authorised people.</p>
       </div>}
     </Page>

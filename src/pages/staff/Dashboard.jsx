@@ -8,13 +8,14 @@ import { getLocale } from '../../i18n'
 import { useData } from '../../lib/db'
 import { balanceOf, stockAlerts, doctors, worksOn, queueFor, avgConsultMins, canVerify, PAY_METHODS } from '../../lib/actions'
 import { addDays, greeting, hhmm, inr, today, fmtShort, cls, timeAgo } from '../../lib/utils'
-import { can } from '../../lib/rbac'
+import { can, rolesOf } from '../../lib/rbac'
 
-export function useTodayStats() {
+const inUnit = (unit) => (r) => (r.unit || 'hospital') === unit
+export function useTodayStats(unit = 'hospital') {
   return useData((d) => {
     const T = today()
     const appts = d.list('appointments', (a) => a.date === T && a.status !== 'cancelled')
-    const pays = d.list('payments', (p) => p.at?.startsWith(T))
+    const pays = d.list('payments', (p) => p.at?.startsWith(T) && inUnit(unit)(p))
     const beds = d.list('beds')
     return {
       patients: d.list('patients').length,
@@ -23,8 +24,9 @@ export function useTodayStats() {
       done: appts.filter((a) => a.status === 'completed').length,
       waiting: appts.filter((a) => a.status === 'arrived').length,
       revenue: pays.reduce((s, p) => s + p.amount, 0),
-      outstanding: d.list('bills', (b) => b.status !== 'cancelled').reduce((s, b) => s + Math.max(0, balanceOf(b)), 0),
+      outstanding: d.list('bills', (b) => b.status !== 'cancelled' && inUnit(unit)(b)).reduce((s, b) => s + Math.max(0, balanceOf(b)), 0),
       pendingLab: d.list('labOrders', (l) => !['published', 'cancelled'].includes(l.status)).length,
+      monthRevenue: d.list('payments', (p) => p.at?.startsWith(T.slice(0, 7)) && inUnit(unit)(p)).reduce((x, p) => x + p.amount, 0),
       bedsFree: beds.filter((b) => b.status === 'available').length,
       bedsUsed: beds.filter((b) => b.status === 'occupied').length,
       bedsTotal: beds.length,
@@ -34,11 +36,35 @@ export function useTodayStats() {
   })
 }
 
+// Income of ONE unit (each owner sees only their own)
+function useIncome(unit) {
+  const series = useData((d) => Array.from({ length: 14 }, (_, i) => { const day = addDays(today(), i - 13); return { label: fmtShort(day + 'T00:00:00').split(' ')[0], value: d.list('payments', (p) => p.at?.startsWith(day) && inUnit(unit)(p)).reduce((a, p) => a + p.amount, 0) } }))
+  const byMethod = useData((d) => { const m = {}; d.list('payments', (p) => p.at?.startsWith(today().slice(0, 7)) && p.kind === 'payment' && inUnit(unit)(p)).forEach((p) => { m[p.method] = (m[p.method] || 0) + p.amount }); return Object.entries(m).map(([k, v]) => ({ label: PAY_METHODS[k] || k, value: v })).sort((a, b) => b.value - a.value) })
+  return { series, byMethod }
+}
+export function IncomePanel({ unit, title }) {
+  const s = useTodayStats(unit)
+  const { series, byMethod } = useIncome(unit)
+  return (
+    <>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+        <Stat icon={IndianRupee} tone="green" label="Collection today" value={inr(s.revenue)} />
+        <Stat icon={IndianRupee} tone="sky" label="Collection this month" value={inr(s.monthRevenue)} />
+        <Stat icon={Wallet} tone="red" label="Outstanding payments" value={inr(s.outstanding)} />
+      </div>
+      <div className="grid lg:grid-cols-3 gap-4 mt-4">
+        <Card className="p-5 lg:col-span-2"><div className="flex justify-between items-baseline"><h3 className="font-bold">{title}</h3><span className="text-sm text-ink-500">{inr(series.reduce((a, x) => a + x.value, 0))}</span></div><div className="mt-4"><ColumnChart data={series} format={(v) => (v >= 1000 ? `₹${(v / 1000).toFixed(1)}k` : `₹${Math.round(v)}`)} height={160} ariaLabel={title} /></div></Card>
+        <Card className="p-5"><h3 className="font-bold mb-4">Payment methods (this month)</h3><BarList data={byMethod} format={(v) => inr(v)} color="#16968B" /></Card>
+      </div>
+    </>
+  )
+}
+
 function AdminDash() {
   const nav = useNavigate()
-  const s = useTodayStats()
-  const series = useData((d) => Array.from({ length: 14 }, (_, i) => { const day = addDays(today(), i - 13); return { label: fmtShort(day + 'T00:00:00').split(' ')[0], value: d.list('payments', (p) => p.at?.startsWith(day)).reduce((a, p) => a + p.amount, 0) } }))
-  const byMethod = useData((d) => { const m = {}; d.list('payments', (p) => p.at?.startsWith(today().slice(0, 7)) && p.kind === 'payment').forEach((p) => { m[p.method] = (m[p.method] || 0) + p.amount }); return Object.entries(m).map(([k, v]) => ({ label: PAY_METHODS[k] || k, value: v })).sort((a, b) => b.value - a.value) })
+  const s = useTodayStats('hospital')
+  const { series } = useIncome('hospital')
+  const byMethod = useData((d) => { const m = {}; d.list('payments', (p) => p.at?.startsWith(today().slice(0, 7)) && p.kind === 'payment' && inUnit('hospital')(p)).forEach((p) => { m[p.method] = (m[p.method] || 0) + p.amount }); return Object.entries(m).map(([k, v]) => ({ label: PAY_METHODS[k] || k, value: v })).sort((a, b) => b.value - a.value) })
   const docs = useData(() => doctors().map((doc) => { const q = queueFor(doc.id); return { doc, on: worksOn(doc, today()), waiting: q.filter((a) => a.status === 'arrived').length, done: q.filter((a) => a.status === 'completed').length, avg: avgConsultMins(doc.id) } }))
   const fb = useData((d) => d.list('feedback', (f) => f.status !== 'resolved').length)
   const alerts = useData(() => stockAlerts())
@@ -52,11 +78,11 @@ function AdminDash() {
         <Stat icon={Wallet} tone="red" label="Outstanding payments" value={inr(s.outstanding)} onClick={() => nav('/s/billing?tab=due')} />
         <Stat icon={FlaskConical} tone="amber" label="Pending lab reports" value={s.pendingLab} onClick={() => nav('/s/lab')} />
         <Stat icon={BedDouble} tone="blue" label="Beds available / occupied" value={`${s.bedsFree} / ${s.bedsUsed}`} sub={`${s.bedsTotal} beds`} onClick={() => nav('/s/ipd')} />
-        <Stat icon={PackageX} tone="red" label="Pharmacy low-stock alerts" value={s.lowStock} onClick={() => nav('/s/pharmacy/stock')} />
+        <Stat icon={PackageX} tone="red" label="Medical store low-stock alerts" value={s.lowStock} />
       </div>
       <div className="grid lg:grid-cols-3 gap-4 mt-4">
         <Card className="p-5 lg:col-span-2">
-          <div className="flex justify-between items-baseline"><h3 className="font-bold">Daily collection – last 14 days</h3><span className="text-sm text-ink-500">{inr(series.reduce((a, x) => a + x.value, 0))}</span></div>
+          <div className="flex justify-between items-baseline"><h3 className="font-bold">Hospital collection – last 14 days</h3><span className="text-sm text-ink-500">{inr(series.reduce((a, x) => a + x.value, 0))}</span></div>
           <div className="mt-4"><ColumnChart data={series} format={(v) => (v >= 1000 ? `₹${(v / 1000).toFixed(1)}k` : `₹${Math.round(v)}`)} height={170} ariaLabel="Daily collection" /></div>
         </Card>
         <Card className="p-5">
@@ -84,9 +110,9 @@ function AdminDash() {
           <h3 className="font-bold mb-3">Needs attention</h3>
           <div className="space-y-2 text-sm">
             {s.emergencies > 0 && <button onClick={() => nav('/s/emergency')} className="w-full flex items-center gap-2 rounded-xl bg-red-50 text-red-700 px-3 py-2.5 font-semibold"><Siren size={16} /> {`${s.emergencies} emergency case(s) in OPD`}</button>}
-            {alerts.out.length > 0 && <button onClick={() => nav('/s/pharmacy/stock')} className="w-full flex items-center gap-2 rounded-xl bg-red-50 text-red-700 px-3 py-2.5 font-semibold"><PackageX size={16} /> {`${alerts.out.length} medicine(s) out of stock`}</button>}
-            {alerts.expired.length > 0 && <button onClick={() => nav('/s/pharmacy/stock')} className="w-full flex items-center gap-2 rounded-xl bg-amber-50 text-amber-800 px-3 py-2.5 font-semibold"><AlertTriangle size={16} /> {`${alerts.expired.length} expired batch(es) to remove`}</button>}
-            {alerts.expiring.length > 0 && <button onClick={() => nav('/s/pharmacy/stock')} className="w-full flex items-center gap-2 rounded-xl bg-amber-50 text-amber-800 px-3 py-2.5 font-semibold"><Clock size={16} /> {`${alerts.expiring.length} batch(es) expiring within 2 months`}</button>}
+            {alerts.out.length > 0 && <button className="w-full flex items-center gap-2 rounded-xl bg-red-50 text-red-700 px-3 py-2.5 font-semibold"><PackageX size={16} /> {`${alerts.out.length} medicine(s) out of stock`}</button>}
+            {alerts.expired.length > 0 && <button className="w-full flex items-center gap-2 rounded-xl bg-amber-50 text-amber-800 px-3 py-2.5 font-semibold"><AlertTriangle size={16} /> {`${alerts.expired.length} expired batch(es) to remove`}</button>}
+            {alerts.expiring.length > 0 && <button className="w-full flex items-center gap-2 rounded-xl bg-amber-50 text-amber-800 px-3 py-2.5 font-semibold"><Clock size={16} /> {`${alerts.expiring.length} batch(es) expiring within 2 months`}</button>}
             {fb > 0 && <button onClick={() => nav('/s/feedback')} className="w-full flex items-center gap-2 rounded-xl bg-sky-50 text-sky-800 px-3 py-2.5 font-semibold"><Megaphone size={16} /> {`${fb} feedback / complaint(s) to review`}</button>}
           </div>
         </Card>
@@ -102,7 +128,7 @@ function DoctorDash() {
   const followups = q.filter((a) => a.type === 'followup').length
   const emerg = q.filter((a) => a.priority === 'emergency' && a.status !== 'completed')
   const pending = q.filter((a) => ['arrived', 'booked', 'in_consultation'].includes(a.status))
-  const verifyCount = useData((d) => (canVerify(user) ? d.list('labOrders', (l) => l.status === 'result_entered').length : 0))
+  const verifyCount = useData((d) => d.list('labOrders', (l) => l.status === 'result_entered' && canVerify(user, l)).length)
   const ipd = useData((d) => d.list('admissions', (a) => a.status === 'admitted' && a.doctorId === user.staffId))
   return (
     <>
@@ -113,7 +139,7 @@ function DoctorDash() {
         <Stat icon={ListOrdered} tone="sky" label="Follow-up patients" value={followups} />
         <Stat icon={Siren} tone="red" label="Emergency cases" value={emerg.length} onClick={() => nav('/s/opd')} />
       </div>
-      {verifyCount > 0 && <button onClick={() => nav('/s/lab?tab=verify')} className="mt-4 w-full flex items-center gap-3 rounded-2xl bg-amber-50 text-amber-900 px-4 py-3 font-semibold text-left"><FlaskConical size={20} /> {`${verifyCount} lab report(s) waiting for your verification`}</button>}
+      {verifyCount > 0 && <button onClick={() => nav('/s/investigations?tab=verify')} className="mt-4 w-full flex items-center gap-3 rounded-2xl bg-amber-50 text-amber-900 px-4 py-3 font-semibold text-left"><FlaskConical size={20} /> {`${verifyCount} lab report(s) waiting for your verification`}</button>}
       <div className="grid lg:grid-cols-3 gap-4 mt-4">
         <Card className="p-5 lg:col-span-2">
           <div className="flex justify-between items-center mb-3"><h3 className="font-bold">Upcoming patients</h3><Button size="sm" onClick={() => nav('/s/opd')}>Open my OPD</Button></div>
@@ -202,12 +228,13 @@ function TaskRow({ t }) {
   return <div className="flex items-center gap-3 py-2 border-b border-ink-100 last:border-0 text-sm"><span className={cls('h-2.5 w-2.5 rounded-full', late ? 'bg-red-500' : 'bg-amber-400')} /><span className="flex-1 font-semibold" translate="no">{t.title}</span><span className="text-ink-500 truncate max-w-[35%]">{p?.name}</span><span className={cls('text-xs w-20 text-right', late ? 'text-red-600 font-bold' : 'text-ink-500')}>{timeAgo(t.due)}</span></div>
 }
 
-function PharmacyDash() {
+function PharmacyDash({ owner }) {
   const nav = useNavigate()
   const pending = useData((d) => d.list('prescriptions', (r) => r.status === 'final' && r.dispenseStatus !== 'dispensed' && r.items?.some((i) => i.medicineId)).length)
   const a = useData(() => stockAlerts())
-  const sales = useData((d) => d.list('bills', (b) => b.date === today() && b.items.some((i) => i.type === 'pharmacy')).reduce((s, b) => s + b.total, 0))
+  const sales = useData((d) => d.list('bills', (b) => b.date === today() && b.unit === 'pharmacy').reduce((s, b) => s + b.total, 0))
   return (
+    <>
     <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
       <Stat icon={Pill} label="Prescriptions to dispense" value={pending} onClick={() => nav('/s/pharmacy')} />
       <Stat icon={IndianRupee} tone="green" label="Pharmacy sales today" value={inr(sales)} onClick={() => nav('/s/pharmacy/sales')} />
@@ -215,19 +242,24 @@ function PharmacyDash() {
       <Stat icon={AlertTriangle} tone="amber" label="Low stock" value={a.low.length} onClick={() => nav('/s/pharmacy/stock')} />
       <Stat icon={Clock} tone="purple" label="Expiring / expired batches" value={a.expiring.length + a.expired.length} onClick={() => nav('/s/pharmacy/stock')} />
     </div>
+    {owner && <IncomePanel unit="pharmacy" title="Medical store collection – last 14 days" />}
+    </>
   )
 }
 
-function LabDash() {
+function LabDash({ owner }) {
   const nav = useNavigate()
-  const c = useData((d) => { const o = {}; d.list('labOrders').forEach((l) => { o[l.status] = (o[l.status] || 0) + 1 }); return o })
+  const c = useData((d) => { const o = {}; d.list('labOrders', (l) => (l.unit || 'lab') === 'lab').forEach((l) => { o[l.status] = (o[l.status] || 0) + 1 }); return o })
   return (
+    <>
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       <Stat icon={FlaskConical} label="Samples to collect" value={c.ordered || 0} onClick={() => nav('/s/lab')} />
       <Stat icon={Clock} tone="purple" label="In process" value={(c.sample_collected || 0) + (c.processing || 0)} onClick={() => nav('/s/lab')} />
       <Stat icon={AlertTriangle} tone="amber" label="Awaiting verification" value={c.result_entered || 0} onClick={() => nav('/s/lab?tab=verify')} />
       <Stat icon={Receipt} tone="green" label="Verified – to publish" value={c.verified || 0} onClick={() => nav('/s/lab?tab=done')} />
     </div>
+    {owner && <IncomePanel unit="lab" title="Laboratory collection – last 14 days" />}
+    </>
   )
 }
 
@@ -239,6 +271,9 @@ export default function Dashboard() {
     <Page title={`${greeting()}, ${user.name.split(' ').slice(0, R === 'doctor' || user.name.startsWith('Dr') ? 2 : 1).join(' ')}`} subtitle={`${h.name} · ${new Date().toLocaleDateString(getLocale(), { weekday: 'long', day: 'numeric', month: 'long' })}`} wide>
       {R === 'admin' && <AdminDash />}
       {R === 'doctor' && <DoctorDash />}
+      {R === 'doctor' && rolesOf(user).includes('admin') && <><SectionTitle>Hospital overview (administrator)</SectionTitle><AdminDash /></>}
+      {R === 'pharmacy_admin' && <PharmacyDash owner />}
+      {R === 'lab_admin' && <LabDash owner />}
       {R === 'receptionist' && <ReceptionDash />}
       {R === 'nurse' && <NurseDash />}
       {R === 'pharmacist' && <PharmacyDash />}

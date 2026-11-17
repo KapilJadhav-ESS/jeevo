@@ -106,5 +106,6 @@ export function patientTimeline(patientId) {
   db.list('prescriptions', (r) => r.patientId === patientId && r.status === 'final').forEach((r) => items.push({ kind: 'prescription', at: r.createdAt, rec: r }))
   db.list('labOrders', (l) => l.patientId === patientId).forEach((l) => items.push({ kind: 'lab', at: l.createdAt, rec: l }))
   db.list('admissions', (a) => a.patientId === patientId).forEach((a) => items.push({ kind: 'admission', at: a.admittedAt, rec: a }))
+  db.list('referrals', (r) => r.patientId === patientId).forEach((r) => items.push({ kind: 'referral', at: r.createdAt, rec: r }))
   return items.sort((a, b) => String(b.at).localeCompare(String(a.at)))
 }

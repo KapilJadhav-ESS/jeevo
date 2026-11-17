@@ -1,8 +1,15 @@
 import { db } from '../db'
 import { uid, today, round2, inr } from '../utils'
 import { audit, fail, me, need, nextNo, notifyPatient, req, sendMessage } from './core'
+import { can, unitOf, seesUnitMoney } from '../rbac'
 
-export const PAY_METHODS = { upi: 'UPI', cash: 'Cash', card: 'Debit / credit card', netbanking: 'Net banking', other: 'Other' }
+// Each unit (hospital / medical store / laboratory) keeps its own bill and receipt series
+export const BILL_PREFIX = { hospital: 'BL', pharmacy: 'PH', lab: 'LBL' }
+export const RECEIPT_PREFIX = { hospital: 'RC', pharmacy: 'PR', lab: 'LR' }
+export const billUnit = (b) => b?.unit || 'hospital'
+export const visibleBills = (user, rows) => rows.filter((b) => user?.role === 'patient' || seesUnitMoney(user, billUnit(b)))
+
+export const PAY_METHODS = { upi: 'UPI', cash: 'Cash', card: 'Debit / credit card', netbanking: 'Net banking', insurance: 'Insurance (cashless)', other: 'Other' }
 export const BILL_STATUS = { unpaid: 'Unpaid', partial: 'Part paid', paid: 'Paid', refunded: 'Refunded', cancelled: 'Cancelled' }
 export const ITEM_TYPES = { consultation: 'Consultation', lab: 'Laboratory', pharmacy: 'Medicines', radiology: 'X-ray / scan', procedure: 'Procedure', room: 'Room / bed', other: 'Other' }
 
@@ -17,16 +24,18 @@ const statusOf = (total, paid, refunded) => (refunded > 0 && paid - refunded <= 
 
 // `internal`: bills created automatically by another workflow (test orders,
 // check-in fees, admission deposits) – any staff member may trigger those.
-export function createBill({ patientId, items, apptId, doctorId, labOrderId, prescriptionId, admissionId, notes = '' }, payment, { internal = false } = {}) {
-  if (!internal) need('billing.create')
-  else if (!['super_admin', 'admin', 'doctor', 'receptionist', 'nurse', 'pharmacist', 'lab_tech'].includes(me()?.role)) fail('You do not have permission to do this.')
+export function createBill({ patientId, items, apptId, doctorId, labOrderId, prescriptionId, admissionId, notes = '', unit }, payment, { internal = false } = {}) {
+  const u = me()
+  unit = unit || unitOf(u) || 'hospital'
+  if (!internal) { need('billing.create'); if (u.role !== 'super_admin' && unitOf(u) !== unit) fail('You can only create bills for your own unit') }
+  else if (!u || u.role === 'patient') fail('You do not have permission to do this.')
   if (!db.get('patients', patientId)) fail('Please choose a patient')
   const clean = items.filter((i) => i.desc && Number(i.qty) > 0).map((i) => ({ ...i, qty: Number(i.qty), rate: round2(i.rate), discount: round2(i.discount || 0), taxPct: Number(i.taxPct || 0) }))
   if (!clean.length) fail('Add at least one item')
   if (clean.some((i) => i.discount > i.qty * i.rate)) fail('Discount cannot be more than the item amount')
-  if (clean.some((i) => i.discount > 0) && !['admin', 'super_admin', 'receptionist'].includes(me().role)) fail('You do not have permission to give discounts.')
+  if (clean.some((i) => i.discount > 0) && !can(u, 'billing.discount')) fail('You do not have permission to give discounts.')
   const t = totals(clean)
-  const b = db.insert('bills', { id: uid('bl'), billNo: nextNo('BL'), patientId, date: today(), items: clean, ...t, paid: 0, refunded: 0, status: t.total > 0 ? 'unpaid' : 'paid', apptId, doctorId, labOrderId, prescriptionId, admissionId, notes, createdBy: me().id })
+  const b = db.insert('bills', { id: uid('bl'), billNo: nextNo(BILL_PREFIX[unit]), unit, patientId, date: today(), items: clean, ...t, paid: 0, refunded: 0, status: t.total > 0 ? 'unpaid' : 'paid', apptId, doctorId, labOrderId, prescriptionId, admissionId, notes, createdBy: me().id })
   audit('create', 'bills', b.id, `Bill ${b.billNo} for ${inr(b.total)}`)
   if (payment?.amount > 0) recordPayment(b.id, payment)
   return db.get('bills', b.id)
@@ -39,13 +48,13 @@ export function recordPayment(billId, { amount, method = 'cash', ref = '' }) {
   if (u.role === 'patient') {
     // online payment by the patient (simulated gateway in the demo)
     if (!['upi', 'card', 'netbanking'].includes(method)) fail('Choose an online payment method')
-  } else need('billing.create')
+  } else { need('billing.create'); if (!seesUnitMoney(u, billUnit(b))) fail('This bill belongs to another unit – collect it at that counter') }
   amount = round2(amount)
   if (!(amount > 0)) fail('Enter the amount received')
   const bal = balanceOf(b)
   if (amount > bal + 0.001) fail(`Amount is more than the balance (${inr(bal)})`)
   if (amount < bal && !db.setting('billing', {}).allowPartial && u.role !== 'patient') fail('Part payments are switched off in billing settings')
-  const p = db.insert('payments', { id: uid('pm'), receiptNo: nextNo('RC'), billId, patientId: b.patientId, amount, kind: 'payment', method, ref, by: u.id, at: new Date().toISOString() })
+  const p = db.insert('payments', { id: uid('pm'), receiptNo: nextNo(RECEIPT_PREFIX[billUnit(b)]), unit: billUnit(b), billId, patientId: b.patientId, amount, kind: 'payment', method, ref, by: u.id, at: new Date().toISOString() })
   const paid = round2((b.paid || 0) + amount)
   db.update('bills', billId, { paid, status: statusOf(b.total, paid, b.refunded || 0) })
   if (b.apptId) db.update('appointments', b.apptId, { paid: paid >= b.total })
@@ -59,11 +68,12 @@ export function recordPayment(billId, { amount, method = 'cash', ref = '' }) {
 export function refund(billId, { amount, method = 'cash', reason }) {
   const u = need('billing.refund')
   const b = db.get('bills', billId)
+  if (!seesUnitMoney(u, billUnit(b))) fail('Only the owner of this unit can refund')
   req(reason, 'Please enter the reason for the refund')
   amount = round2(amount)
   const refundable = round2((b.paid || 0) - (b.refunded || 0))
   if (!(amount > 0) || amount > refundable + 0.001) fail(`Refund must be between ₹1 and ${inr(refundable)}`)
-  const p = db.insert('payments', { id: uid('pm'), receiptNo: nextNo('RC'), billId, patientId: b.patientId, amount: -amount, kind: 'refund', method, reason, authorizedBy: u.id, by: u.id, at: new Date().toISOString() })
+  const p = db.insert('payments', { id: uid('pm'), receiptNo: nextNo(RECEIPT_PREFIX[billUnit(b)]), unit: billUnit(b), billId, patientId: b.patientId, amount: -amount, kind: 'refund', method, reason, authorizedBy: u.id, by: u.id, at: new Date().toISOString() })
   const refunded = round2((b.refunded || 0) + amount)
   db.update('bills', billId, { refunded, status: statusOf(b.total, b.paid, refunded) })
   audit('refund', 'bills', billId, `Refund ${inr(amount)} – ${reason}`)
@@ -71,8 +81,9 @@ export function refund(billId, { amount, method = 'cash', reason }) {
 }
 
 export function cancelBill(billId, reason) {
-  need('billing.refund')
+  const u = need('billing.refund')
   const b = db.get('bills', billId)
+  if (!seesUnitMoney(u, billUnit(b))) fail('Only the owner of this unit can cancel its bills')
   req(reason, 'Please enter the reason')
   if ((b.paid || 0) - (b.refunded || 0) > 0) fail('Refund the payments first, then cancel the bill')
   db.update('bills', billId, { status: 'cancelled', cancelReason: reason, cancelledBy: me().id })

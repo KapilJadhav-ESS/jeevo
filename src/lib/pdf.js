@@ -78,11 +78,31 @@ export async function shareBlob(blob, filename, text) {
 }
 
 /* ---------- letterhead ---------- */
-function letterhead(p, h, title) {
-  p.rect(0, 0, 595, 78, h.color || '#0E7C74')
+// Each unit prints on its own letterhead (hospital / medical store / laboratory)
+function letterhead(p, h, title, unit = 'hospital') {
+  if (unit === 'lab') {
+    const lab = db.setting('unit.lab', {})
+    p.rect(0, 0, 595, 84, '#1B2A4A'); p.rect(0, 84, 595, 4, '#1F7A3A')
+    p.text(40, 32, lab.name || 'Laboratory', { size: 17, bold: true, color: '#FFFFFF' })
+    p.text(40, 50, lab.address || '', { size: 8, color: '#D9E1F2' })
+    p.text(40, 64, `Ph: ${lab.phone || ''}  |  ${lab.email || ''}`, { size: 8, color: '#D9E1F2' })
+    ;(lab.signatories || []).slice(0, 2).forEach((x, i) => { p.text(555, 24 + i * 28, x.name, { size: 8.5, bold: true, color: '#FFFFFF', align: 'right' }); p.text(555, 35 + i * 28, `${x.qual}  ${x.reg}`, { size: 7, color: '#D9E1F2', align: 'right' }) })
+    p.text(40, 104, title, { size: 10, bold: true, color: '#1F7A3A' })
+    return 116
+  }
+  if (unit === 'pharmacy') {
+    const ph = db.setting('unit.pharmacy', {})
+    p.rect(0, 0, 595, 78, h.color || '#6E1824')
+    p.text(40, 34, ph.name || 'Medical Store', { size: 17, bold: true, color: '#FFFFFF' })
+    p.text(40, 52, `${h.address || ''}, ${h.city || ''} ${h.pin || ''}`, { size: 8, color: '#F3D9DC' })
+    p.text(40, 66, `${ph.drugLicence || ''}  |  ${ph.gstin || ''}  |  Ph: ${ph.phone || h.phone || ''}`, { size: 8, color: '#F3D9DC' })
+    p.text(555, 34, title, { size: 11, bold: true, color: '#FFFFFF', align: 'right' })
+    return 100
+  }
+  p.rect(0, 0, 595, 78, h.color || '#6E1824')
   p.text(40, 34, h.name, { size: 17, bold: true, color: '#FFFFFF' })
-  p.text(40, 52, `${h.address || ''}, ${h.city || ''} ${h.pin || ''}`, { size: 8.5, color: '#D2F2EE' })
-  p.text(40, 66, `Ph: ${h.phone || ''}${h.emergencyPhone ? '  |  Emergency: ' + h.emergencyPhone : ''}${h.regNo ? '  |  Reg: ' + h.regNo : ''}`, { size: 8.5, color: '#D2F2EE' })
+  p.text(40, 52, `${h.address || ''}, ${h.city || ''} ${h.pin || ''}`, { size: 8, color: '#F3D9DC' })
+  p.text(40, 66, `Ph: ${h.phone || ''}  |  Hospital Regd. No.: ${h.regNo || ''}${h.rohiniCode ? '  |  Rohini Code: ' + h.rohiniCode : ''}`, { size: 8, color: '#F3D9DC' })
   p.text(555, 34, title, { size: 11, bold: true, color: '#FFFFFF', align: 'right' })
   return 100
 }
@@ -152,7 +172,7 @@ export function billPdf(b) {
   const h = db.hospital(), pt = db.get('patients', b.patientId)
   const pays = db.list('payments', (x) => x.billId === b.id).sort((a, c) => a.at.localeCompare(c.at))
   return makePdf((p) => {
-    let y = letterhead(p, h, b.status === 'paid' ? 'BILL / RECEIPT' : 'BILL')
+    let y = letterhead(p, h, b.status === 'paid' ? 'BILL / RECEIPT' : 'BILL', b.unit || 'hospital')
     p.text(40, y + 4, `Bill No.: ${b.billNo}`, { size: 10, bold: true })
     p.text(555, y + 4, `Date: ${fmtNum(b.createdAt)}`, { size: 9, align: 'right' })
     if (h.gstin) p.text(555, y + 18, `GSTIN: ${h.gstin}`, { size: 8.5, color: '#64748B', align: 'right' })
@@ -198,8 +218,8 @@ export function labReportPdf(lo) {
   const h = db.hospital(), pt = db.get('patients', lo.patientId), doc = db.get('staff', lo.doctorId)
   const ver = db.getAny('users', lo.verifiedBy)
   return makePdf((p) => {
-    let y = letterhead(p, h, 'LABORATORY REPORT')
-    y = patientBox(p, y, pt, [['Ref. by', doc?.name || 'Self'], ['Sample', lo.sampleId || '-']])
+    let y = letterhead(p, h, lo.unit === 'hospital' ? 'INVESTIGATION REPORT' : 'LABORATORY REPORT', lo.unit || 'lab')
+    y = patientBox(p, y, pt, [['Ref. by', doc?.name || lo.referredBy || 'Self'], ['R/B No.', lo.orderNo]])
     p.text(40, y, `Order ${lo.orderNo}   |   Collected ${fmtNum(lo.collectedAt)}   |   Reported ${fmtNum(lo.verifiedAt || lo.enteredAt)}`, { size: 8.5, color: '#64748B' })
     y += 16
     for (const tid of lo.tests) {

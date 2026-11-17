@@ -98,7 +98,7 @@ export function dispense({ prescriptionId, patientId, lines, payment, discountPc
   }
   if (!items.length) fail('Enter the quantity to give')
   updates.forEach(([id, batches]) => db.update('medicines', id, { batches }))
-  const bill = createBill({ patientId, prescriptionId, items }, payment)
+  const bill = createBill({ patientId, prescriptionId, items, unit: 'pharmacy' }, payment)
   if (prescriptionId) {
     const rx = db.get('prescriptions', prescriptionId)
     const given = { ...(rx.dispensed || {}) }

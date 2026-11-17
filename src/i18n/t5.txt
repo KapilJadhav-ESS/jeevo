@@ -1,0 +1,190 @@
+# English || हिंदी || मराठी   — Radhakrishna Hospital: units, owners, insurance, referrals, facilities
+Radhakrishna Hospital || राधाकृष्ण हॉस्पिटल || राधाकृष्ण हॉस्पिटल
+Pimpalgaon Baswant, Dist. Nashik || पिंपलगाँव बसवंत, जि. नासिक || पिंपळगाव बसवंत, जि. नाशिक
+Pimpalgaon Baswant · Reg. No. 348 || पिंपलगाँव बसवंत · पंजी. नं. 348 || पिंपळगाव बसवंत · नोंदणी क्र. 348
+Pimpalgaon Baswant · Appointments · Reports · Bills || पिंपलगाँव बसवंत · अपॉइंटमेंट · रिपोर्ट · बिल || पिंपळगाव बसवंत · भेटी · रिपोर्ट · बिले
+Appointments, tokens, prescriptions, lab reports, medical store and bills — in English, हिंदी and मराठी. || अपॉइंटमेंट, टोकन, पर्चे, लैब रिपोर्ट, मेडिकल स्टोर और बिल — English, हिंदी और मराठी में. || भेटी, टोकन, प्रिस्क्रिप्शन, लॅब रिपोर्ट, मेडिकल स्टोअर आणि बिले — English, हिंदी आणि मराठीत.
+Owners || मालिक || मालक
+Staff || स्टाफ़ || कर्मचारी
+Hospital owner – OPD, beds, hospital billing & income, hospital staff, settings || अस्पताल मालिक – OPD, बेड, अस्पताल बिलिंग और आय, अस्पताल स्टाफ़, सेटिंग || रुग्णालय मालक – OPD, बेड, रुग्णालय बिलिंग व उत्पन्न, रुग्णालय कर्मचारी, सेटिंग्ज
+Main doctor and administrator – today’s OPD, prescriptions, ECG / 2D echo, plus admin || मुख्य डॉक्टर और प्रशासक – आज की OPD, पर्चे, ECG / 2D इको, साथ में प्रशासन || मुख्य डॉक्टर व प्रशासक – आजची OPD, प्रिस्क्रिप्शन, ECG / 2D इको, तसेच प्रशासन
+Medical store owner – stock, sales and income of the medical store only || मेडिकल स्टोर मालिक – केवल मेडिकल स्टोर का स्टॉक, बिक्री और आय || मेडिकल स्टोअर मालक – फक्त मेडिकल स्टोअरचा साठा, विक्री व उत्पन्न
+Laboratory owner – verifies reports, lab prices, lab income and staff only || लैब मालिक – रिपोर्ट सत्यापन, लैब दरें, केवल लैब की आय और स्टाफ़ || लॅब मालक – रिपोर्ट पडताळणी, लॅब दर, फक्त लॅबचे उत्पन्न व कर्मचारी
+Gynaecologist – maternity OPD, prescriptions, deliveries || स्त्री रोग विशेषज्ञ – प्रसूति OPD, पर्चे, प्रसव || स्त्रीरोगतज्ज्ञ – प्रसूती OPD, प्रिस्क्रिप्शन, प्रसूती
+Reception – register patients, tokens, queue, hospital billing || रिसेप्शन – मरीज़ पंजीकरण, टोकन, कतार, अस्पताल बिलिंग || स्वागत कक्ष – रुग्ण नोंदणी, टोकन, रांग, रुग्णालय बिलिंग
+Nurse – ward & ICU patients, vitals, tasks, medicines given || नर्स – वार्ड और ICU मरीज़, वाइटल्स, काम, दी गई दवाएँ || परिचारिका – वॉर्ड व ICU रुग्ण, व्हायटल्स, कामे, दिलेली औषधे
+Pharmacist – dispense prescriptions, counter sales || फ़ार्मासिस्ट – पर्चे की दवा, काउंटर बिक्री || फार्मासिस्ट – प्रिस्क्रिप्शनची औषधे, काउंटर विक्री
+Lab technologist – samples, result entry || लैब टेक्नोलॉजिस्ट – सैंपल, परिणाम दर्ज || लॅब टेक्नॉलॉजिस्ट – नमुने, निकाल नोंद
+A different (sample) clinic – its data is completely separate || दूसरा (नमूना) क्लिनिक – इसका डेटा पूरी तरह अलग है || दुसरे (नमुना) क्लिनिक – त्याचा डेटा पूर्णपणे वेगळा आहे
+Platform – all hospitals & clinics, plans, usage || प्लेटफ़ॉर्म – सभी अस्पताल और क्लिनिक, प्लान, उपयोग || प्लॅटफॉर्म – सर्व रुग्णालये व क्लिनिक, प्लॅन, वापर
+Hospital Administrator || अस्पताल प्रशासक || रुग्णालय प्रशासक
+Medical Store Owner || मेडिकल स्टोर मालिक || मेडिकल स्टोअर मालक
+Laboratory Owner || लैब मालिक || लॅब मालक
+Hospital Owner & Administrator || अस्पताल मालिक और प्रशासक || रुग्णालय मालक व प्रशासक
+Consultant Physician & Echocardiologist || कंसल्टेंट फ़िज़िशियन और इकोकार्डियोलॉजिस्ट || सल्लागार फिजिशियन व इकोकार्डिओलॉजिस्ट
+Consultant Gynaecologist & Obstetrician || स्त्री रोग एवं प्रसूति विशेषज्ञ || स्त्रीरोग व प्रसूतीतज्ज्ञ
+Lab Technologist || लैब टेक्नोलॉजिस्ट || लॅब टेक्नॉलॉजिस्ट
+Reception & Billing (placeholder) || रिसेप्शन और बिलिंग (नमूना) || स्वागत कक्ष व बिलिंग (नमुना)
+Staff Nurse – ICU (placeholder) || स्टाफ़ नर्स – ICU (नमूना) || स्टाफ नर्स – ICU (नमुना)
+Staff Nurse – Maternity (placeholder) || स्टाफ़ नर्स – प्रसूति (नमूना) || स्टाफ नर्स – प्रसूती (नमुना)
+Pharmacist (placeholder) || फ़ार्मासिस्ट (नमूना) || फार्मासिस्ट (नमुना)
+Lab Technician (placeholder) || लैब तकनीशियन (नमूना) || लॅब तंत्रज्ञ (नमुना)
+Hospital || अस्पताल || रुग्णालय
+Medical Store || मेडिकल स्टोर || मेडिकल स्टोअर
+Laboratory || प्रयोगशाला || प्रयोगशाळा
+Platform || प्लेटफ़ॉर्म || प्लॅटफॉर्म
+Medical Store profile || मेडिकल स्टोर प्रोफ़ाइल || मेडिकल स्टोअर प्रोफाइल
+Laboratory profile || लैब प्रोफ़ाइल || लॅब प्रोफाइल
+Hospital profile || अस्पताल प्रोफ़ाइल || रुग्णालय प्रोफाइल
+Medical store details || मेडिकल स्टोर विवरण || मेडिकल स्टोअर तपशील
+Laboratory letterhead || लैब लेटरहेड || लॅब लेटरहेड
+Hospital letterhead || अस्पताल लेटरहेड || रुग्णालय लेटरहेड
+Letterhead || लेटरहेड || लेटरहेड
+Owner || मालिक || मालक
+Drug licence number || ड्रग लाइसेंस नंबर || औषध परवाना क्रमांक
+GSTIN || GSTIN || GSTIN
+Footer (printed on bills / reports) || फ़ुटर (बिल / रिपोर्ट पर छपेगा) || तळटीप (बिल / रिपोर्टवर छापली जाईल)
+Signatories (top right of the report) || हस्ताक्षरकर्ता (रिपोर्ट में ऊपर दाएँ) || स्वाक्षरीकर्ते (रिपोर्टमध्ये वर उजवीकडे)
+Add signatory || हस्ताक्षरकर्ता जोड़ें || स्वाक्षरीकर्ता जोडा
+Qualification || योग्यता || पात्रता
+Only the owner of this unit can change this. Income and bills of your unit are visible only to you and your staff. || इसे केवल इस विभाग का मालिक बदल सकता है. आपके विभाग की आय और बिल केवल आपको और आपके स्टाफ़ को दिखते हैं. || हे फक्त या विभागाचे मालक बदलू शकतात. तुमच्या विभागाचे उत्पन्न व बिले फक्त तुम्हाला व तुमच्या कर्मचाऱ्यांना दिसतात.
+Lab tests & prices || लैब जाँचें और दरें || लॅब तपासण्या व दर
+ECG / echo / X-ray prices || ECG / इको / एक्स-रे दरें || ECG / इको / एक्स-रे दर
+ECG / Echo / X-ray || ECG / इको / एक्स-रे || ECG / इको / एक्स-रे
+Investigations done in the hospital || अस्पताल में होने वाली जाँचें || रुग्णालयात होणाऱ्या तपासण्या
+New investigation || नई जाँच || नवीन तपासणी
+Investigation || जाँच || तपासणी
+Investigation report || जाँच रिपोर्ट || तपासणी रिपोर्ट
+Laboratory report || प्रयोगशाला रिपोर्ट || प्रयोगशाळा रिपोर्ट
+Referred by || रेफ़र करने वाले || संदर्भ देणारे
+Referred by Dr. || रेफ़र करने वाले डॉ. || संदर्भ देणारे डॉ.
+e.g. Dr. Umesh Aher / outside doctor / self || जैसे डॉ. उमेश आहेर / बाहर के डॉक्टर / स्वयं || उदा. डॉ. उमेश आहेर / बाहेरचे डॉक्टर / स्वतः
+Outside doctor (walk-in) || बाहर के डॉक्टर (वॉक-इन) || बाहेरचे डॉक्टर (वॉक-इन)
+*** Identity given by patient *** || *** पहचान मरीज़ द्वारा दी गई *** || *** ओळख रुग्णाने दिलेली ***
+Identity given by patient. Results relate only to the sample tested; please correlate clinically. || पहचान मरीज़ द्वारा दी गई. परिणाम केवल जाँचे गए सैंपल के हैं; कृपया डॉक्टर से मिलान करें. || ओळख रुग्णाने दिलेली. निकाल फक्त तपासलेल्या नमुन्याचे आहेत; कृपया डॉक्टरांकडून पडताळा.
+Biochemistry || बायोकेमिस्ट्री || बायोकेमिस्ट्री
+Haematology || हीमेटोलॉजी || हिमॅटोलॉजी
+Serology || सीरोलॉजी || सिरॉलॉजी
+Hormones || हार्मोन || संप्रेरके
+Clinical pathology || क्लिनिकल पैथोलॉजी || क्लिनिकल पॅथॉलॉजी
+Cardiac || हृदय संबंधी || हृदयविषयक
+Report || रिपोर्ट || रिपोर्ट
+Referral letter || रेफ़रल पत्र || संदर्भ पत्र
+Referral letters || रेफ़रल पत्र || संदर्भ पत्रे
+Referral letter created || रेफ़रल पत्र बना || संदर्भ पत्र तयार झाले
+Create referral letter || रेफ़रल पत्र बनाएँ || संदर्भ पत्र तयार करा
+Refer || रेफ़र करें || संदर्भ द्या
+To (doctor) || किसे (डॉक्टर) || कोणाला (डॉक्टर)
+Speciality || विशेषता || विशेषता
+Place / hospital || स्थान / अस्पताल || ठिकाण / रुग्णालय
+Reason for referral || रेफ़र करने का कारण || संदर्भ देण्याचे कारण
+Notes (investigations, treatment given) || नोट (जाँचें, दिया गया इलाज) || नोंद (तपासण्या, दिलेले उपचार)
+Printed on your letterhead with today’s vitals. It is saved in the patient’s history. || आज के वाइटल्स के साथ आपके लेटरहेड पर छपेगा. यह मरीज़ के इतिहास में सेव होता है. || आजच्या व्हायटल्ससह तुमच्या लेटरहेडवर छापले जाईल. ते रुग्णाच्या इतिहासात जतन होते.
+Enter the doctor or speciality you are referring to || जिन डॉक्टर या विशेषता को रेफ़र कर रहे हैं वह लिखें || ज्या डॉक्टर किंवा विशेषतेकडे पाठवत आहात ते लिहा
+Enter the reason for referral || रेफ़र करने का कारण लिखें || संदर्भाचे कारण लिहा
+To, || प्रति, || प्रति,
+Insurance || बीमा || विमा
+Insurance & cashless || बीमा और कैशलेस || विमा व कॅशलेस
+Insurance / cashless || बीमा / कैशलेस || विमा / कॅशलेस
+Insurance (cashless) || बीमा (कैशलेस) || विमा (कॅशलेस)
+Health insurance / TPA (cashless) || स्वास्थ्य बीमा / TPA (कैशलेस) || आरोग्य विमा / TPA (कॅशलेस)
+Cashless insurance / TPA (optional) || कैशलेस बीमा / TPA (वैकल्पिक) || कॅशलेस विमा / TPA (ऐच्छिक)
+Insurance company / TPA || बीमा कंपनी / TPA || विमा कंपनी / TPA
+Insurer / TPA || बीमा कंपनी / TPA || विमा कंपनी / TPA
+No insurance / cash || बीमा नहीं / नकद || विमा नाही / रोख
+Policy / card number || पॉलिसी / कार्ड नंबर || पॉलिसी / कार्ड क्रमांक
+Valid till || तक मान्य || पर्यंत वैध
+Pre-auth || प्री-ऑथ || प्री-ऑथ
+Pre-authorisation || पूर्व-अनुमति || पूर्व-मंजुरी
+Pre-auth amount (₹) || प्री-ऑथ राशि (₹) || प्री-ऑथ रक्कम (₹)
+Pre-auth reference || प्री-ऑथ संदर्भ || प्री-ऑथ संदर्भ
+Claim || क्लेम || दावा
+Claim status || क्लेम स्थिति || दाव्याची स्थिती
+Claim amount (₹) || क्लेम राशि (₹) || दाव्याची रक्कम (₹)
+Not required || आवश्यक नहीं || आवश्यक नाही
+Pre-auth requested || प्री-ऑथ माँगा गया || प्री-ऑथ मागितले
+Pre-auth approved || प्री-ऑथ मंज़ूर || प्री-ऑथ मंजूर
+Pre-auth rejected || प्री-ऑथ अस्वीकार || प्री-ऑथ नाकारले
+Not submitted || जमा नहीं || सादर केले नाही
+Claim submitted || क्लेम जमा || दावा सादर
+Query raised || प्रश्न पूछा गया || प्रश्न विचारला
+Settled || निपटारा हुआ || निकाली
+No insured admissions || बीमा वाली कोई भर्ती नहीं || विमा असलेले दाखल रुग्ण नाहीत
+Empanelled for cashless || कैशलेस के लिए सूचीबद्ध || कॅशलेससाठी सूचीबद्ध
+Cash patient – no insurance recorded. || नकद मरीज़ – कोई बीमा दर्ज नहीं. || रोख रुग्ण – विमा नोंदवलेला नाही.
+When the insurer settles, record the amount in Billing with payment method “Insurance (cashless)”. || बीमा कंपनी भुगतान करे तो बिलिंग में “बीमा (कैशलेस)” तरीके से राशि दर्ज करें. || विमा कंपनीने रक्कम दिल्यावर बिलिंगमध्ये “विमा (कॅशलेस)” पद्धतीने नोंदवा.
+Also: LIC and Star Health medical examination centre · help with the Chief Minister’s medical relief fund. || साथ ही: LIC और स्टार हेल्थ मेडिकल जाँच केंद्र · मुख्यमंत्री चिकित्सा सहायता निधि में मदद. || तसेच: LIC व स्टार हेल्थ वैद्यकीय तपासणी केंद्र · मुख्यमंत्री सहाय्यता निधी मिळवण्यासाठी मदत.
+Cashless mediclaim available || कैशलेस मेडिक्लेम उपलब्ध || उपलब्ध मेडिक्लेम कॅशलेस सुविधा
+LIC & Star Health medical examination centre. Help is available for the Chief Minister’s medical relief fund. || LIC और स्टार हेल्थ मेडिकल जाँच केंद्र. मुख्यमंत्री चिकित्सा सहायता निधि में मदद उपलब्ध. || LIC व स्टार हेल्थ वैद्यकीय तपासणी केंद्र. वैद्यकीय उपचारासाठी मुख्यमंत्री सहाय्यता निधी मिळण्याकरिता सहाय्य.
+Update || अपडेट करें || अद्ययावत करा
+Hospital overview (administrator) || अस्पताल सारांश (प्रशासक) || रुग्णालय आढावा (प्रशासक)
+Medical store low-stock alerts || मेडिकल स्टोर कम स्टॉक अलर्ट || मेडिकल स्टोअर कमी साठा सूचना
+Hospital collection – last 14 days || अस्पताल वसूली – पिछले 14 दिन || रुग्णालय वसुली – मागील 14 दिवस
+Medical store collection – last 14 days || मेडिकल स्टोर वसूली – पिछले 14 दिन || मेडिकल स्टोअर वसुली – मागील 14 दिवस
+Laboratory collection – last 14 days || लैब वसूली – पिछले 14 दिन || लॅब वसुली – मागील 14 दिवस
+Collection this month || इस महीने की वसूली || या महिन्याची वसुली
+Hospital – only this unit’s income || अस्पताल – केवल इस विभाग की आय || रुग्णालय – फक्त या विभागाचे उत्पन्न
+Medical Store – only this unit’s income || मेडिकल स्टोर – केवल इस विभाग की आय || मेडिकल स्टोअर – फक्त या विभागाचे उत्पन्न
+Laboratory – only this unit’s income || लैब – केवल इस विभाग की आय || लॅब – फक्त या विभागाचे उत्पन्न
+All units || सभी विभाग || सर्व विभाग
+You can only create bills for your own unit || आप केवल अपने विभाग के बिल बना सकते हैं || तुम्ही फक्त तुमच्या विभागाची बिले करू शकता
+This bill belongs to another unit – collect it at that counter || यह बिल दूसरे विभाग का है – उसी काउंटर पर भुगतान लें || हे बिल दुसऱ्या विभागाचे आहे – त्या काउंटरवर रक्कम घ्या
+Only the owner of this unit can refund || केवल इस विभाग का मालिक रिफ़ंड कर सकता है || फक्त या विभागाचे मालक परतावा देऊ शकतात
+Only the owner of this unit can cancel its bills || केवल इस विभाग का मालिक बिल रद्द कर सकता है || फक्त या विभागाचे मालक बिले रद्द करू शकतात
+This person belongs to another unit || यह व्यक्ति दूसरे विभाग का है || ही व्यक्ती दुसऱ्या विभागाची आहे
+This role is not available in your unit || यह भूमिका आपके विभाग में उपलब्ध नहीं है || ही भूमिका तुमच्या विभागात उपलब्ध नाही
+You can only change your own unit || आप केवल अपना विभाग बदल सकते हैं || तुम्ही फक्त तुमचा विभाग बदलू शकता
+This test belongs to another unit || यह जाँच दूसरे विभाग की है || ही तपासणी दुसऱ्या विभागाची आहे
+Bills of another unit are visible only to that unit. || दूसरे विभाग के बिल केवल उसी विभाग को दिखते हैं. || दुसऱ्या विभागाची बिले फक्त त्याच विभागाला दिसतात.
+Medicines are billed from Pharmacy → Counter sale (stock is updated there). Use custom items here only for other charges. || दवाओं का बिल फ़ार्मेसी → काउंटर बिक्री से बनाएँ (वहीं स्टॉक अपडेट होता है). यहाँ केवल अन्य शुल्क जोड़ें. || औषधांचे बिल फार्मसी → काउंटर विक्रीतून करा (तिथेच साठा अद्ययावत होतो). येथे फक्त इतर शुल्क जोडा.
++ Lab test… || + लैब जाँच… || + लॅब तपासणी…
++ ECG / echo / X-ray… || + ECG / इको / एक्स-रे… || + ECG / इको / एक्स-रे…
+Facilities || सुविधाएँ || सुविधा
+General Medicine & Diabetes || जनरल मेडिसिन और डायबिटीज़ || जनरल मेडिसिन व मधुमेह
+Cardiac care (ECG, 2D Echo, Stress test) || हृदय देखभाल (ECG, 2D इको, स्ट्रेस टेस्ट) || हृदय उपचार (ECG, 2D इको, स्ट्रेस टेस्ट)
+Obstetrics & Gynaecology · Maternity || प्रसूति एवं स्त्री रोग · मैटरनिटी || प्रसूती व स्त्रीरोग · मॅटर्निटी
+Operation Theatre || ऑपरेशन थियेटर || ऑपरेशन थिएटर
+X-ray || एक्स-रे || एक्स-रे
+Emergency & Ambulance (24×7) || इमरजेंसी और एम्बुलेंस (24×7) || आपत्कालीन व रुग्णवाहिका (24×7)
+Pathology – Radhakrushna Clinical Laboratory || पैथोलॉजी – राधाकृष्ण क्लिनिकल लैबोरेटरी || पॅथॉलॉजी – राधाकृष्ण क्लिनिकल लॅबोरेटरी
+Medical Store (24×7) || मेडिकल स्टोर (24×7) || मेडिकल स्टोअर (24×7)
+Well-equipped ICU || सुसज्ज ICU || सुसज्ज अतिदक्षता विभाग
+Modern operation theatre || आधुनिक ऑपरेशन थियेटर || अत्याधुनिक सुसज्ज ऑपरेशन थिएटर
+Diabetes treatment || डायबिटीज़ उपचार || डायबेटिक (मधुमेह) उपचार
+Ventilator || वेंटिलेटर || कृत्रिम श्वसन यंत्र
+2D Echo || 2D इको || २-डी इको
+Stress test || स्ट्रेस टेस्ट || स्ट्रेस टेस्ट
+High blood pressure treatment || हाई ब्लड प्रेशर उपचार || उच्च रक्तदाब उपचार
+Blood storage centre || ब्लड स्टोरेज सेंटर || ब्लड स्टोरेज सेंटर
+General ward and special rooms || जनरल वार्ड और स्पेशल रूम || जनरल वार्ड आणि स्पेशल रूम्स उपलब्ध
+Urinary tract disease & kidney stone treatment || मूत्र रोग और किडनी स्टोन उपचार || मूत्रमार्ग आजार, किडनी स्टोन उपचार
+Treatment of all types of fractures || सभी प्रकार के फ्रैक्चर का उपचार || सर्व प्रकारचे हाडांचे फ्रॅक्चर उपचार
+Arthritis treatment || गठिया उपचार || संधीवात, हातांचे उपचार
+Knee arthroscopy (keyhole surgery) || घुटने की दूरबीन सर्जरी || गुडघ्याची दुर्बिणीद्वारे शस्त्रक्रिया
+24-hour ambulance || 24 घंटे एम्बुलेंस || २४ तास ॲम्ब्युलन्स सेवा
+24-hour pathology lab || 24 घंटे पैथोलॉजी लैब || २४ तास पॅथॉलॉजी लॅब
+24-hour medical store || 24 घंटे मेडिकल स्टोर || २४ तास मेडिकल स्टोअर सुविधा
+Maternity home || मैटरनिटी होम || मॅटर्निटी होम
+Infertility treatment || बांझपन उपचार || वंध्यत्व चिकित्सा
+Cancer diagnosis & treatment || कैंसर निदान और उपचार || कॅन्सर निदान व चिकित्सा
+Family planning advice || परिवार नियोजन सलाह || कुटुंब नियोजन सल्ला
+Sexual health problems & guidance || यौन समस्याएँ और मार्गदर्शन || लैंगिक समस्या व मार्गदर्शन
+Uterus disorders – diagnosis & surgery || गर्भाशय विकार – निदान और सर्जरी || गर्भपिशवीचे विकार – निदान व शस्त्रक्रिया
+General Ward || जनरल वार्ड || जनरल वॉर्ड
+Semi-Special Rooms || सेमी-स्पेशल रूम || सेमी-स्पेशल रूम्स
+Special Rooms || स्पेशल रूम || स्पेशल रूम्स
+OPD timings || OPD समय || OPD वेळ
+OPD: 11 am – 4 pm and 6 – 8 pm · Saturday closed · Emergency & ambulance 24×7 || OPD: सुबह 11 – शाम 4 और 6 – 8 बजे · शनिवार बंद · इमरजेंसी और एम्बुलेंस 24×7 || ओपीडी वेळ: सकाळी ११ ते ४ व सायं. ६ ते ८ · शनिवार बंद · आपत्कालीन व रुग्णवाहिका २४×७
+OPD: 11 am – 4 pm and 6 – 8 pm · Saturday closed || OPD: सुबह 11 – शाम 4 और 6 – 8 बजे · शनिवार बंद || ओपीडी वेळ: सकाळी ११ ते ४ व सायं. ६ ते ८ · शनिवार बंद
+Please bring this file on every visit. Get well soon! || हर बार आते समय यह फ़ाइल साथ लाएँ. जल्दी स्वस्थ हों! || कृपया प्रत्येक वेळी येताना ही फाईल सोबत आणावी. लवकर बरे व्हा!
+Type 2 diabetes || टाइप 2 डायबिटीज़ || टाइप 2 मधुमेह
+Osteoarthritis (knees) || घुटनों का ऑस्टियोआर्थराइटिस || गुडघ्यांचा संधिवात
+Sulfa drugs || सल्फा दवाएँ || सल्फा औषधे
+Penicillin || पेनिसिलिन || पेनिसिलिन
+Free diabetes & BP check-up camp || मुफ़्त डायबिटीज़ और बीपी जाँच शिविर || मोफत मधुमेह व BP तपासणी शिबिर
+Cashless insurance available || कैशलेस बीमा उपलब्ध || कॅशलेस विमा उपलब्ध
+Maternity & infertility care || प्रसूति और बांझपन उपचार || प्रसूती व वंध्यत्व उपचार
+Fire safety drill || अग्नि सुरक्षा अभ्यास || अग्निसुरक्षा सराव
+Also administrator (hospital) || प्रशासक भी (अस्पताल) || प्रशासक सुद्धा (हॉस्पिटल)
+Only the hospital administrator can give administrator rights || प्रशासक अधिकार केवल अस्पताल प्रशासक दे सकते हैं || प्रशासक अधिकार फक्त हॉस्पिटल प्रशासक देऊ शकतात
+You cannot change your own role || आप अपनी भूमिका नहीं बदल सकते || तुम्ही स्वतःची भूमिका बदलू शकत नाही
