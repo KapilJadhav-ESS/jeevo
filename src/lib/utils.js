@@ -1,8 +1,10 @@
 import { getLocale } from '../i18n'
 export const uid = (p = '') => p + Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4)
 
-export const inr = (n = 0, dec = 0) =>
-  '₹' + Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: dec, maximumFractionDigits: dec || 0 })
+export const inr = (n = 0, dec = 0) => {
+  const v = Number(n || 0)
+  return (v < 0 ? '−₹' : '₹') + Math.abs(v).toLocaleString('en-IN', { minimumFractionDigits: dec, maximumFractionDigits: dec || 0 })
+}
 export const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100
 
 export const cls = (...a) => a.filter(Boolean).join(' ')

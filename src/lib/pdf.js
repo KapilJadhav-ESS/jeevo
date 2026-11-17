@@ -8,7 +8,7 @@ import { flagOf } from './actions/lab'
 import { balanceOf, PAY_METHODS } from './actions/billing'
 import { ageSex, fmtNum } from './utils'
 
-const esc = (s) => String(s ?? '').replace(/₹/g, 'Rs. ').replace(/[–—]/g, '-').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/µ/g, 'u').replace(/₂/g, '2').replace(/×/g, 'x').replace(/[^\x20-\x7E]/g, '').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)')
+const esc = (s) => String(s ?? '').replace(/−/g, '-').replace(/₹/g, 'Rs. ').replace(/[–—]/g, '-').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/µ/g, 'u').replace(/₂/g, '2').replace(/×/g, 'x').replace(/[^\x20-\x7E]/g, '').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)')
 const rs = (n) => 'Rs. ' + Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
 export function makePdf(draw) {
